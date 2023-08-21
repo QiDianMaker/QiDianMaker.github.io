@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/more-effective-cpp/index.png">
 <meta property="article:published_time" content="2023-08-05T19:33:04.000Z">
-<meta property="article:modified_time" content="2023-08-15T01:29:54.511Z">
+<meta property="article:modified_time" content="2023-08-21T06:39:33.940Z">
 <meta property="article:author" content="QiDianMaker">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="经验">
@@ -322,7 +322,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          298 字
+          940 字
         
       </span>
     
@@ -333,7 +333,7 @@
         
         
         
-          3 分钟
+          8 分钟
         
       </span>
     
@@ -683,6 +683,7 @@
                 <p>继 Effective C++ 之后，Scott Meyers 于 1996 年推出这本“续集”。条款变得比较少，页数倒是多了一些，原因是这次选材比“第一集”更高阶。尤其是第 5 章。Meyers 将此章命名为技术（techniques），并明白告诉你，其中都是一些 patterns（模式），例如 virtual contructors（虚构造函数），smart pointers（智能指针），reference counting（引用计数），proxy classes（策略类），double dispatching（双重派发）……这一章的每个条款篇幅都长达 15~30 页之多，实在让人有“山重水复疑无路，柳暗花明又一村”之叹。</p>
 <span id="more"></span>
 
+<h2 id="基础议题"><a href="#基础议题" class="headerlink" title="基础议题"></a>基础议题</h2><h3 id="条款-1：仔细区分指针和引用"><a href="#条款-1：仔细区分指针和引用" class="headerlink" title="条款 1：仔细区分指针和引用"></a>条款 1：仔细区分指针和引用</h3><h3 id="条款-2：最好使用-C-转型操作符"><a href="#条款-2：最好使用-C-转型操作符" class="headerlink" title="条款 2：最好使用 C++ 转型操作符"></a>条款 2：最好使用 C++ 转型操作符</h3><h3 id="条款-3：绝对不要以多态反诗处理数组"><a href="#条款-3：绝对不要以多态反诗处理数组" class="headerlink" title="条款 3：绝对不要以多态反诗处理数组"></a>条款 3：绝对不要以多态反诗处理数组</h3><h3 id="条款-4：非必要不提供默认构造函数"><a href="#条款-4：非必要不提供默认构造函数" class="headerlink" title="条款 4：非必要不提供默认构造函数"></a>条款 4：非必要不提供默认构造函数</h3><h2 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h2><h3 id="条款-5：对定制的“类型转换函数”保持警觉"><a href="#条款-5：对定制的“类型转换函数”保持警觉" class="headerlink" title="条款 5：对定制的“类型转换函数”保持警觉"></a>条款 5：对定制的“类型转换函数”保持警觉</h3><h3 id="条款-6：区分自增-自减操作符的前置和后置形式"><a href="#条款-6：区分自增-自减操作符的前置和后置形式" class="headerlink" title="条款 6：区分自增&#x2F;自减操作符的前置和后置形式"></a>条款 6：区分自增&#x2F;自减操作符的前置和后置形式</h3><h3 id="条款-7：千万不要重载-，-和-操作符"><a href="#条款-7：千万不要重载-，-和-操作符" class="headerlink" title="条款 7：千万不要重载 &amp;&amp;，|| 和 , 操作符"></a>条款 7：千万不要重载 &amp;&amp;，|| 和 , 操作符</h3><h3 id="条款-8：了解各种不同意义的-new-和-delete"><a href="#条款-8：了解各种不同意义的-new-和-delete" class="headerlink" title="条款 8：了解各种不同意义的 new 和 delete"></a>条款 8：了解各种不同意义的 new 和 delete</h3><h2 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h2><h3 id="条款-9：利用析构函数避免资源泄露"><a href="#条款-9：利用析构函数避免资源泄露" class="headerlink" title="条款 9：利用析构函数避免资源泄露"></a>条款 9：利用析构函数避免资源泄露</h3><h3 id="条款-10：在构造函数内阻止资源泄露"><a href="#条款-10：在构造函数内阻止资源泄露" class="headerlink" title="条款 10：在构造函数内阻止资源泄露"></a>条款 10：在构造函数内阻止资源泄露</h3><h3 id="条款-11：禁止异常流出析构函数之外"><a href="#条款-11：禁止异常流出析构函数之外" class="headerlink" title="条款 11：禁止异常流出析构函数之外"></a>条款 11：禁止异常流出析构函数之外</h3><h3 id="条款-12：了解“抛出一个异常”与“传递一个参数”或“调用一个虚函数”之间的差异"><a href="#条款-12：了解“抛出一个异常”与“传递一个参数”或“调用一个虚函数”之间的差异" class="headerlink" title="条款 12：了解“抛出一个异常”与“传递一个参数”或“调用一个虚函数”之间的差异"></a>条款 12：了解“抛出一个异常”与“传递一个参数”或“调用一个虚函数”之间的差异</h3><h3 id="条款-13：以传引用的方式捕获异常"><a href="#条款-13：以传引用的方式捕获异常" class="headerlink" title="条款 13：以传引用的方式捕获异常"></a>条款 13：以传引用的方式捕获异常</h3><h3 id="条款-14：明智运用异常规约"><a href="#条款-14：明智运用异常规约" class="headerlink" title="条款 14：明智运用异常规约"></a>条款 14：明智运用异常规约</h3><h3 id="条款-15：了解异常处理的成本"><a href="#条款-15：了解异常处理的成本" class="headerlink" title="条款 15：了解异常处理的成本"></a>条款 15：了解异常处理的成本</h3><h2 id="效率"><a href="#效率" class="headerlink" title="效率"></a>效率</h2><h3 id="条款-16：谨记-80-20-法则"><a href="#条款-16：谨记-80-20-法则" class="headerlink" title="条款 16：谨记 80-20 法则"></a>条款 16：谨记 80-20 法则</h3><h3 id="条款-17：考虑使用惰性求值"><a href="#条款-17：考虑使用惰性求值" class="headerlink" title="条款 17：考虑使用惰性求值"></a>条款 17：考虑使用惰性求值</h3><h3 id="条款-18：分期摊还预期的计算成本"><a href="#条款-18：分期摊还预期的计算成本" class="headerlink" title="条款 18：分期摊还预期的计算成本"></a>条款 18：分期摊还预期的计算成本</h3><h3 id="条款-19：了解临时对象的来源"><a href="#条款-19：了解临时对象的来源" class="headerlink" title="条款 19：了解临时对象的来源"></a>条款 19：了解临时对象的来源</h3><h3 id="条款-20：协助完成“返回值优化”"><a href="#条款-20：协助完成“返回值优化”" class="headerlink" title="条款 20：协助完成“返回值优化”"></a>条款 20：协助完成“返回值优化”</h3><h3 id="条款-21：利用重载技术避免隐式类型转换"><a href="#条款-21：利用重载技术避免隐式类型转换" class="headerlink" title="条款 21：利用重载技术避免隐式类型转换"></a>条款 21：利用重载技术避免隐式类型转换</h3><h3 id="条款-22：考虑以操作符复合形式取代其独身形式"><a href="#条款-22：考虑以操作符复合形式取代其独身形式" class="headerlink" title="条款 22：考虑以操作符复合形式取代其独身形式"></a>条款 22：考虑以操作符复合形式取代其独身形式</h3><h3 id="条款-23：考虑使用其他程序库"><a href="#条款-23：考虑使用其他程序库" class="headerlink" title="条款 23：考虑使用其他程序库"></a>条款 23：考虑使用其他程序库</h3><h3 id="条款-24：了解虚函数、多继承、虚基类、RTTI-的成本"><a href="#条款-24：了解虚函数、多继承、虚基类、RTTI-的成本" class="headerlink" title="条款 24：了解虚函数、多继承、虚基类、RTTI 的成本"></a>条款 24：了解虚函数、多继承、虚基类、RTTI 的成本</h3><h2 id="技术"><a href="#技术" class="headerlink" title="技术"></a>技术</h2><h3 id="条款-25：将构造函数和非成员函数虚化"><a href="#条款-25：将构造函数和非成员函数虚化" class="headerlink" title="条款 25：将构造函数和非成员函数虚化"></a>条款 25：将构造函数和非成员函数虚化</h3><h3 id="条款-26：限制某个类所能产生的对象数量"><a href="#条款-26：限制某个类所能产生的对象数量" class="headerlink" title="条款 26：限制某个类所能产生的对象数量"></a>条款 26：限制某个类所能产生的对象数量</h3><h3 id="条款-27：要求（或禁止）对象产生于堆之中"><a href="#条款-27：要求（或禁止）对象产生于堆之中" class="headerlink" title="条款 27：要求（或禁止）对象产生于堆之中"></a>条款 27：要求（或禁止）对象产生于堆之中</h3><h3 id="条款-28：智能指针"><a href="#条款-28：智能指针" class="headerlink" title="条款 28：智能指针"></a>条款 28：智能指针</h3><h3 id="条款-29：引用计数"><a href="#条款-29：引用计数" class="headerlink" title="条款 29：引用计数"></a>条款 29：引用计数</h3><h3 id="条款-30：代理类"><a href="#条款-30：代理类" class="headerlink" title="条款 30：代理类"></a>条款 30：代理类</h3><h3 id="条款-31：让函数根据一个以上的对象类型来决定如何虚化"><a href="#条款-31：让函数根据一个以上的对象类型来决定如何虚化" class="headerlink" title="条款 31：让函数根据一个以上的对象类型来决定如何虚化"></a>条款 31：让函数根据一个以上的对象类型来决定如何虚化</h3><h2 id="杂项讨论"><a href="#杂项讨论" class="headerlink" title="杂项讨论"></a>杂项讨论</h2><h3 id="条款-32：在未来时态下发展程序"><a href="#条款-32：在未来时态下发展程序" class="headerlink" title="条款 32：在未来时态下发展程序"></a>条款 32：在未来时态下发展程序</h3><h3 id="条款-33：将非尾端类设计为抽象类"><a href="#条款-33：将非尾端类设计为抽象类" class="headerlink" title="条款 33：将非尾端类设计为抽象类"></a>条款 33：将非尾端类设计为抽象类</h3><h3 id="条款-34：如何在同一个程序中结合-C-和-C"><a href="#条款-34：如何在同一个程序中结合-C-和-C" class="headerlink" title="条款 34：如何在同一个程序中结合 C++ 和 C"></a>条款 34：如何在同一个程序中结合 C++ 和 C</h3><h3 id="条款-35：让自己习惯于标准-C-语言"><a href="#条款-35：让自己习惯于标准-C-语言" class="headerlink" title="条款 35：让自己习惯于标准 C++ 语言"></a>条款 35：让自己习惯于标准 C++ 语言</h3>
                 
               </div>
             
@@ -764,7 +765,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>更新于</div>
-          <div>2023年8月14日</div>
+          <div>2023年8月20日</div>
         </div>
       
       

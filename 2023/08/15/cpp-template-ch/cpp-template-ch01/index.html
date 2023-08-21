@@ -16,26 +16,21 @@
   <meta name="author" content="QiDianMaker">
   <meta name="keywords" content="">
   
-    <meta name="description" content="一份宏大的作品，能够带动一个领域的蓬勃发展。C++ 社群在相对沉寂数十年之后迎来新一波浪潮，原因是，作为一门编程工具的最核心，C++ 的语言和标准库都出现巨大的拓展和强化。这一番大变革始自 2011，并分别于 2014、2017 持续进化。业界习惯性地将这些新版本统称为 Modern C++，用以区别“传统” C++。 作为知名书系的最新作品，《Effective Modern C++》的佳质和佳">
+    <meta name="description" content="第 1 章 函数模板本章将介绍函数模板。函数模板是被参数化的函数，因此他们代表的是一组具有相似行为的函数。 1.1 函数模板初探函数模板提供了适用于不同数据类型的函数行为。也就是说，函数模板代表的是一组函数。除了某些信息未被明确指定之外，他们看起来很像普通函数。这些未被指定的信息就是被参数化的信息。我们将通过下面一个简单的例子来说明这一问题。 1.1.1 定义模板以下就是一个函数模板， 它返回两个">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Effective Modern C++">
-<meta property="og:url" content="http://example.com/2023/08/08/effective-modern-cpp/index.html">
+<meta property="og:title" content="奇点创客">
+<meta property="og:url" content="http://example.com/2023/08/15/cpp-template-ch/cpp-template-ch01/index.html">
 <meta property="og:site_name" content="奇点创客">
-<meta property="og:description" content="一份宏大的作品，能够带动一个领域的蓬勃发展。C++ 社群在相对沉寂数十年之后迎来新一波浪潮，原因是，作为一门编程工具的最核心，C++ 的语言和标准库都出现巨大的拓展和强化。这一番大变革始自 2011，并分别于 2014、2017 持续进化。业界习惯性地将这些新版本统称为 Modern C++，用以区别“传统” C++。 作为知名书系的最新作品，《Effective Modern C++》的佳质和佳">
+<meta property="og:description" content="第 1 章 函数模板本章将介绍函数模板。函数模板是被参数化的函数，因此他们代表的是一组具有相似行为的函数。 1.1 函数模板初探函数模板提供了适用于不同数据类型的函数行为。也就是说，函数模板代表的是一组函数。除了某些信息未被明确指定之外，他们看起来很像普通函数。这些未被指定的信息就是被参数化的信息。我们将通过下面一个简单的例子来说明这一问题。 1.1.1 定义模板以下就是一个函数模板， 它返回两个">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/images/effective-modern-cpp/index.png">
-<meta property="article:published_time" content="2023-08-07T19:33:40.000Z">
-<meta property="article:modified_time" content="2023-08-21T05:53:38.171Z">
+<meta property="article:published_time" content="2023-08-15T05:51:57.087Z">
+<meta property="article:modified_time" content="2023-08-15T05:51:57.087Z">
 <meta property="article:author" content="QiDianMaker">
-<meta property="article:tag" content="C++">
-<meta property="article:tag" content="经验">
-<meta property="article:tag" content="准则">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/images/effective-modern-cpp/index.png">
   
   
   
-  <title>Effective Modern C++ - 奇点创客</title>
+  <title>奇点创客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -288,13 +283,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/images/effective-modern-cpp/banner.png') no-repeat center center; background-size: cover;">
+     style="background: url('/images/about/post.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Effective Modern C++"></span>
+            <span id="subtitle" data-typed-text=""></span>
           
         </div>
 
@@ -310,8 +305,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-08-07 11:33" pubdate>
-          2023年8月7日 中午
+        <time datetime="2023-08-14 21:51" pubdate>
+          2023年8月14日 晚上
         </time>
       </span>
     
@@ -322,7 +317,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          625 字
+          3.5k 字
         
       </span>
     
@@ -333,7 +328,7 @@
         
         
         
-          6 分钟
+          30 分钟
         
       </span>
     
@@ -371,303 +366,6 @@
   <div class="row nomargin-x">
     <div class="side-col d-none d-lg-block col-lg-2">
       
-  <aside class="sidebar category-bar" style="margin-right: -1rem">
-    
-
-
-
-
-
-<div class="category-list">
-  
-  
-    
-    
-    
-    <div class="category row nomargin-x">
-      <a class="category-item 
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="技术"
-        id="heading-a95dd3e179418be1ecd2a719a22db70e" role="tab" data-toggle="collapse" href="#collapse-a95dd3e179418be1ecd2a719a22db70e"
-        aria-expanded="true"
-      >
-        技术
-        <span class="list-group-count">(12)</span>
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      
-      <div class="category-collapse collapse show" id="collapse-a95dd3e179418be1ecd2a719a22db70e"
-           role="tabpanel" aria-labelledby="heading-a95dd3e179418be1ecd2a719a22db70e">
-        
-        
-          
-          
-  <div class="category-post-list">
-    
-    
-  </div>
-
-          
-  
-    
-    
-    
-    <div class="category-sub row nomargin-x">
-      <a class="category-subitem 
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="C++"
-        id="heading-f6f87c9fdcf8b3c3f07f93f1ee8712c9" role="tab" data-toggle="collapse" href="#collapse-f6f87c9fdcf8b3c3f07f93f1ee8712c9"
-        aria-expanded="true"
-      >
-        C++
-        <span class="list-group-count">(10)</span>
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      
-      <div class="category-collapse collapse show" id="collapse-f6f87c9fdcf8b3c3f07f93f1ee8712c9"
-           role="tabpanel" aria-labelledby="heading-f6f87c9fdcf8b3c3f07f93f1ee8712c9">
-        
-        
-          
-          
-  <div class="category-post-list">
-    
-    
-  </div>
-
-          
-  
-    
-    
-    
-    <div class="category-sub row nomargin-x">
-      <a class="category-subitem 
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="笔记"
-        id="heading-7051dc52c184c205e39aa54b4664ae9b" role="tab" data-toggle="collapse" href="#collapse-7051dc52c184c205e39aa54b4664ae9b"
-        aria-expanded="true"
-      >
-        笔记
-        <span class="list-group-count">(4)</span>
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      
-      <div class="category-collapse collapse show" id="collapse-7051dc52c184c205e39aa54b4664ae9b"
-           role="tabpanel" aria-labelledby="heading-7051dc52c184c205e39aa54b4664ae9b">
-        
-        
-          
-  <div class="category-post-list">
-    
-    
-      
-      
-        <a href="/2023/08/05/effective-cpp/" title="Effective C++"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">Effective C++</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2023/08/08/effective-modern-cpp/" title="Effective Modern C++"
-           class="list-group-item list-group-item-action
-           active">
-          <span class="category-post">Effective Modern C++</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2023/08/07/effective-stl/" title="Effective STL"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">Effective STL</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2023/08/06/more-effective-cpp/" title="More Effective C++"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">More Effective C++</span>
-        </a>
-      
-    
-  </div>
-
-        
-      </div>
-    </div>
-  
-    
-    
-    
-    <div class="category-sub row nomargin-x">
-      <a class="category-subitem collapsed
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="翻译"
-        id="heading-8b3607d0f4181a3cb6ffdccf7185f09b" role="tab" data-toggle="collapse" href="#collapse-8b3607d0f4181a3cb6ffdccf7185f09b"
-        aria-expanded="false"
-      >
-        翻译
-        <span class="list-group-count">(6)</span>
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      
-      <div class="category-collapse collapse " id="collapse-8b3607d0f4181a3cb6ffdccf7185f09b"
-           role="tabpanel" aria-labelledby="heading-8b3607d0f4181a3cb6ffdccf7185f09b">
-        
-        
-          
-  <div class="category-post-list">
-    
-    
-      
-      
-        <a href="/2023/08/18/boost-library-overview/" title="Boost 库概览"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">Boost 库概览</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2023/08/04/cpp-lambda-story/" title="C++ Lambda 的故事"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">C++ Lambda 的故事</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2023/08/03/cpp-initialization-story/" title="C++ 初始化的故事"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">C++ 初始化的故事</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2023/08/09/cpp-template/" title="C++ 模板"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">C++ 模板</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2023/08/14/eigen-library-guide/" title="Eigen 库官方文档"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">Eigen 库官方文档</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2023/08/15/range-library-guide/" title="Range-v3 库官方文档"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">Range-v3 库官方文档</span>
-        </a>
-      
-    
-  </div>
-
-        
-      </div>
-    </div>
-  
-        
-      </div>
-    </div>
-  
-    
-    
-    
-    <div class="category-sub row nomargin-x">
-      <a class="category-subitem collapsed
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Haskell"
-        id="heading-a59b783ba97fcd85891ddb2e62fbfebb" role="tab" data-toggle="collapse" href="#collapse-a59b783ba97fcd85891ddb2e62fbfebb"
-        aria-expanded="false"
-      >
-        Haskell
-        <span class="list-group-count">(1)</span>
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      
-      <div class="category-collapse collapse " id="collapse-a59b783ba97fcd85891ddb2e62fbfebb"
-           role="tabpanel" aria-labelledby="heading-a59b783ba97fcd85891ddb2e62fbfebb">
-        
-        
-          
-  <div class="category-post-list">
-    
-    
-      
-      
-        <a href="/2023/08/13/haskell-primer/" title="Haskell 趣学指南"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">Haskell 趣学指南</span>
-        </a>
-      
-    
-  </div>
-
-        
-      </div>
-    </div>
-  
-    
-    
-    
-    <div class="category-sub row nomargin-x">
-      <a class="category-subitem collapsed
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="图像处理"
-        id="heading-7808a68ee1b34dab43011429a12de19e" role="tab" data-toggle="collapse" href="#collapse-7808a68ee1b34dab43011429a12de19e"
-        aria-expanded="false"
-      >
-        图像处理
-        <span class="list-group-count">(1)</span>
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      
-      <div class="category-collapse collapse " id="collapse-7808a68ee1b34dab43011429a12de19e"
-           role="tabpanel" aria-labelledby="heading-7808a68ee1b34dab43011429a12de19e">
-        
-        
-          
-  <div class="category-post-list">
-    
-    
-      
-      
-        <a href="/2023/08/10/digital-image-processing/" title="数字图像处理"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">数字图像处理</span>
-        </a>
-      
-    
-  </div>
-
-        
-      </div>
-    </div>
-  
-        
-      </div>
-    </div>
-  
-</div>
-
-
-  </aside>
-
 
     </div>
 
@@ -675,16 +373,62 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Effective Modern C++</h1>
+            <h1 id="seo-header"></h1>
             
             
               <div class="markdown-body">
                 
-                <p>一份宏大的作品，能够带动一个领域的蓬勃发展。C++ 社群在相对沉寂数十年之后迎来新一波浪潮，原因是，作为一门编程工具的最核心，C++ 的语言和标准库都出现巨大的拓展和强化。这一番大变革始自 2011，并分别于 2014、2017 持续进化。业界习惯性地将这些新版本统称为 Modern C++，用以区别“传统” C++。</p>
-<p>作为知名书系的最新作品，《Effective Modern C++》的佳质和佳评一如其早期同门作品《Effective C++》和《More Effective C++》。本书延续作者 Scott Meyers 的一贯风格和质量，其最大特质就是，不但告诉我们 How，更用巨大而精良的篇幅告诉我们 Why。作者穷追猛打讲究再三的劲儿，常让我筋疲力尽，痛并快乐地爬行于某个条款之际拍案而叹：“天哪，还有下一页！”</p>
-<p>而我，是一个在 C++ 领域已经生活了 25 年的老兵。</p>
-<p>是的，我是一个在 C++ 领域已经生活了 25 年的老兵，这意味着我具备相当的 C++ 能力。尽管如此，面对号称全新语言的 Modern C++，我时或也有力不能逮、掩卷长叹的焦躁，特别是面对 Rvalue Reference（右值引用）、Perfect Forwarding（完美转发）、Metaprogramming（元编程）、Type Deduction（类型推导）、Type Traits（型别特征）等艰涩主题的时候。然而正是在特别艰涩的主题上你可以领受本书的巨大价值：如果你想完善根基，本书是你唯一的选择。</p>
-<p>———— 侯捷推荐序</p>
+                <h2 id="第-1-章-函数模板"><a href="#第-1-章-函数模板" class="headerlink" title="第 1 章 函数模板"></a>第 1 章 函数模板</h2><p>本章将介绍函数模板。函数模板是被参数化的函数，因此他们代表的是一组具有相似行为的函数。</p>
+<h3 id="1-1-函数模板初探"><a href="#1-1-函数模板初探" class="headerlink" title="1.1 函数模板初探"></a>1.1 函数模板初探</h3><p>函数模板提供了适用于不同数据类型的函数行为。也就是说，函数模板代表的是一组函数。除了某些信息未被明确指定之外，他们看起来很像普通函数。这些未被指定的信息就是被参数化的信息。我们将通过下面一个简单的例子来说明这一问题。</p>
+<h4 id="1-1-1-定义模板"><a href="#1-1-1-定义模板" class="headerlink" title="1.1.1 定义模板"></a>1.1.1 定义模板</h4><p>以下就是一个函数模板， 它返回两个数之中的最大值：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function">T <span class="hljs-title">max</span><span class="hljs-params">(T a, T b)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">// 如果 b &lt; a, 返回 a，否则返回 b</span><br>    <span class="hljs-keyword">return</span> b &lt; a ? a : b;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这个模板定义了一组函数，它们都返回函数的两个参数中值较大的那一个。这两个参数的类型并没有被明确指定，而是被表示为模板参数 <code>T</code>。如你所见，模板参数必须按照如下语法声明：</p>
+<p><code>template&lt;由逗号分割的模板参数&gt;</code></p>
+<p>在我们的例子中，模板参数是 <code>typename T</code>。请留意 <code>&lt;</code> 和 <code>&gt;</code> 的使用，它们在这里被称为尖括号。关键字 <code>typename</code> 标识了一个类型参数。这是到目前为止 C++ 中模板参数最典型的用法，当然也有其他参数（非类型模板参数），我们将在第 3 章介绍。</p>
+<p>在这里 <code>T</code> 是类型参数。你可以用任意标识作为类型参数名，但是习惯上是用 <code>T</code>。类型参数可以代表任意类型，它在模板被调用的时候决定。但是该类型（可以是基础类型，类或者其它类型）应该支持模板中用到的运算符。在本例中，类型 <code>T</code> 必须支持小于运算符，因为 <code>a</code> 和 <code>b</code> 在做比较时用到了它。例子中不太容易看出的一点是，为了支持返回值， <code>T</code> 还应该是可拷贝的。</p>
+<p>由于历史原因，除了 <code>typename</code> 之外你还可以使用 <code>class</code> 来定义类型参数。关键字 <code>typename</code> 在 C++98 标准发展过程中引入的较晚。在那之前，关键字 <code>class</code> 是唯一可以用来定义类型参数的方法，而且目前这一方法依然有效。因此模板 <code>max()</code> 也可以被定义成如下等效的方式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// basics/max1.hpp</span><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span> T&gt;</span><br><span class="hljs-function">T <span class="hljs-title">max</span><span class="hljs-params">(T a, T b)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">// 如果 b &lt; a, 返回 a，否则返回 b</span><br>    <span class="hljs-keyword">return</span> b &lt; a ? a : b;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>从语义上来讲，这样写不会有任何不同。因此，在这里你依然可以使用任意类型作为类型参数。只是用 <code>class</code> 的话可能会引起一些歧义（T 并不是只能是 <code>class</code> 类型），你应该优先使用 <code>typename</code>。但是与定义 <code>class</code> 的情况不同，在声明模板类型参数的时候，不可以用关键字 <code>struct</code> 取代 <code>typename</code>。</p>
+<h4 id="1-1-2-使用模板"><a href="#1-1-2-使用模板" class="headerlink" title="1.1.2 使用模板"></a>1.1.2 使用模板</h4><p>下面的程序展示了使用模板的方法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// basics/max1.cpp</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;max1.hpp&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">int</span> i = <span class="hljs-number">42</span>;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;max(7,i): &quot;</span> &lt;&lt; ::<span class="hljs-built_in">max</span>(<span class="hljs-number">7</span>,i) &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;<br>    <span class="hljs-type">double</span> f1 = <span class="hljs-number">3.4</span>;<br>    <span class="hljs-type">double</span> f2 = <span class="hljs-number">-6.7</span>;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;max(f1,f2): &quot;</span> &lt;&lt; ::<span class="hljs-built_in">max</span>(f1,f2) &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;<br>    std::string s1 = <span class="hljs-string">&quot;mathematics&quot;</span>;<br>    std::string s2 = <span class="hljs-string">&quot;math&quot;</span>;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;max(s1,s2): &quot;</span> &lt;&lt; ::<span class="hljs-built_in">max</span>(s1,s2) &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在这段代码中，<code>max()</code>被调用了三次：一次是比较两个<code>int</code>，一次是比较两个<code>double</code>，还有一次是比较两个<code>std::string</code>。每一次都会算出最大值。下面是输出结果：</p>
+<p><code>max(7,i): 42</code><br><code>max(f1,f2): 3.4</code><br><code>max(s1,s2): mathematics</code></p>
+<p>注意在调用<code>max()</code>模板的时候使用了作用域限制符<code>::</code>。这样程序将会在全局作用域中查找<code>max()</code>模板。否则的话，在某些情况下标准库中的<code>std::max()</code>模板将会被调用，或者有时候不太容易确定具体哪一个模板会被调用。</p>
+<p>在编译阶段，模板并不是被编译成一个可以支持多种类型的实体。而是对每一个用于该模板的类型都会产生一个独立的实体。因此在本例中，<code>max()</code>会被编译出三个实体，因为它被用于三种类型。比如第一次调用时：</p>
+<p><code>int i = 42;</code><br><code>... max(7,i) ...</code></p>
+<p>函数模板的类型参数是<code>int</code>。 因此语义上等效于调用了如下函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">max</span> <span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> b &lt; a ? a : b;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>以上用具体类型取代模板类型参数的过程叫做“实例化”。它会产生模板的一个实例。</p>
+<p>值得注意的是，模板的实例化不需要程序员做额外的请求，只是简单的使用函数模板就会触发这一实例化过程。</p>
+<p>同样的，另外两次调用也会分别为<code>double</code>和<code>std::string</code>各实例化出一个实例，就像是分别定义了下面两个函数一样：</p>
+<p><code>double max (double, double);</code><br><code>std::string max (std::string, std::string);</code></p>
+<p>另外，只要结果是有意义的，<code>void</code>作为模板参数也是有效的。比如:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function">T <span class="hljs-title">foo</span><span class="hljs-params">(T*)</span></span><br><span class="hljs-function"></span>&#123; &#125;<br><br><span class="hljs-type">void</span>* vp = <span class="hljs-literal">nullptr</span>;<br><span class="hljs-built_in">foo</span>(vp); <span class="hljs-comment">// OK: 推导出 void foo(void*)</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="1-1-3-两阶段编译检查"><a href="#1-1-3-两阶段编译检查" class="headerlink" title="1.1.3 两阶段编译检查"></a>1.1.3 两阶段编译检查</h4><p>在实例化模板的时候，如果模板参数类型不支持所有模板中用到的操作符，将会遇到编译期错误。比如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp">std::complex&lt;<span class="hljs-type">float</span>&gt; c1, c2; <span class="hljs-comment">// std::complex&lt;&gt; 没有提供小于运算符</span><br>...<br>::<span class="hljs-built_in">max</span>(c1, c2); <span class="hljs-comment">// 编译期 ERROR</span><br></code></pre></td></tr></table></figure>
+
+<p>但是在定义的地方并没有遇到错误提示。这是因为模板是被分两步编译的：</p>
+<ol>
+<li>在模板定义阶段， 模板的检查并不包含类型参数的检查。 只包含下面几个方面：<br>- 语法检查。比如少了分号。<br>- 使用了未定义的不依赖于模板参数的名称（类型名，函数名，……）。<br>- 未使用模板参数的静态断言。  </li>
+<li>在模板实例化阶段， 为确保所有代码都是有效的， 模板会再次被检查， 尤其是那些依赖于类型参数的部分。</li>
+</ol>
+<p>比如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">foo</span><span class="hljs-params">(T t)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">undeclared</span>();  <span class="hljs-comment">// 如果 undeclared() 未定义，第一阶段就会报错，因为与模板参数无关</span><br>    <span class="hljs-built_in">undeclared</span>(t); <span class="hljs-comment">// 如果 undeclared(t) 未定义，第二阶段会报错，因为与模板参数有关</span><br>    <span class="hljs-built_in">static_assert</span>(<span class="hljs-built_in">sizeof</span>(<span class="hljs-type">int</span>) &gt; <span class="hljs-number">10</span>, <span class="hljs-string">&quot;int too small&quot;</span>); <span class="hljs-comment">// 如果 sizeof(int) &lt;= 10，总是会报错</span><br>    <span class="hljs-built_in">static_assert</span>(<span class="hljs-built_in">sizeof</span>(T) &gt; <span class="hljs-number">10</span>, <span class="hljs-string">&quot;T too small&quot;</span>); <span class="hljs-comment">// 如果实例化出的 T的 size &lt;= 10，则会失败</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>名称被检查两次这一现象被称为“两阶段查找”，在 14.3.1 节中会进行更细致的讨论。</p>
+<p>需要注意的是，有些编译器并不会执行第一阶段中的所有检查。因此如果模板没有被至少实例化一次的话，你可能一直都不会发现代码中的常规错误。</p>
+<p><strong>编译和链接</strong></p>
+<p>两阶段的编译检查给模板的处理带来了一个问题：当实例化一个模板的时候，编译器需要（一定程度上）看到模板的完整定义。这不同于函数编译和链接分离的思想，函数在编译阶段只需要声明就够了。第 9 章将讨论如何应对这一问题。我们将暂时采取最简单的方法：将模板的实现写在头文件里。</p>
+<h3 id="1-2-模板实参推导"><a href="#1-2-模板实参推导" class="headerlink" title="1.2 模板实参推导"></a>1.2 模板实参推导</h3><p>当我们调用形如<code>max()</code>的函数模板来处理某些变量时，模板参数将由被传递的调用参数决定。如果我们传递两个<code>int</code>类型的参数给模板函数，C++ 编译器会将模板参数<code>T</code>推断为<code>int</code>。</p>
+<p>不过<code>T</code>可能只是实际传递的函数参数类型的一部分。比如我们定义了如下接受常量引用作为函数参数的模板：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function">T <span class="hljs-title">max</span> <span class="hljs-params">(T <span class="hljs-type">const</span>&amp; a, T <span class="hljs-type">const</span>&amp; b)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> b &lt; a ? a : b;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>此时如果我们传递<code>int</code>类型的调用参数，由于调用参数和<code>int const&amp;</code>匹配，类型参数<code>T</code>将被推断为<code>int</code>。</p>
 
                 
               </div>
@@ -693,52 +437,6 @@
             <div>
               <div class="post-metas my-3">
   
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%8A%80%E6%9C%AF/C/" class="category-chain-item">C++</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%8A%80%E6%9C%AF/C/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
-  
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/C/" class="print-no-link">#C++</a>
-      
-        <a href="/tags/%E7%BB%8F%E9%AA%8C/" class="print-no-link">#经验</a>
-      
-        <a href="/tags/%E5%87%86%E5%88%99/" class="print-no-link">#准则</a>
-      
-    </div>
   
 </div>
 
@@ -748,8 +446,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Effective Modern C++</div>
-      <div>http://example.com/2023/08/08/effective-modern-cpp/</div>
+      <div></div>
+      <div>http://example.com/2023/08/15/cpp-template-ch/cpp-template-ch01/</div>
     </div>
     <div class="license-meta">
       
@@ -761,14 +459,9 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年8月7日</div>
+          <div>2023年8月14日</div>
         </div>
       
-      
-        <div class="license-meta-item license-meta-date">
-          <div>更新于</div>
-          <div>2023年8月20日</div>
-        </div>
       
       
         <div class="license-meta-item">
@@ -793,29 +486,6 @@
 
 
 
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2023/08/09/cpp-template/" title="C++ 模板">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">C++ 模板</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2023/08/07/effective-stl/" title="Effective STL">
-                        <span class="hidden-mobile">Effective STL</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
               
             </div>
 
