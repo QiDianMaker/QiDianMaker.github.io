@@ -19,12 +19,12 @@
     <meta name="description" content="第 6 章 移动语义与 enable_if()C++11 引入的最突出的特性之一便是移动语义（move semantics）。 您可以使用它通过将内部资源从源对象移动（“窃取”）到目标对象而不是复制这些内容来优化复制和赋值。如果源不再需要它的内部值或状态（因为它即将失效），就可以做到这一点。 移动语义对模板的设计有重要的影响，在泛型代码中引入了特殊的规则来支持移动语义。本章将介绍这些特性。 6.1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第 6 章 移动语义与 enable_if()">
-<meta property="og:url" content="http://example.com/2023/08/15/cpp-template-ch/cpp-template-ch06/index.html">
+<meta property="og:url" content="http://example.com/2023/08/11/cpp-template-ch/cpp-template-ch06/index.html">
 <meta property="og:site_name" content="奇点创客">
 <meta property="og:description" content="第 6 章 移动语义与 enable_if()C++11 引入的最突出的特性之一便是移动语义（move semantics）。 您可以使用它通过将内部资源从源对象移动（“窃取”）到目标对象而不是复制这些内容来优化复制和赋值。如果源不再需要它的内部值或状态（因为它即将失效），就可以做到这一点。 移动语义对模板的设计有重要的影响，在泛型代码中引入了特殊的规则来支持移动语义。本章将介绍这些特性。 6.1">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-08-15T05:51:57.089Z">
-<meta property="article:modified_time" content="2023-08-21T09:19:45.103Z">
+<meta property="article:published_time" content="2023-08-11T12:30:41.697Z">
+<meta property="article:modified_time" content="2023-08-22T11:36:59.930Z">
 <meta property="article:author" content="QiDianMaker">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -305,8 +305,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-08-14 21:51" pubdate>
-          2023年8月14日 晚上
+        <time datetime="2023-08-11 04:30" pubdate>
+          2023年8月11日 凌晨
         </time>
       </span>
     
@@ -317,7 +317,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.4k 字
+          1.9k 字
         
       </span>
     
@@ -328,7 +328,7 @@
         
         
         
-          12 分钟
+          16 分钟
         
       </span>
     
@@ -387,7 +387,13 @@
 <li>可移动对象（我们可以“窃取”的对象，因为它们即将失效）应当被转发为可移动对象。</li>
 </ul>
 <p>要在没有模板的情况下实现此功能，我们必须对所有三种情况进行编程。例如，要将<code>f()</code>的调用转发给相应的函数<code>g()</code>：</p>
-<figure class="highlight cpp"><figcaption><span>"basics/move1.cpp"</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;utility&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">X</span> &#123; <span class="hljs-comment">/*...*/</span> &#125;;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">g</span> <span class="hljs-params">(X&amp;)</span>       </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;g() for variable\n&quot;</span>; &#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">g</span> <span class="hljs-params">(X <span class="hljs-type">const</span>&amp;)</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;g() for constant\n&quot;</span>; &#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">g</span> <span class="hljs-params">(X&amp;&amp;)</span>      </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;g() for movable object\n&quot;</span>; &#125;<br><br><span class="hljs-comment">// let f() forward argument val to g():</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span> <span class="hljs-params">(X&amp; val)</span> </span>&#123;<br>    <span class="hljs-built_in">g</span>(val); <span class="hljs-comment">// val is non-const lvalue =&gt; calls g(X&amp;)</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span> <span class="hljs-params">(X <span class="hljs-type">const</span>&amp; val)</span> </span>&#123;<br>    <span class="hljs-built_in">g</span>(val); <span class="hljs-comment">// val is const lvalue =&gt; calls g(X const&amp;)</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span> <span class="hljs-params">(X&amp;&amp; val)</span> </span>&#123;<br>    <span class="hljs-built_in">g</span>(std::<span class="hljs-built_in">move</span>(val)); <span class="hljs-comment">// val is non-const lvalue =&gt; needs std::move() to call g(X&amp;&amp;)</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    X v;       <span class="hljs-comment">// create variable</span><br>    X <span class="hljs-type">const</span> c; <span class="hljs-comment">// create constant</span><br>    <span class="hljs-built_in">f</span>(v);   <span class="hljs-comment">// f() for nonconstant object calls f(X&amp;) =&gt; calls g(X&amp;)</span><br>    <span class="hljs-built_in">f</span>(c);   <span class="hljs-comment">// f() for constant object calls f(X const&amp;) =&gt; calls g(X const&amp;)</span><br>    <span class="hljs-built_in">f</span>(<span class="hljs-built_in">X</span>()); <span class="hljs-comment">// f() for temporary calls f(X&amp;&amp;) =&gt; calls g(X&amp;&amp;)</span><br>    <span class="hljs-built_in">f</span>(std::<span class="hljs-built_in">move</span>(v)); <span class="hljs-comment">// f() for movable variable calls f(X&amp;&amp;) =&gt; calls g(X&amp;&amp;)</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p><em>basics&#x2F;move1.cpp</em></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;utility&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">X</span> &#123; <span class="hljs-comment">/*...*/</span> &#125;;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">g</span><span class="hljs-params">(X&amp;)</span>       </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;g() for variable\n&quot;</span>; &#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">g</span><span class="hljs-params">(X <span class="hljs-type">const</span>&amp;)</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;g() for constant\n&quot;</span>; &#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">g</span><span class="hljs-params">(X&amp;&amp;)</span>      </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;g() for movable object\n&quot;</span>; &#125;<br><br><span class="hljs-comment">// let f() forward argument val to g():</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(X&amp; val)</span> </span>&#123;<br>    <span class="hljs-built_in">g</span>(val); <span class="hljs-comment">// val is non-const lvalue =&gt; calls g(X&amp;)</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(X <span class="hljs-type">const</span>&amp; val)</span> </span>&#123;<br>    <span class="hljs-built_in">g</span>(val); <span class="hljs-comment">// val is const lvalue =&gt; calls g(X const&amp;)</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(X&amp;&amp; val)</span> </span>&#123;<br>    <span class="hljs-built_in">g</span>(std::<span class="hljs-built_in">move</span>(val)); <span class="hljs-comment">// val is non-const lvalue =&gt; needs std::move() to call g(X&amp;&amp;)</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    X v;       <span class="hljs-comment">// create variable</span><br>    X <span class="hljs-type">const</span> c; <span class="hljs-comment">// create constant</span><br>    <span class="hljs-built_in">f</span>(v);   <span class="hljs-comment">// f() for nonconstant object calls f(X&amp;) =&gt; calls g(X&amp;)</span><br>    <span class="hljs-built_in">f</span>(c);   <span class="hljs-comment">// f() for constant object calls f(X const&amp;) =&gt; calls g(X const&amp;)</span><br>    <span class="hljs-built_in">f</span>(<span class="hljs-built_in">X</span>()); <span class="hljs-comment">// f() for temporary calls f(X&amp;&amp;) =&gt; calls g(X&amp;&amp;)</span><br>    <span class="hljs-built_in">f</span>(std::<span class="hljs-built_in">move</span>(v)); <span class="hljs-comment">// f() for movable variable calls f(X&amp;&amp;) =&gt; calls g(X&amp;&amp;)</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在这里，我们看到<code>f()</code>将其参数转发给<code>g()</code>的三种不同实现：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(X&amp; val)</span> </span>&#123;  <br>    <span class="hljs-built_in">g</span>(val); <span class="hljs-comment">// val is non-const lvalue =&gt; calls g(X&amp;)  </span><br>&#125;  <br>  <br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(X <span class="hljs-type">const</span>&amp; val)</span> </span>&#123;  <br>    <span class="hljs-built_in">g</span>(val); <span class="hljs-comment">// val is const lvalue =&gt; calls g(X const&amp;)  </span><br>&#125;  <br>  <br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(X&amp;&amp; val)</span> </span>&#123;  <br>    <span class="hljs-built_in">g</span>(std::<span class="hljs-built_in">move</span>(val)); <span class="hljs-comment">// val is non-const lvalue =&gt; needs std::move() to call g(X&amp;&amp;)  </span><br>&#125;  <br></code></pre></td></tr></table></figure>
+
+<p>请注意，可移动对象的代码（通过右值引用）与其他代码不同：它需要一个<code>std::move()</code>，因为根据语言规则，移动语义不被传递。虽然第三个<code>f()</code>中的<code>val</code>被声明为右值引用，但它作为表达式使用时的值类别是一个非常量左值（参见附录 B），并且行为类似于第一个<code>f()</code>中的<code>val</code>。如果没有<code>move()</code>，对于非常量左值，将调用<code>g(X&amp;)</code>而不是<code>g(&amp;&amp;)</code>。</p>
 
                 
               </div>
@@ -406,7 +412,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>第 6 章 移动语义与 enable_if()</div>
-      <div>http://example.com/2023/08/15/cpp-template-ch/cpp-template-ch06/</div>
+      <div>http://example.com/2023/08/11/cpp-template-ch/cpp-template-ch06/</div>
     </div>
     <div class="license-meta">
       
@@ -418,13 +424,13 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年8月14日</div>
+          <div>2023年8月11日</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
           <div>更新于</div>
-          <div>2023年8月21日</div>
+          <div>2023年8月22日</div>
         </div>
       
       
