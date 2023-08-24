@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/cpp-concepts-introduction/index.png">
 <meta property="article:published_time" content="2023-08-22T06:58:52.000Z">
-<meta property="article:modified_time" content="2023-08-23T10:26:57.134Z">
+<meta property="article:modified_time" content="2023-08-24T02:52:19.789Z">
 <meta property="article:author" content="QiDianMaker">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="特性">
@@ -322,7 +322,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          31k 字
+          38k 字
         
       </span>
     
@@ -333,7 +333,7 @@
         
         
         
-          263 分钟
+          314 分钟
         
       </span>
     
@@ -391,7 +391,7 @@
         aria-expanded="true"
       >
         技术
-        <span class="list-group-count">(13)</span>
+        <span class="list-group-count">(14)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
@@ -418,7 +418,7 @@
         aria-expanded="true"
       >
         C++
-        <span class="list-group-count">(11)</span>
+        <span class="list-group-count">(12)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
@@ -445,7 +445,7 @@
         aria-expanded="true"
       >
         笔记
-        <span class="list-group-count">(5)</span>
+        <span class="list-group-count">(6)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
@@ -456,6 +456,15 @@
           
   <div class="category-post-list">
     
+    
+      
+      
+        <a href="/2023/08/25/cpp-value-categories/" title="C++ 值类别探究"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">C++ 值类别探究</span>
+        </a>
+      
     
       
       
@@ -704,7 +713,7 @@
 <p>好在 C++20 起对 concept 特性进行了标准化，目前主流的编译器也提供了支持。concept 的名字由 STL 之父 Alex Stepanov 命名，将一类数据类型和对它的一组操作所满足的公理集称为 concept：不仅需要从语法上满足要求，还需要从语义层面上满足。</p>
 <p>几十年来，计算机科学一直在追求软件重用的目标。有多种方法，但没有一种方法能像其他工程学科中的类似尝试那样成功。泛型编程提供了机会。它基于这样一个原则，即软件可以分解为组件，这些组件只对其他组件做出最小的假设（concept），从而得到允许组合的最大灵活性。</p>
 <p>泛型编程的关键在于高度可复用的组件必须以 concept 为基础进行编程，而 concept 尽可能匹配更多的类型，并且要求在不牺牲性能的前提下完成这一任务。标准模板库就是基于少量广泛有用的概念，使得用户能够通过各种方式与它们灵活组合。因此，concept 是泛型编程的基石。</p>
-<p>本章将详细介绍C++的concept特性发展过程，从中我们能看到语言设计者们需要面临与考虑的问题。</p>
+<p>本章将详细介绍 C++ 的 concept 特性发展过程，从中我们能看到语言设计者们需要面临与考虑的问题。</p>
 <h3 id="1-1-1994-年（早期想法）"><a href="#1-1-1994-年（早期想法）" class="headerlink" title="1.1 1994 年（早期想法）"></a>1.1 1994 年（早期想法）</h3><p>1994 年，在 Bjarne Stroustrup 的著作 <em>The Design and Evolution of C++</em> 中提到了两种对模板参数的约束方案，分别是继承形式和依据表达式的形式。</p>
 <h4 id="1-1-1-继承方案"><a href="#1-1-1-继承方案" class="headerlink" title="1.1.1 继承方案"></a>1.1.1 继承方案</h4><p>该方案是通过继承方式来表达约束的，使用和声明类同样的语法，然后在模板定义的时候将模板参数派生自约束类。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span>&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Comparable</span> &#123;<br>    T&amp;  <span class="hljs-keyword">operator</span>= (<span class="hljs-type">const</span> T&amp;);<br>    <span class="hljs-type">int</span> <span class="hljs-keyword">operator</span>==(<span class="hljs-type">const</span> T&amp;, <span class="hljs-type">const</span> T&amp;);<br>    <span class="hljs-type">int</span> <span class="hljs-keyword">operator</span>&lt;=(<span class="hljs-type">const</span> T&amp;, <span class="hljs-type">const</span> T&amp;);<br>    <span class="hljs-type">int</span> <span class="hljs-keyword">operator</span>&lt; (<span class="hljs-type">const</span> T&amp;, <span class="hljs-type">const</span> T&amp;);<br>&#125;;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span> : Comparable&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">vector</span> &#123; <span class="hljs-comment">/*...*/</span> &#125;;<br></code></pre></td></tr></table></figure>
@@ -729,9 +738,9 @@
 <p>另一个问题是，将对模板参数的要求提炼成基类会导致类的泛滥，而且这也不符合泛型编程的习惯。假如有两个人开发科学计算库，其中一个人表达加法使用 Addable 约束类，而另一个人表达加法使用 Add 约束类，当用户提供的 Number 类想要使用这两个人提供的泛型函数时，不得不同时派生自 Addable 约束类与 Add 约束类并实现两套接口，这样做会引入额外的复杂度。考虑如下常见的函数：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">Addable <span class="hljs-keyword">operator</span>+(<span class="hljs-type">const</span> Addable&amp;, <span class="hljs-type">const</span> Addable);<br></code></pre></td></tr></table></figure>
 
-<p>如何确保两个约束类Addable拥有同一个具体类型？返回类型又该如何确定？答案是基础类型需要额外的包装才能使用，而返回抽象类型的值在 C++ 语言中是非法的。</p>
+<p>如何确保两个约束类 Addable 拥有同一个具体类型？返回类型又该如何确定？答案是基础类型需要额外的包装才能使用，而返回抽象类型的值在 C++ 语言中是非法的。</p>
 <h4 id="1-2-2-函数匹配方案"><a href="#1-2-2-函数匹配方案" class="headerlink" title="1.2.2 函数匹配方案"></a>1.2.2 函数匹配方案</h4><p>更理想的方案是避免使用继承来表达约束，可以使用匹配（match）一词取而代之，表达如下：</p>
-<p>我们要求模板参数类匹配由match声明的函数所指定的约束。</p>
+<p>我们要求模板参数类匹配由 match 声明的函数所指定的约束。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp">match Addable &#123; <span class="hljs-comment">// match 声明了一系列操作的约束</span><br>    Addable <span class="hljs-keyword">operator</span>+(Addable);<br>&#125;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span> match Addable&gt; <span class="hljs-comment">// 模板参数需要符合 Addable 的要求</span><br><span class="hljs-function">T <span class="hljs-title">sum</span><span class="hljs-params">(<span class="hljs-type">const</span> vector&lt;T&gt;&amp;)</span></span>;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Number</span> &#123; <span class="hljs-comment">/*...*/</span> &#125;; <span class="hljs-comment">// 无须使用继承满足要求，只需要提供 operator+</span><br></code></pre></td></tr></table></figure>
 
 <p>当 <code>vector&lt;Number&gt;</code> 想要使用泛型函数 sum 时，要求 Number 的实现中能够提供成员函数 operator+，否则将导致编译错误。这种方式避免了基类方案中的很多缺点。</p>
@@ -784,26 +793,45 @@
 <p>以上便是设计 concept 特性的所有目标，当然它们也存在矛盾的地方，比如基于 concept 的重载与分离编译这两点，一个是编译时目标，而另一个是运行时目标。</p>
 <h3 id="1-3-2004-年（印第安纳提案与得克萨斯提案）"><a href="#1-3-2004-年（印第安纳提案与得克萨斯提案）" class="headerlink" title="1.3 2004 年（印第安纳提案与得克萨斯提案）"></a>1.3 2004 年（印第安纳提案与得克萨斯提案）</h3><p>2004 年，concept 特性出现了两大提案，分别被称为“印第安纳提案”与“得克萨斯提案”，它们分别对伪签名方案与基于表达式方案做出了更加深入的分析。</p>
 <h4 id="1-3-1-印第安纳提案"><a href="#1-3-1-印第安纳提案" class="headerlink" title="1.3.1 印第安纳提案"></a>1.3.1 印第安纳提案</h4><p>该提案基于伪签名方案并提供如下的语法形式，它看上去和函数匹配方案类似，但是匹配要求没那么严格。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typeid</span> T&gt; <span class="hljs-comment">// 定义小于概念</span><br><span class="hljs-keyword">concept</span> LessThanComparable &#123;<br>    <span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span>&lt;(T x, T y);<br>    <span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span>&lt;=(T x, T y);<br>&#125;;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typeid</span> T&gt; <span class="hljs-comment">// 对模板参数 T 进行约束，要求小于、拷贝</span><br>    where &#123; LessThanComparable&lt;T&gt;, CopyConstructible&lt;T&gt; &#125;<br><span class="hljs-function">T <span class="hljs-title">min</span><span class="hljs-params">(<span class="hljs-type">const</span> T&amp; x, <span class="hljs-type">const</span> T&amp; y)</span> </span>&#123; <span class="hljs-comment">/*...*/</span> &#125;<br></code></pre></td></tr></table></figure>
+
 <p>在这个例子中，只要被替换后的实际类型支持 operator&lt; 和 operator&lt;&#x3D; 操作即可：不管是内建方式、还是自由函数方式或者成员函数，只要这两个操作符能够接受两个相同的类型并且返回类型为 bool 或者能够通过隐式类型转换成 bool 即可。</p>
 <p>另一个值得注意的点是模板参数被声明为 typeid，笔者建议复用该关键字来区分受约束与未受约束的模板参数。引入新的关键字 where 来提高表达力。</p>
 <p>通过使用派生语法并基于已有的 concept 创建新的作法，被称为概念改良（concept refinement）。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typeid</span> Iter&gt; <span class="hljs-comment">// 由多个概念组合而成，复用它们的要求</span><br><span class="hljs-keyword">concept</span> InputIterator <br>    : CopyConstructible&lt;Iter&gt;, Assignable&lt;Iter&gt;<br>    , EqualityComparable&lt;Iter&gt; &#123; <span class="hljs-comment">/*...*/</span> &#125;<br></code></pre></td></tr></table></figure>
+
 <p>定义 concept 时，能够对函数提供默认实现，从而减少被约束的类型所需要满足的函数数量。当被约束类型仅提供 operator&#x3D;&#x3D; 时，下述代码的概念会自动满足 operator!&#x3D; 的要求。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typeid</span> T&gt;<br><span class="hljs-keyword">concept</span> EqualityComparable &#123;<br>    <span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span>==(<span class="hljs-type">const</span> T&amp;, <span class="hljs-type">const</span> T&amp;); <span class="hljs-comment">// 提供 operator!= 的默认实现</span><br>    <span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span>!=(<span class="hljs-type">const</span> T&amp; x, <span class="hljs-type">const</span> T&amp; y) &#123; <span class="hljs-keyword">return</span> !(x == y); &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
 <p>在泛型类中有很多关联类型可供使用，例如 vector 会提供成员类型 value_type 来存储容器中每个元素的类型。同样地，定义 concept 时也可以要求一个类提供一些关联类型，并且能为某些关联类型提供默认值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typeid</span> G&gt;<br><span class="hljs-keyword">concept</span> Graph &#123; <span class="hljs-comment">// 要求模板参数 G 提供如下两个关联类型</span><br>    <span class="hljs-keyword">typename</span> edge;<br>    <span class="hljs-keyword">typename</span> vertex;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
 <p>当定义一个概念时，会要求模板参数的关联类型也满足概念的要求，这时候可以使用 require 子句。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typeid</span> X&gt;<br><span class="hljs-keyword">concept</span> Container &#123; <span class="hljs-comment">// 关联类型 X::iterator 需要满足概念 InputIterator</span><br>    require <span class="hljs-keyword">typename</span> X::iterator;<br>    require InputIterator&lt;X::iterator&gt;;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
 <p>在设计层面上，该提案提出了一个显著的问题：结构一致性与名字一致性的问题，并通过对实际类型进行显式概念建模声明（explicit model declarations）的方式来解决，这也是该提案的特点。通常来说有两种方案可以确定类型是否符合接口（概念）的要求：结构一致性与名字一致性。</p>
 <p>结构一致性仅依赖接口的内容，而不关心接口的名字。例如有两个不同名字的 concept，但是它们的要求（结构）是一样的，那么它们实际上是同一个接口。这种方式无须对实际类型进行声明是否实现接口，即可满足多个的要求，只要在模板参数被替换成实际类型时能够通过约束检查。前文介绍的几个方案都是这种形式。</p>
 <p>名字一致性依赖于接口的名字，因此两个不同名的接口即便内容一样，它们也是不同的。这就要求对一个类型进行显式声明是否实现了接口，C++ 中的 subtype 使用了名字一致性的方式，显式声明一个类继承了另一个接口类。在泛型编程的术语中，名字一致性意味着显式建模，表明实际类型对概念进行建模。</p>
 <p>之所以会出现这个问题，原因在于一个概念不仅需要从语法层面满足要求，还需要从语义层面满足要求。一个比较明显的例子是在标准模板库中输入迭代器与前向迭代器的概念，它们的定义（结构）是一样的，但语义不一样：前者只能迭代一轮，后者可以保证多轮迭代，仅从语法角度上无法区分两者。</p>
-<p>那么结构一致性存在的可能是，实际类型既匹配输入迭代器也匹配前向迭代器，从语义角度而言输入迭代器不是前向迭代器，如果使用基于concept重载的函数，将可能决策出错误的重载实现。</p>
+<p>那么结构一致性存在的可能是，实际类型既匹配输入迭代器也匹配前向迭代器，从语义角度而言输入迭代器不是前向迭代器，如果使用基于 concept 重载的函数，将可能决策出错误的重载实现。</p>
 <p>如果使用名字一致性并对实际类型进行显式概念建模，就能够通过名字来实现对语义上的区分。比如声明 MyFileIterator 是一个输入迭代器，那么重载决议时仅使用输入迭代器的版本，不会出现实际类型符合语法但不符合语义的情况。</p>
+<p><code>model InputIterator&lt;MyFileIterator&gt; &#123;&#125;; // 对实际类型进行概念建模声明</code></p>
 <p>即使该类型不包含概念所需的函数定义，也可以对实际类型进行概念建模声明，因为能够通过 model 子句补充被要求的函数定义，从而满足概念。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Point</span> &#123; <span class="hljs-type">int</span> x, y; &#125;<br>model EqualityComparable&lt;Point&gt; &#123;     <span class="hljs-comment">// 对 Point 显示概念建模</span><br>    <span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span>==(<span class="hljs-type">const</span> Point&amp; rhs) <span class="hljs-comment">// 子句补充了所需的函数定义</span><br>    &#123; <span class="hljs-keyword">return</span> x == rhs.x &amp;&amp; y == rhs.y; &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
 <p>名字一致性的另一个好处是提供了一种简单的机制来支持关联类型，只要用户对实际类型声明了概念建模，就无须再使用 type traits 方式访问关联类型。该方式也有利于编译器的实现。</p>
 <p>结构一致性的好处在于无须开发者为每一个类型进行概念建模声明，这有助于将当前的泛型库过渡到基于概念的泛型库。可以借助编译器的帮助生成一些默认的声明来解决显式概念建模的问题。</p>
 <h4 id="1-3-2-得克萨斯提案"><a href="#1-3-2-得克萨斯提案" class="headerlink" title="1.3.2 得克萨斯提案"></a>1.3.2 得克萨斯提案</h4><p>继印第安纳提案之后得克萨斯提案也诞生了，该提案对基于表达式使用方式做了进一步细化。通过列出一系列函数、操作符、关联类型的使用来定义一个 concept，如下是前向迭代器概念的定义。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">concept</span> ForwardIterator&lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">Iter</span>&gt; <span class="hljs-comment">// 对前向迭代器的要求</span><br>&#123;<br>    Iter p;                         <span class="hljs-comment">// 支持默认构造</span><br>    Iter q = p;                     <span class="hljs-comment">// 支持拷贝构造</span><br>    p = q;                          <span class="hljs-comment">// 支持赋值</span><br>    Iter&amp; q = ++p;                  <span class="hljs-comment">// 前自增，结果能够被引用</span><br>    <span class="hljs-type">const</span> Iter&amp; cq = p++;           <span class="hljs-comment">// 后自增</span><br>    <span class="hljs-type">bool</span> b1 = (p == q);             <span class="hljs-comment">// 判等，结果为 bool 或者能够隐式转换成 bool</span><br>    <span class="hljs-type">bool</span> b2 = (p != q);             <span class="hljs-comment">// 判不等</span><br>    ValueType Iter::value_type;     <span class="hljs-comment">// 拥有成员类型 value_type</span><br>    Iter::value_type v = *p;        <span class="hljs-comment">// 解引用，结果能够被赋 value_type 类型</span><br>    *p = v;                         <span class="hljs-comment">// value_type 类型的值能够被赋给解引用后的值</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
 <p>前向迭代器的概念定义直接从 C++ 标准中与前向迭代器相关的语法要求表而得。如果一个模板类型满足概念的所有要求，我们可以说该类型“匹配”对应的概念，印第安纳提案中使用的类似术语叫作“建模”。通常不使用术语“是一个”（is-a）来表达，因为这样会和类体系中的术语相混淆。</p>
 <p>概念是一个编译期谓词，得克萨斯提案中通过使用静态断言可以判断具体类型是否匹配概念，若不匹配则编译报错。值得一提的是编译器可以缓存概念匹配的结果，供后续使用。</p>
+<p><code>static_assert ForwardIterator&lt;int*&gt;; // 静态断言类型 int* 是否匹配前向迭代器概念</code></p>
 <p>可惜的是上述断言将失败，因为指针类型没有成员类型 value_type，这不符合我们的预期。为了让基础数据类型也能够匹配概念，需要通过静态断言来对基础类型做扩展。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">static_assert</span> <span class="hljs-keyword">template</span>&lt;ValueType T&gt; ForwardIterator&lt;T*&gt; &#123;<br>    <span class="hljs-keyword">typedef</span> T* pointer_type; <span class="hljs-comment">// 对 T* 类型拓展，定义关联类型 value_type 为 T</span><br>    <span class="hljs-keyword">typedef</span> T  pointer_type::value_type;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
 <p>在印第安纳提案中提到，如果不通过显式建模声明的方式，会出现因为语法相同、语义不同而导致决策错误的问题，因此得克萨斯提案考虑使用否定断言（Negative assertions）的方式来解决，例如断言 MyIterator 虽然从语法上匹配前向迭代器，但从语义上不匹配。</p>
+<p><code>static_assert ! ForwardIterator&lt;MyIterator&gt;;</code></p>
 <p>因此，得克萨斯提案的静态断言有三个语义：第一、通过及早断言给定的类型是否匹配概念来及时发现错误；第二、通过对诸如基础数据类型进行扩展；第三、通过否定断言来声明指定类型不匹配概念。这样做可以避免为每个类型都显式建模声明。</p>
 <h4 id="1-3-3-ConceptGCC"><a href="#1-3-3-ConceptGCC" class="headerlink" title="1.3.3 ConceptGCC"></a>1.3.3 ConceptGCC</h4><p>2005 年下半年，印第安纳提案的修订版本中移除了 typeid 关键字，它被替换成标准的关键字 typename。</p>
 <p>与此同时 GCC 编译器基于印第安纳提案衍生出一个分支：ConceptGCC，这个原型项目至关重要，因为它是首个证明该提案可行的实现。然而这个过程中遇到了很多问题：实现赶不上标准制定的进展，存在非常多的 bug 并且编译速度慢，这些都使其很难用于大型泛型库中。</p>
@@ -811,10 +839,14 @@
 <p>两个团队经过数个月的合作并公布了折中方案，后由 Stroustrup 等人汇总并正式向 C++ 标准委员会提出提案，该提案的一些要点如下：</p>
 <p>基于伪签名模式与依据表达式使用模式拥有等价的语义，两种方式应该能够相互转换，只是表现形式不一样，因此需要考虑其他方面的问题。尽管依据表达式模式很贴近文档中的约束描述，但是应该采用伪签名方式，原因是它的表现形式与类和类所需的成员函数具有相似性以及与显式建模声明子句的一致性。伪签名的另一个优势是容易构造原型类（archetypes），它是提供所需函数、成员以满足概念的最小类，在提案中便于对受约束的模板参数定义进行检查。</p>
 <p>对模板类或模板函数使用约束时，拥有两种表现形式，分别是应对简单的场是与应对复杂的场景，在复杂的情况下可以使用逻辑关系来组合多个概念。</p>
-<p>在提案中提出了基于概念重载的规则来决策哪个可行函数更优的方式：受概念约束的重载比未受约束的更具体，同样受约束的多个概念逻辑组合关系的比较，例如 A<T> 与 A<T> &amp;&amp; B<T> 相比，根据规则后者将更具体。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;Comparable T&gt; <span class="hljs-comment">// 简单的语法对应简单的场景</span><br><span class="hljs-function">T <span class="hljs-title">mymin</span><span class="hljs-params">(T a, T b)</span> </span>&#123; <span class="hljs-keyword">return</span> a &lt; b ? a : b; &#125;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">// concept 的逻辑组合</span><br>    where &#123; Comparable&lt;T&gt; &amp;&amp; AnotherConcept&lt;T&gt; &#125;<br><span class="hljs-function">T <span class="hljs-title">mymin</span><span class="hljs-params">(T a, T b)</span> </span>&#123; <span class="hljs-keyword">return</span> a &lt; b ? a : b; &#125;<br></code></pre></td></tr></table></figure>
+
+<p>在提案中提出了基于概念重载的规则来决策哪个可行函数更优的方式：受概念约束的重载比未受约束的更具体，同样受约束的多个概念逻辑组合关系的比较，例如 <code>A&lt;T&gt;</code> 与 <code>A&lt;T&gt; &amp;&amp; B&lt;T&gt;</code> 相比，根据规则后者将更具体。</p>
 <p>关于显式建模还是隐式匹配的抉择也是个很大的问题。显式建模能够避免给定类型仅因为语义差别而导致误匹配概念的情况，但是它增加了简单场景的复杂度：需要大量的 model 声明语句，使得一个类型变得相当模糊。该提案给出的解决方案是将 concept 分成两种：一种是默认 concept 需要显式建模，而另一种是需要在 concept 定义前使用 auto 修饰来表明它可以隐式匹配。</p>
 <p>由于显式建模的关键字 model 太过平凡，可能会与现存代码造成冲突，因此提案中将该关键字修改为 concept_map，它的子句中可以对不满足概念要求的指定类型进行补充扩展定义，从而满足概念要求。顾名思义，concept_map 可视作模板参数到指定类型的概念映射。</p>
-<p>公理（axiom）表达了概念的语义要求，虽然编译器仅能检查语法要求，但是它可以提示编译器基于这些假设对类型做出优化。例如，某个概念要求类型的二元操作 op 符合结合律，那么编译器可能会将表达式 op(x, op(y, z)) 等价替换成 op(op(x, y), z)。</p>
+<p>公理（axiom）表达了概念的语义要求，虽然编译器仅能检查语法要求，但是它可以提示编译器基于这些假设对类型做出优化。例如，某个概念要求类型的二元操作 op 符合结合律，那么编译器可能会将表达式 <code>op(x, op(y, z))</code> 等价替换成 <code>op(op(x, y), z)</code>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">concept</span> Semigroup &lt;<span class="hljs-keyword">typename</span> Op, <span class="hljs-keyword">typename</span> T&gt; &#123;<br>    <span class="hljs-function">T <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(Op, T, T)</span></span>; <span class="hljs-comment">// axiom 公理作为语义要求</span><br>    <span class="hljs-function">axiom <span class="hljs-title">Associativity</span><span class="hljs-params">(Op op, T x, T y)</span></span><br><span class="hljs-function">    </span>&#123; <span class="hljs-built_in">op</span>(x, <span class="hljs-built_in">op</span>(y, z)) == <span class="hljs-built_in">op</span>(<span class="hljs-built_in">op</span>(x, y), z); &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
 <h3 id="1-5-2009-年（标准化投票）"><a href="#1-5-2009-年（标准化投票）" class="headerlink" title="1.5 2009 年（标准化投票）"></a>1.5 2009 年（标准化投票）</h3><p>Stroustrup 在 2009 年写了一篇论文，总结了标准委员会对 ConceptGCC 提案的担忧，他们担心这个特性对普通的 C++ 程序员来说太复杂了，所以决定简化设计。</p>
 <p>其中一点是建议将默认的显式建模改成默认隐式匹配，并提出了相关手段，这样能够减少 concept_map 声明的数量，使得对普通程序员更加友好，但这一手段需要相当大的改动。</p>
 <p>同年7月的法兰克福会议上，C++ 标准委员会对该特性进行投票，有如下选项。</p>
@@ -833,12 +865,20 @@
 <li>无任何运行时开销，且能提高编译速度。</li>
 </ol>
 <p>值得一提的是，GCC 编译器在设计报告编写时已经完成了大部分目标与实现，并且包含了配套使用 concept 的标准库。</p>
-<p>轻量级概念定义如下：<br>我们可以发现 concept 的定义发生了变化，它相当于 constexpr 谓词函数，能够在编译时求值，原型要求返回类型为 bool 的无参函数。</p>
+<p>轻量级概念定义如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-function"><span class="hljs-keyword">concept</span> <span class="hljs-type">bool</span> <span class="hljs-title">EqualityComparable</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">requires</span>(T a, T b) &#123;<br>        &#123;a == b&#125; -&gt; <span class="hljs-type">bool</span>;<br>        &#123;a != b&#125; -&gt; <span class="hljs-type">bool</span>;<br>    &#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们可以发现 concept 的定义发生了变化，它相当于 constexpr 谓词函数，能够在编译时求值，原型要求返回类型为 bool 的无参函数。</p>
 <p>同时引入了 requires 表达式，它提供了可以简明表示表达式是否合法和关联的类型是否满足要求的能力。requires 表达式能够声明一些参数，然后罗列这些参数的表达式来判断其是否符合要求。这个例子中通过声明模板类型T的两个实例 a 和 b，并通过表达式 a&#x3D;&#x3D;b 来判断它们是否能够判等，并且最终判等的结果是否为 bool。</p>
 <p>当实例化时若这些表达式无效，则 requires 表达式最终结果为 false，表明模板参数不满足要求。在这个设计报告中使用了基于表达式使用的方式而不是伪签名方式，它的一个优势在于能够根据标准库的文档代码样例简单地转换成概念的定义。此外，基于表达式使用的方式比伪签名更加抽象，它们表达更多的是如何（How）使用而不是提供什么（What）签名，这使得程序员能够写出更加通用的代码。</p>
-<p>接着看看概念的使用，同样提供了两种方式分别应对简单与复杂的场景，使用 requires 子句来表达多个概念的逻辑组合。如上两种方式是等价的，前者使用概念 FloatingPoint 来约束模板参数，而后者使用 requires 对三个 Same 概念进行组合约束。</p>
+<p>接着看看概念的使用，同样提供了两种方式分别应对简单与复杂的场景，使用 requires 子句来表达多个概念的逻辑组合。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;FloatingPoint T&gt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">complex</span>; <span class="hljs-comment">// 概念的简单使用</span><br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">// 概念的复杂场景，使用 requires 子句组合</span><br>    <span class="hljs-keyword">requires</span> <span class="hljs-built_in">Same</span>&lt;T, <span class="hljs-type">float</span>&gt;() || <span class="hljs-built_in">Same</span>&lt;T, <span class="hljs-type">double</span>&gt;() || <span class="hljs-built_in">Same</span>&lt;T, <span class="hljs-type">long</span> <span class="hljs-type">double</span>&gt;()<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">complex</span>;<br></code></pre></td></tr></table></figure>
+
+<p>如上两种方式是等价的，前者使用概念 FloatingPoint 来约束模板参数，而后者使用 requires 对三个 Same 概念进行组合约束。</p>
 <p>对于模板类型可以基于概念的特化实现，考虑如下例子。</p>
-<p>上述代码声明了一个模板类型 complex，将模板参数约束为数值类型，既可以是浮点类型也可以是整数类型，接着分别对浮点类型和整数类型进行特化，当用户使用 complex<int> 时将使用 Integral 概念约束的特化版本。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;Arithmetic T&gt;    <span class="hljs-keyword">class</span> <span class="hljs-title class_">complex</span>;<br><span class="hljs-keyword">template</span> &lt;FloatingPoint T&gt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">complex</span>&lt;T&gt; &#123; <span class="hljs-comment">/*...*/</span> &#125;;<br><span class="hljs-keyword">template</span> &lt;Integral T&gt;      <span class="hljs-keyword">class</span> <span class="hljs-title class_">complex</span>&lt;T&gt; &#123; <span class="hljs-comment">/*...*/</span> &#125;;<br></code></pre></td></tr></table></figure>
+
+<p>上述代码声明了一个模板类型 complex，将模板参数约束为数值类型，既可以是浮点类型也可以是整数类型，接着分别对浮点类型和整数类型进行特化，当用户使用 <code>complex&lt;int&gt;</code> 时将使用 Integral 概念约束的特化版本。</p>
 <p>设计报告没有使用显式建模 concept_map 方案，而是隐式匹配方案。同样地，这种方案也面临着语法相同、语义不同而导致的 concept 无法区分的情况。目前的变通方案是将语义要求的差异转换成语法上的差异，以此进行区分。</p>
 <h3 id="1-7-2015-年（ConceptsTS）"><a href="#1-7-2015-年（ConceptsTS）" class="headerlink" title="1.7 2015 年（ConceptsTS）"></a>1.7 2015 年（ConceptsTS）</h3><p>C++14 的目标是完成 C++11 的特性并修复一些已知问题，concept 没有足够的时间进入 C++14 标准，标准委员会决定为该特性单独编写一份技术规范文档（TechnicalSpecification，TS）。</p>
 <p>2012 年，标准委员会的工作方式发生了变化，其主要工作独立于标准制定，并行地以技术规范形式交付，随后可以纳入标准。这种工作方式允许标准委员会能够快节奏、可预测地交付。Concepts TS 形成了最终的技术规范，在 GCC 编译器中能够使用选项 -fconcepts 来使用该特性。</p>
@@ -852,48 +892,90 @@
 <p>方案的多样性也是有价值的，对于印第安纳提案与得克萨斯提案而言，它们提供了不同的思路来解决同一问题，并且一起改善了提案；缺少编译器实现（最初仅 GCC 编译器实现）上的多样性导致了概念被延期进入标准。因此，面对与讨论不同的方案以及进行广泛的测试验证是有价值的。</p>
 <h2 id="第-2-章-C-20-标准的概念特性"><a href="#第-2-章-C-20-标准的概念特性" class="headerlink" title="第 2 章 C++20 标准的概念特性"></a>第 2 章 C++20 标准的概念特性</h2><h3 id="2-1-定义概念"><a href="#2-1-定义概念" class="headerlink" title="2.1 定义概念"></a>2.1 定义概念</h3><p>这里正式给 concept 下定义，它是一个对类型约束的编译期谓词，给定一个类型判断其能否满足语法和语义要求，这对泛型编程而言极为重要。举个例子，给定模板参数T，对它的要求如下。</p>
 <ol>
-<li>一种迭代器类型 Iterator<T>。</li>
-<li>一种数字类型 Number<T>。</li>
+<li>一种迭代器类型 <code>Iterator&lt;T&gt;</code>。</li>
+<li>一种数字类型 <code>Number&lt;T&gt;</code>。</li>
 </ol>
-<p>符号 C<T> 中的 C 就是概念，T 是一个类型，它表达“如果 T 满足 C 的所有要求，那么为真，否则为假。”</p>
-<p>类似地，我们能够指定一组模板参数来满足概念的要求，例如 <code>Same&lt;T, U&gt;</code> 概念可定义为类型 T 与 U 相等。这种多类型概念对于STL来说是必不可少的，同时也能应用于其他领域中。</p>
-<p>concept拥有强大的表达力并且对编译时间友好，程序员能够通过非常简单地定义一个概念，也可以借助概念库对已有的概念进行组合。概念支持重载，能够消除对变通方案（诸如enable_if等技巧）的依赖，因此不仅大大降低了元编程的难度，同时也简化了泛型编程。在 C++ 中定义一个 concept 的语法为：</p>
-<p>概念被定义为约束表达式（constraint-expression），也可以简单理解成布尔常量表达式。在实现一些简单的概念时可以复用在2.2节介绍的 type traits中，它们是编译时查询类型特征的接口，在配套的概念标准库<code>&lt;concepts&gt;</code>中可以看到一些和数值相关的概念被定义为：</p>
-<p>这种简单的概念定义能否不依托于type traits呢？答案是可能不行，根据 C++20 标准，概念不允许做特化且约束表达式在定义时处于不求值环境中，因此除了 type traits 之外没有更好的方式了。</p>
+<p>符号 <code>C&lt;T&gt;</code> 中的 C 就是概念，T 是一个类型，它表达“如果 T 满足 C 的所有要求，那么为真，否则为假。”</p>
+<p>类似地，我们能够指定一组模板参数来满足概念的要求，例如 <code>Same&lt;T, U&gt;</code> 概念可定义为类型 T 与 U 相等。这种多类型概念对于 STL 来说是必不可少的，同时也能应用于其他领域中。</p>
+<p>concept 拥有强大的表达力并且对编译时间友好，程序员能够通过非常简单地定义一个概念，也可以借助概念库对已有的概念进行组合。概念支持重载，能够消除对变通方案（诸如 enable_if 等技巧）的依赖，因此不仅大大降低了元编程的难度，同时也简化了泛型编程。在 C++ 中定义一个 concept 的语法为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;被约束的模板参数列表&gt;<br><span class="hljs-keyword">concept</span> 概念名 = 约束表达式;<br></code></pre></td></tr></table></figure>
+
+<p>概念被定义为约束表达式（constraint-expression），也可以简单理解成布尔常量表达式。在实现一些简单的概念时可以复用在 2.2 节介绍的 type traits 中，它们是编译时查询类型特征的接口，在配套的概念标准库 <code>&lt;concepts&gt;</code> 中可以看到一些和数值相关的概念被定义为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">concept</span> integral = is_integral_v&lt;T&gt;;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">concept</span> floating_point = is_floating_point_v&lt;T&gt;;<br></code></pre></td></tr></table></figure>
+
+<p>这种简单的概念定义能否不依托于 type traits 呢？答案是可能不行，根据 C++20 标准，概念不允许做特化且约束表达式在定义时处于不求值环境中，因此除了 type traits 之外没有更好的方式了。</p>
 <p>概念和模板using的别名很类似，前者是对布尔表达式的别名，而后者是对模板类型的别名，它们都不允许自身进行实例化或特化。记住这个有助于对后文介绍的约束偏序规则的理解。</p>
 <p>在判断类型是否满足概念时，编译器将会对概念定义的约束表达式进行求值，因此可以通过静态断言来检测类型是否满足。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-built_in">static_assert</span>( floating_point&lt;<span class="hljs-type">float</span>&gt;); <span class="hljs-comment">// 对约束表达式 is_floating_point_v 进行求值</span><br><span class="hljs-built_in">static_assert</span>(!floating_point&lt;<span class="hljs-type">int</span>&gt;);<br></code></pre></td></tr></table></figure>
+
 <p>如果在定义概念时约束表达式类型不为 bool 类型，将引发一个编译错误，而不是返回不满足（假）。</p>
-<p>约束表达式通过逻辑操作符的方式进行组合以定义更复杂的概念，这种操作符有两种：合取(conjunction)与析取(disjunction)，C++标准中使用符号∧来代表合取操作，符号∨代表析取操作。</p>
-<p>由于在C++语法中并没有定义这两个符号，而是复用逻辑与(&amp;&amp;)和逻辑或(||)来分别表达合取与析取，那么它们在约束表达式中的语义相对布尔运算也就有了细微区别。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// atomic constraint must be of type &#x27;bool&#x27; (found &#x27;int&#x27;)</span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">concept</span> Foo = <span class="hljs-number">1</span>;<br></code></pre></td></tr></table></figure>
+
+<p>约束表达式通过逻辑操作符的方式进行组合以定义更复杂的概念，这种操作符有两种：合取（conjunction）与析取（disjunction），C++ 标准中使用符号 ∧ 来代表合取操作，符号 ∨ 代表析取操作。</p>
+<p>由于在 C++ 语法中并没有定义这两个符号，而是复用逻辑与（&amp;&amp;）和逻辑或（||）来分别表达合取与析取，那么它们在约束表达式中的语义相对布尔运算也就有了细微区别。</p>
 <p>约束的合取表达式由两个约束组成，判断一个合取是否满足要求，首先要对第一个约束进行检查，如果它不满足，整个合取表达式也不满足；否则，当且仅当第二个约束也满足时，整个表达式满足要求。</p>
 <p>约束的析取表达式同样由两个约束组成，判断一个析取是否满足要求，首先对第一个约束进行检查，如果它满足，整个析取表达式满足要求；否则，当且仅当第二个约束也满足时，整个表达式满足要求。</p>
 <p>合取与析取操作与逻辑表达式中的与或运算类似，也是一个短路操作符。在依次对每个约束进行检查时，首先检查表达式是否合法，若不合法则该约束不满足，否则进一步对约束进行求值判断是否满足。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">// 析取表达式 is_integral_v&lt;T::type&gt; ∨ sizeof(T) &gt; 1</span><br><span class="hljs-keyword">concept</span> C = is_integral_v&lt;<span class="hljs-keyword">typename</span> T::type&gt; || (<span class="hljs-built_in">sizeof</span>(T) &gt; <span class="hljs-number">1</span>);<br><span class="hljs-built_in">static_assert</span>(C&lt;<span class="hljs-type">double</span>&gt;);<br></code></pre></td></tr></table></figure>
+
 <p>对 <code>C&lt;double&gt;</code> 进行求值的过程中，模板类型参数T被替换为 double，整个约束表达式为 <code>is_integral_v&lt;double::type&gt; ∨ sizeof(double) &gt; 1</code>，显然第一个约束的表达式非法，结果为不满足要求，然而第二个表达式满足要求，因此整个结果为真。</p>
 <p>对于可变参数模板形成的约束表达式，既不是约束合取也不是约束析取。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span>... TS&gt;<br><span class="hljs-keyword">concept</span> C = (is_integral_v&lt;<span class="hljs-keyword">typename</span> Ts::type&gt; || ...);<br></code></pre></td></tr></table></figure>
+
 <p>上述代码不是析取表达式，因此没有短路操作，它首先检查整个表达式是否合法，只要有一个模板参数没有类型成员 type，整个表达式将为假。若要表达“至少一个模板参数存在类型成员 type 且类型成员为整数”，则可以添加一层间接层解决：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">// 额外的间接层</span><br><span class="hljs-keyword">concept</span> IntegralWithNestType = is_integral_v&lt;<span class="hljs-keyword">typename</span> T::type&gt;;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span>... Ts&gt;<br><span class="hljs-keyword">concept</span> C = (IntegralWithNestType&lt;Ts&gt; || ...);<br></code></pre></td></tr></table></figure>
+
 <p>由于约束表达式使用的合取与析取操作符分别与逻辑表达式的逻辑与和逻辑或相同，若要表达“逻辑表达式”的合法性，而不是被当成析取或合取表达式处理则需要额外的工作。</p>
-<p>概念C1中的约束表达式为析取表达式，它具有短路性质，表达“要求存在一个模板参数拥有类型成员 type 且类型成员为整数”，而 C2 表达了一条完整的逻辑表达式：“要求两个模板参数存在类型成员 type 且其中一个为整数”。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T, <span class="hljs-keyword">typename</span> U&gt; <span class="hljs-comment">// 约束析取表达式</span><br><span class="hljs-keyword">concept</span> C1 = is_integral_v&lt;<span class="hljs-keyword">typename</span> T::type&gt; || is_integral_v&lt;<span class="hljs-keyword">typename</span> U::type&gt;;<br><br><span class="hljs-keyword">template</span> &lt;typanme T, <span class="hljs-keyword">typename</span> U&gt; <span class="hljs-comment">// 原子约束</span><br><span class="hljs-keyword">concept</span> C2 = <span class="hljs-built_in">bool</span>(is_integral_v&lt;<span class="hljs-keyword">typename</span> T::type&gt; || is_integral_v&lt;<span class="hljs-keyword">typename</span> U::type&gt;);<br></code></pre></td></tr></table></figure>
+
+<p>概念 C1 中的约束表达式为析取表达式，它具有短路性质，表达“要求存在一个模板参数拥有类型成员 type 且类型成员为整数”，而 C2 表达了一条完整的逻辑表达式：“要求两个模板参数存在类型成员 type 且其中一个为整数”。</p>
 <p>另一个比较特殊的是逻辑否定（negation），在对概念进行求值的过程中，若约束中的模板参数替换发生错误（表达式非法），则该约束的结果为不满足。考虑如下情况。</p>
-<p>其中C1表达式“要求类型T存在关联类型 type，且关联类型为整数类型”，C1 的否定“要求类型T不存在关联类型 type，或关联类型不为整数”。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">concept</span> C1 =  is_integral_v&lt;<span class="hljs-keyword">typename</span> T::type&gt;;<br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">concept</span> C2 = !is_integral_v&lt;<span class="hljs-keyword">typename</span> T::type&gt;;<br><br><span class="hljs-built_in">static_assert</span>(!C1&lt;<span class="hljs-type">int</span>&gt;);<br><span class="hljs-built_in">static_assert</span>(!C2&lt;<span class="hljs-type">int</span>&gt;);<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Foo</span> &#123; <span class="hljs-keyword">using</span> type = <span class="hljs-type">float</span>; &#125;;<br><span class="hljs-built_in">static_assert</span>(C2&lt;Foo&gt;);<br></code></pre></td></tr></table></figure>
+
+<p>其中 C1 表达式“要求类型 T 存在关联类型 type，且关联类型为整数类型”，C1 的否定“要求类型T不存在关联类型 type，或关联类型不为整数”。</p>
 <p>根据约束否定的特殊性质，C2 并不是 C1 的否定，它表达的是“要求类型 T 存在关联类型 type，且关联类型不为整数类型”，在断言 <code>C2&lt;Foo&gt;</code> 和 <code>C2&lt;int&gt;</code> 时我们可以确认这一点。</p>
 <p>如果需要表达 C1 的否定“要求类型T不存在关联类型 type，或关联类型不为整数”，应该定义为如下形式。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">concept</span> C3 = !C1&lt;T&gt;;<br><span class="hljs-built_in">static_assert</span>(C3&lt;Foo&gt;);<br><span class="hljs-built_in">static_assert</span>(C3&lt;<span class="hljs-type">int</span>&gt;);<br></code></pre></td></tr></table></figure>
+
 <h3 id="2-2-requires-表达式"><a href="#2-2-requires-表达式" class="headerlink" title="2.2 requires 表达式"></a>2.2 requires 表达式</h3><p>除了使用 type traits 来定义概念之外，requires 表达式也提供了一种简明的方式来表达对模板参数及其对象的特征要求：成员函数、自由函数、关联类型等。在 C++ 中定义 requires 表达式的语法为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-built_in">requires</span> (可选的形参列表) &#123; <span class="hljs-comment">// 表达式体，提出要求</span><br>    一系列表达式（要求）<br>&#125;<br></code></pre></td></tr></table></figure>
+
 <p>requires 表达式的结果为 bool 类型，即编译时谓词。表达式体应至少提出一条要求，同样地在表达式体中处于不求值环境。当对 requires 表达式进行求值时，按照表达式体中声明的先后顺序依次检查表达式的合法性，当遇到一条非法的表达式时，返回结果为不满足（假），与短路类似的后续表达式也无须进一步检查；当所有表达式都合法时，返回的结果为满足（真）。</p>
 <p>可选的形参列表声明了一系列局部变量，这些局部变量不允许提供默认参数，它们对整个表达式体可见。这些变量没有链接性、存储性与生命周期，仅仅用作提出要求时的符号。如果在表达式体中引用了未声明的符号，则视作语法错误。</p>
 <p>requires 表达式提供了四种形式的要求：简单要求、类型要求、复合要求与嵌套要求，它们分别应对不同场景。</p>
-<h4 id="2-2-1-简单要求"><a href="#2-2-1-简单要求" class="headerlink" title="2.2.1 简单要求"></a>2.2.1 简单要求</h4><p>对于简单的要求，仅仅通过表达式就能表达。考虑定义一个机器的概念，能够上电与下电。这里涉及两个特性，首先通过 concept 定义机器概念，其次约束表达式为 requires 表达式，它声明了模板参数M的局部对象 m，然后在表达式体中提出了两个要求，分别是能够使用对象的上下电接口。</p>
+<h4 id="2-2-1-简单要求"><a href="#2-2-1-简单要求" class="headerlink" title="2.2.1 简单要求"></a>2.2.1 简单要求</h4><p>对于简单的要求，仅仅通过表达式就能表达。考虑定义一个机器的概念，能够上电与下电。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> M&gt;<br><span class="hljs-keyword">concept</span> Machine = <span class="hljs-built_in">requires</span>(M m) &#123;<br>    m.<span class="hljs-built_in">powerUp</span>();   <span class="hljs-comment">// 需要存在的成员函数</span><br>    m.<span class="hljs-built_in">powerDown</span>(); <span class="hljs-comment">// powerUp/powerDown</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里涉及两个特性，首先通过 concept 定义机器概念，其次约束表达式为 requires 表达式，它声明了模板参数 M 的局部对象 m，然后在表达式体中提出了两个要求，分别是能够使用对象的上下电接口。</p>
 <p>对约束表达式求值的过程中并不会去创建对象，因此我们可以使用简单的值语义，而无须添加额外的引用或者指针形式，这样代码更简洁。此外也不会进行接口调用，仅仅是依据表达式是否合法来确认是否满足要求。</p>
 <p>有时候我们要求模板参数的对象含有相关的自由函数，以及含有静态成员函数，或者成员变量，这些要求都可以通过下面这种形式来表达。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">concept</span> Animal = <span class="hljs-built_in">requires</span>(T a, T b, T c) &#123;<br>    <span class="hljs-built_in">play</span>(animal);      <span class="hljs-comment">// 要求存在自由函数 play</span><br>    T::count;          <span class="hljs-comment">// 存在静态成员 count</span><br>    animal.age;        <span class="hljs-comment">// 要求存在成员变量 age</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
 <p>又或者需要进行复杂的操作符运算时，可以声明几个对象，并在提出要求的同时表达对象之间的操作。目的只是检查表达式的合法性，不会去进行真正的计算。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">concept</span> Number = <span class="hljs-built_in">requires</span>(T a, T b, T c) &#123;<br>    a == a;     <span class="hljs-comment">// 要求对象能进行判等操作</span><br>    a + b * c;  <span class="hljs-comment">// 要求对象能够进行加、乘操作</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
 <h4 id="2-2-2-类型要求"><a href="#2-2-2-类型要求" class="headerlink" title="2.2.2 类型要求"></a>2.2.2 类型要求</h4><p>简单要求虽然可以表达对象的成员函数、成员变量，但无法表达对象的类成员。类型要求可以表达一个类型是否含有成员类型，该类型是否能够和其他模板类型组合等。考虑如下情况。</p>
-<p>这段代码中的requires表达式无须引入局部变量，直接对类型提出要求即可。表达式体中使用关键字typename来表达它是一个类型要求。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">concept</span> C = <span class="hljs-keyword">requires</span> &#123;<br>    <span class="hljs-keyword">typename</span> T::type;    <span class="hljs-comment">// 要求存在类型成员 type</span><br>    <span class="hljs-keyword">typename</span> vector&lt;T&gt;;  <span class="hljs-comment">// 要求能够与 vector 组合，能够模板实例化</span><br>&#125;;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Foo</span> &#123; <span class="hljs-keyword">using</span> type = first; &#125;;<br><span class="hljs-built_in">static_assert</span>(C&lt;Foo&gt;);<br></code></pre></td></tr></table></figure>
+
+<p>这段代码中的 requires 表达式无须引入局部变量，直接对类型提出要求即可。表达式体中使用关键字 typename 来表达它是一个类型要求。</p>
 <h4 id="2-2-3-复合要求"><a href="#2-2-3-复合要求" class="headerlink" title="2.2.3 复合要求"></a>2.2.3 复合要求</h4><p>有时候我们会希望一个表达式的类型也能够符合要求，例如要求函数的返回类型为int，希望表达式不会抛异常等，这时候可以使用复合要求来表达。复合要求的语法如下。</p>
+<p><code>&#123; 表达式 &#125; 可选的 noexcept，可选的返回类型概念要求</code></p>
 <p>复合要求需要用大括号将表达式括起来，最简单的复合要求和简单要求几乎没什么区别。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> M&gt;<br><span class="hljs-keyword">concept</span> Machine = <span class="hljs-built_in">requires</span>(M m) &#123;<br>    &#123; m.<span class="hljs-built_in">powerUp</span>() &#125;;   <span class="hljs-comment">// 需要存在成员函数</span><br>    &#123; m.<span class="hljs-built_in">powerDown</span>() &#125;; <span class="hljs-comment">// powerUp/powerDown</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
 <p>如果要求表达式不能抛异常，这时候 noexcept 关键字便派上了用场。考虑定义一个概念 Movable，要求对象之间的移动禁止抛异常。当用户自定义移动赋值操作符而忘记声明 noexcept 时，将无法通过约束的检查。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">concept</span> Movable = <span class="hljs-built_in">requires</span>(T a, T b) &#123;<br>    &#123; a = std::<span class="hljs-built_in">move</span>(b) &#125; <span class="hljs-keyword">noexcept</span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
 <p>当我们对一个表达式的类型提出要求时，有两个问题需要考虑。首先，是明确要求为某个确定的类型；其次，是由于在C++中允许类型转换，对表达式的类型要求可以稍微放宽，只要能隐式转换到要求的类型即可。</p>
-<p>C++标准库 <code>&lt;concepts&gt;</code> 提供了两个概念 same_as和convertible_to 来分别表达这两种情况，它们的声明如下。</p>
+<p>C++ 标准库 <code>&lt;concepts&gt;</code> 提供了两个概念 same_as 和 convertible_to 来分别表达这两种情况，它们的声明如下。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T, <span class="hljs-keyword">typename</span> U&gt;<br><span class="hljs-keyword">concept</span> same_as = <span class="hljs-comment">/*...*/</span>;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> _From, <span class="hljs-keyword">typename</span> _To&gt;<br><span class="hljs-keyword">concept</span> convertible_to = <span class="hljs-comment">/*...*/</span>;<br></code></pre></td></tr></table></figure>
+
 <p>借助这两个概念的帮助，我们可以定义如下的概念。</p>
-<p>使用箭头“-&gt;”来表达对表达式类型的要求，后面紧接着的是需要满足的概念。值得注意的是，这两个概念本应该接受两个模板类型参数，为何这里只需要提供一个？其实这是 concept 的性质，它会将表达式的类型补充到概念的第一个参数，如果读者将 same_as 替换成元函数is_same_v那么编译时将提示需要提供两个类型参数。上述代码等价于如下形式。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">concept</span> C = <span class="hljs-built_in">requires</span>(T x) &#123;<br>    &#123; <span class="hljs-built_in">f</span>(x) &#125; -&gt; same_as&lt;T&gt;;             <span class="hljs-comment">// 要求 f(x) 的返回类型与 x 类型一致</span><br>    &#123; <span class="hljs-built_in">g</span>(x) &#125; -&gt; convertible_to&lt;<span class="hljs-type">double</span>&gt;; <span class="hljs-comment">// 要求 g(x) 的返回类型能够转换成 double</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>使用箭头“-&gt;”来表达对表达式类型的要求，后面紧接着的是需要满足的概念。值得注意的是，这两个概念本应该接受两个模板类型参数，为何这里只需要提供一个？其实这是 concept 的性质，它会将表达式的类型补充到概念的第一个参数，如果读者将 same_as 替换成元函数 is_same_v 那么编译时将提示需要提供两个类型参数。上述代码等价于如下形式。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">concept</span> C = <span class="hljs-built_in">requires</span>(T x) &#123;<br>    <span class="hljs-built_in">f</span>(x); <span class="hljs-keyword">requires</span> same_as&lt;<span class="hljs-keyword">decltype</span>((<span class="hljs-built_in">f</span>(x))), T&gt;;<br>    <span class="hljs-built_in">g</span>(x); <span class="hljs-keyword">requires</span> convertible_to&lt;<span class="hljs-keyword">decltype</span>((<span class="hljs-built_in">g</span>(x))), <span class="hljs-type">double</span>&gt;;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
 <p>细心的读者会发现 requires 表达式体中又出现了 requires 关键字，这正是下一小节将介绍的嵌套要求。</p>
 <h4 id="2-2-4-嵌套要求"><a href="#2-2-4-嵌套要求" class="headerlink" title="2.2.4 嵌套要求"></a>2.2.4 嵌套要求</h4><p>除了前面几种要求，最后一种是嵌套要求，它在表达式体中通过 requires 连接一个编译时常量谓词来表达额外的约束。根据定义，嵌套要求的额外约束有如下几种形式。</p>
 <ul>
@@ -904,15 +986,17 @@
 </ul>
 <p>requires 表达式体通常只检查表达式的合法性，而嵌套要求的谓词约束则通过对表达式求值来确认是否满足要求。在 2.2.3 节中我们不仅要求 f(x) 表达式有效，还通过 <code>requires same_as&lt;decltype（f(x)）, T&gt;</code> 嵌套要求 same_as 的概念为真。</p>
 <p>通过嵌套要求定义一个概念，它要求给定的类型大小大于指针大小，并且是平凡的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">concept</span> C = <span class="hljs-keyword">requires</span> &#123; <span class="hljs-comment">// 使用嵌套要求连接编译期谓词</span><br>    <span class="hljs-keyword">requires</span> <span class="hljs-built_in">sizeof</span>(T) &gt; <span class="hljs-built_in">sizeof</span>(<span class="hljs-type">void</span>*);<br>    <span class="hljs-keyword">requires</span> is_trivial_v&lt;T&gt;;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
 <h4 id="2-2-5-注意事项"><a href="#2-2-5-注意事项" class="headerlink" title="2.2.5 注意事项"></a>2.2.5 注意事项</h4><p>本小节介绍requires表达式的一些特殊性质，以及使用的时候需要注意的地方。requires 表达式为编译时谓词，它不一定需要在 concept 定义的时候出现，只要是能够接受布尔表达式的地方都允许它的存在。</p>
 <p>最容易想到的是在定义变量模板的时候，判断给定类型是否存在成员函数swap。requires 表达式难道只能对模板参数或者其对象提出要求么？如果对具体类型提出要求又会怎么样？</p>
 <p>从设计角度来看。requires 表达式是服务于模板参数约束的，结果是编译错误而不是返回不满足（假）。除了支持类模板参数外，它还支持非类型模板参数，考虑定义一个偶数概念，要求输入的模板参数为偶数。</p>
 <p>在模板函数 if constexpr 中，也有可能出现 requires 表达式。</p>
 <p>除了以上场景外，还有很多地方能够接受布尔表达式，例如非类型模板参数中，定义 constexpr 谓词函数时，static_assert 中，实现 type traits 时，还有后面将介绍的 requires 子句等。一个容易混淆的地方是简单要求与嵌套要求中对布尔表达式的约束，考虑如下两种形式的差异。</p>
 <p>如果用户写了如下代码，那么很可能违背约束条件。</p>
-<p>用户可能要求模板类型T的大小不应该超过int的大小，然而从编译器的角度来看，这仅仅是检查表达式的合法性，对sizeof的结果进行比较是永远满足的。想达成用户的意图应该是用嵌套要求，让编译器进一步对这个布尔表达式进行求值判断以查看其是否满足。</p>
+<p>用户可能要求模板类型 T 的大小不应该超过 int 的大小，然而从编译器的角度来看，这仅仅是检查表达式的合法性，对 sizeof 的结果进行比较是永远满足的。想达成用户的意图应该是用嵌套要求，让编译器进一步对这个布尔表达式进行求值判断以查看其是否满足。</p>
 <p>另一个容易出错的地方在于嵌套要求可以接受一个 requires 表达式，考虑如下代码。</p>
-<p>经过分析会发现，以上代码表达式体中的 requires 并不是表达嵌套要求，而是简单要求形式，仅仅检查了表达式体中的 requires 表达式是否合法。好在C++标准不接受这种代码，只要是以 requires 开头的代码都会被当作嵌套要求处理，其后还紧接着一个编译时谓词；现有的编译器实现也会对该代码报错。这时需要通过添加 requires 前缀进一步表达嵌套要求，具体代码如下。</p>
+<p>经过分析会发现，以上代码表达式体中的 requires 并不是表达嵌套要求，而是简单要求形式，仅仅检查了表达式体中的 requires 表达式是否合法。好在 C++ 标准不接受这种代码，只要是以 requires 开头的代码都会被当作嵌套要求处理，其后还紧接着一个编译时谓词；现有的编译器实现也会对该代码报错。这时需要通过添加 requires 前缀进一步表达嵌套要求，具体代码如下。</p>
 <p>最后一个需要注意的地方是，requires 表达式的可选形参列表中可能涉及非法表达式的问题，考虑如下代码。</p>
 <p>形参v是否有效取，决于类型T是否含有类型成员 value_type，在形参无效的情况下，requires 表达式是否应该返回不满足（假）？根据 C++ 标准提到，编译器仅检查 requires 表达式体中的表达式要求是否合法，如果形参列表中的表达式非法，那么程序非良构，所以上述代码将产生一个编译错误。</p>
 <p>如果使用 concept 定义，那么在可选的形参无效的情况下，requires 表达式将返回假，不过这是 concept 的特殊性质，和 requires 表达式无关。</p>
@@ -930,56 +1014,56 @@
 <p>requires 子句拥有和 concept 类似的性质，考虑如下代码。</p>
 <p>当用户对该函数进行调用时，首先检查表达式是否合法，如果模板参数类型没有类型成员 type，将不满足要求；否则进一步判断类型成员是否为整数类型，如果是则满足要求，函数能够被正常调用，否则不满足要求，产生编译错误。</p>
 <p>当对 requires 子句中的约束使用否定时需要额外注意，它可能并不是在表达否定的意思，回忆在3.1节提到的一个例子。</p>
-<p>程序员可能把这个否定理解为“要求模板参数类型没有类型成员 type 或类型成员不为整数”，而它真正的语义为“要求模板参数类型拥有类型成员 type 且类型成员不为整数”，如果需要表达前者语义，可以参考3.1节提到的方式，这里不再赘述。</p>
+<p>程序员可能把这个否定理解为“要求模板参数类型没有类型成员 type 或类型成员不为整数”，而它真正的语义为“要求模板参数类型拥有类型成员 type 且类型成员不为整数”，如果需要表达前者语义，可以参考 3.1 节提到的方式，这里不再赘述。</p>
 <p>可能有读者注意到了 requires 子句中对约束的否定使用了圆括号，这是因为编译器对代码进行解析的过程中存在困难，考虑如下代码。</p>
 <p>编译器在解析这段代码时，遇到约束 P(0) 会认为这是一个类型转换表达式，将数值类型转换成其他类型 P，然而实际上表达的是一个谓词函数调用，这时候需要通过括号将 P(0) 括起来。好在编译器又足够智能，能通过错误信息提醒用户更正这个错误。</p>
 <p>requires 子句中的约束表达式也支持对约束进行合取与析取操作。除了通过requires子句引入约束之外，在简单情况下还可以通过更简洁的语法来引入约束。</p>
 <p>我们可以看到关键字 typename 被替换成了概念 integral，对多个模板参数添加概念约束，将产生一个约束合取表达式，正如注释中提到的一样。此外，不需要填充概念中的模板参数，根据 concept 的性质它会自动将模板参数补充到概念中第一个参数位置，这是 type traits 做不到的。</p>
-<p>另一方面也说明了，不需要通过requires子句也能施加约束。约束的合取比较容易得到，而约束的析取需要通过requires子句才能得到。</p>
-<p>如不关心模板参数类型，则C++20模板函数的参数可以使用 auto 来简化，并同时支持添加约束。如下函数原型和上面一样。</p>
+<p>另一方面也说明了，不需要通过 requires 子句也能施加约束。约束的合取比较容易得到，而约束的析取需要通过 requires 子句才能得到。</p>
+<p>如不关心模板参数类型，则 C++20 模板函数的参数可以使用 auto 来简化，并同时支持添加约束。如下函数原型和上面一样。</p>
 <p>此外，泛型lambda也能够通过使用概念进行约束。</p>
 <p>前面提到模板类与它的特化版本能够通过requires子句施加约束，根据约束比较规则可以决策出约束最强的版本。</p>
-<p>如果使用 <code>Optional&lt;int&gt;</code>，因为int类型为平凡类型，符合特化版本中的约束要求，那么将决策特化版本而不是更一般的版本，这样能够有针对性地进行优化。在传统的元编程技巧中，常常使用enable_if_t 与 void_t 进行特化版本的决策，通过使用约束方式降低了程序员学习的难度。</p>
+<p>如果使用 <code>Optional&lt;int&gt;</code>，因为 int 类型为平凡类型，符合特化版本中的约束要求，那么将决策特化版本而不是更一般的版本，这样能够有针对性地进行优化。在传统的元编程技巧中，常常使用enable_if_t 与 void_t 进行特化版本的决策，通过使用约束方式降低了程序员学习的难度。</p>
 <p>当对模板类型进行显式实例化时，若受约束的成员函数不符合要求，编译器将不为这个函数生成代码，这是 enable_if_t 做不到的地方。</p>
-<p>这里的 requires 子句写在了函数声明后，当对该模板类进行实例化时，由于成员函数 operator()() 不满足要求，编译器将不为它生成代码。</p>
+<p>这里的 requires 子句写在了函数声明后，当对该模板类进行实例化时，由于成员函数 <code>operator()()</code> 不满足要求，编译器将不为它生成代码。</p>
 <h3 id="2-4-约束的偏序规则"><a href="#2-4-约束的偏序规则" class="headerlink" title="2.4 约束的偏序规则"></a>2.4 约束的偏序规则</h3><p>在前一节我们看到了通过给模板施加约束，受约束的版本比未受约束的版本更优，如果两个版本同样含有约束且都满足，哪个最优呢？</p>
 <p>之所以会有这个问题，要回到 C++ 最初的标准模板库中的设计，迭代器是算法与容器之间的桥梁，并且分为几类。同一个算法针对不同类的迭代器中拥有不同的高效实现：如 rotate 旋转算法在随机访问迭代器、双向迭代器、单向迭代器中拥有不同的实现，其中随机访问迭代器的效率最高。</p>
 <p>如果一个随机访问迭代器使用了单向迭代器的算法，那么效率不是最优。在 C++11 之前。使用标签分发技术来决策最优算法，迭代器种类标签之间存在继承关系，重载决议时通过比较规则决策出正确的版本；在 C++17 中，可以使用 if constexpr 来决策最优算法；进入 C++20 后，则使用概念约束进行决策。</p>
 <p>在 C++ 的概念特性发展历史中，它曾经支持以继承形式扩展，这被称为概念改良。概念继承形式能够比较自然地表达合取关系，但在表达析取关系就不那么自然了。因此在 C++20 标准中废除了这一形式，而是采用更加自然的合取与析取关系。</p>
 <p>在模板函数重载决议与类模板特化决策中，约束的合取与析取关系以及 concept 扮演至关重要的角色，对于两个约束都满足的模板，可以通过约束的偏序规则决策出谁最优。</p>
-<h4 id="2-4-1-约束表达式归一化"><a href="#2-4-1-约束表达式归一化" class="headerlink" title="2.4.1 约束表达式归一化"></a>2.4.1 约束表达式归一化</h4><p>对于受约束的模板函数、模板类而言，施加的约束表达式被称为关联约束（associated constraint），为了进一步判断是否满足约束以及谁更优，需要将关联约束分解成原子约束的合取与析取形式，这个过程被称为归一化（normalization）。前面提到 concept 只是约束表达式的别名，在归一化过程中会对 concept 进行展开，展开后的约束表达式若包含 concept，则会进一步递归展开。直到所有的约束都无法进一步展开，这些约束即为原子约束，那么最终的形式就是原子约束的合取与析取表达式。每个原子约束既不是合取也不是析取形式。函数f1的关联约束为 C2<T>，为了判断关联约束是否满足要求，将对它进行归一化，展开过程如下。</p>
-<p>最终形式是原子约束 sizeof(T)&#x3D;&#x3D;1 与原子约束 1&#x3D;&#x3D;2 的合取形式，归一化过程在模板参数替换时没有产生非法表达式，这时进行最终的求值，可以发现约束不满足。函数 f2 的关联约束为 C3<T>，归一化过程类似。需要注意 requires 表达式、约束的否定是原子约束，最终结果为：</p>
-<h4 id="2-4-2-简单约束的包含关系"><a href="#2-4-2-简单约束的包含关系" class="headerlink" title="2.4.2 简单约束的包含关系"></a>2.4.2 简单约束的包含关系</h4><p>对于同样满足要求的两个约束表达式的关系，C++标准中拥有更正式的规则来描述，本小节首先考虑简单的合取与析取表达式。</p>
-<p>约束表达式 P 与 Q 的偏序关系也被称为包含关系（subsumption），如果它们拥有包含关系，若 P 包含 Q 而 Q 不包含 P，则  P  比 Q 更优；反之，Q 比  P  更优。P 和 Q 可能没有包含关系，那么将产生决议歧义的编译错误。</p>
+<h4 id="2-4-1-约束表达式归一化"><a href="#2-4-1-约束表达式归一化" class="headerlink" title="2.4.1 约束表达式归一化"></a>2.4.1 约束表达式归一化</h4><p>对于受约束的模板函数、模板类而言，施加的约束表达式被称为关联约束（associated constraint），为了进一步判断是否满足约束以及谁更优，需要将关联约束分解成原子约束的合取与析取形式，这个过程被称为归一化（normalization）。前面提到 concept 只是约束表达式的别名，在归一化过程中会对 concept 进行展开，展开后的约束表达式若包含 concept，则会进一步递归展开。直到所有的约束都无法进一步展开，这些约束即为原子约束，那么最终的形式就是原子约束的合取与析取表达式。每个原子约束既不是合取也不是析取形式。函数f1的关联约束为 <code>C2&lt;T&gt;</code>，为了判断关联约束是否满足要求，将对它进行归一化，展开过程如下。</p>
+<p>最终形式是原子约束 sizeof(T)&#x3D;&#x3D;1 与原子约束 1&#x3D;&#x3D;2 的合取形式，归一化过程在模板参数替换时没有产生非法表达式，这时进行最终的求值，可以发现约束不满足。函数 f2 的关联约束为 <code>C3&lt;T&gt;</code>，归一化过程类似。需要注意 requires 表达式、约束的否定是原子约束，最终结果为：</p>
+<h4 id="2-4-2-简单约束的包含关系"><a href="#2-4-2-简单约束的包含关系" class="headerlink" title="2.4.2 简单约束的包含关系"></a>2.4.2 简单约束的包含关系</h4><p>对于同样满足要求的两个约束表达式的关系，C++ 标准中拥有更正式的规则来描述，本小节首先考虑简单的合取与析取表达式。</p>
+<p>约束表达式 P 与 Q 的偏序关系也被称为包含关系（subsumption），如果它们拥有包含关系，若 P 包含 Q 而 Q 不包含 P，则 P 比 Q 更优；反之，Q 比 P 更优。P 和 Q 可能没有包含关系，那么将产生决议歧义的编译错误。</p>
 <p>约束表达式 P 包含 Q，当且仅当 P 满足要求时 Q 也满足；Q 不包含 P，则当 Q 满足时 P 不一定满足。考虑如下两个约束表达式。</p>
-<p>当 TotallyOrdered<T> 所指的约束合取表达式满足要求时，意味着它的两个约束都为真，可以得出 EqualityComparable<T> 满足要求，因此 TotallyOrdered<T> 包含 EqualityComparable<T>。</p>
-<p>当 EqualityComparable<T> 所指的约束表达式满足要求时，不能得出 TotallyOrdered<T> 也满足要求，因此 EqualityComparable<T> 不包含 TotallyOrdered<T>（见图3.1）。</p>
+<p>当 <code>TotallyOrdered&lt;T&gt;</code> 所指的约束合取表达式满足要求时，意味着它的两个约束都为真，可以得出 <code>EqualityComparable&lt;T&gt;</code> 满足要求，因此 <code>TotallyOrdered&lt;T&gt;</code> 包含 <code>EqualityComparable&lt;T&gt;</code>。</p>
+<p>当 <code>EqualityComparable&lt;T&gt;</code> 所指的约束表达式满足要求时，不能得出 <code>TotallyOrdered&lt;T&gt;</code> 也满足要求，因此 <code>EqualityComparable&lt;T&gt;</code> 不包含 <code>TotallyOrdered&lt;T&gt;</code>（见图 3.1）。</p>
 <p>图3.1约束的合取包含关系</p>
-<p>在对两个都满足约束的函数f决议中，将决出更优的第二个版本。</p>
+<p>在对两个都满足约束的函数 f 决议中，将决出更优的第二个版本。</p>
 <p>再来看看约束析取表达式，同样给出两个约束表达式。</p>
-<p>当 Arithmetic<T> 所指的约束表达式满足要求时，意味着它的两个约束中至少有一个为真，不能得出 FloatingPoint<T> 也满足要求，因此 Arithmetic<T> 不包含 FloatingPoint<T>。</p>
-<p>当 FloatingPoint<T> 所指的约束合取表达式满足要求时，得出 Arithmetic<T> 满足要求，因此 FloatingPoint<T> 包含 Arithmetic<T>（见图3.2）。</p>
-<p>图3.2 约束的析取包含关系<br>在对两个都满足约束的函数f的决议中，将决策出第一个版本更优。</p>
+<p>当 <code>Arithmetic&lt;T&gt;</code> 所指的约束表达式满足要求时，意味着它的两个约束中至少有一个为真，不能得出 <code>FloatingPoint&lt;T&gt;</code> 也满足要求，因此 <code>Arithmetic&lt;T&gt;</code> 不包含 <code>FloatingPoint&lt;T&gt;</code>。</p>
+<p>当 <code>FloatingPoint&lt;T&gt;</code> 所指的约束合取表达式满足要求时，得出 <code>Arithmetic&lt;T&gt;</code> 满足要求，因此 <code>FloatingPoint&lt;T&gt;</code> 包含 <code>Arithmetic&lt;T&gt;</code>（见图 3.2）。</p>
+<p>图 3.2 约束的析取包含关系<br>在对两个都满足约束的函数 f 的决议中，将决策出第一个版本更优。</p>
 <p>通过这两个例子我们可以发现，约束的合取形式 R∧S 要比 R 更优，而析取形式 R 要比 R∨S 更优。</p>
 <h4 id="2-4-3一般约束的包含关系"><a href="#2-4-3一般约束的包含关系" class="headerlink" title="2.4.3一般约束的包含关系"></a>2.4.3一般约束的包含关系</h4><p>上一小节介绍了简单约束表达式的包含关系，这一节将介绍更为通用的规则，当编译器面临复杂的约束表达式时，是如何决策出最优的。</p>
 <p>首先，考虑如下两个约束表达式，谁更优？</p>
 <p>当模板参数 T 为 int 时，这两个函数都满足要求，那么它们究竟谁更优呢？答案是由于编译错误，它们没有任何关系，无法决策出最优版本。2.4.2 节提到“约束的合取形式 R∧S 要比 R 更优”，为什么结论在这里不成立了？</p>
 <p>其实不然，之前为了简化讨论，忽略了对约束表达式进行归一化的过程：约束表达式中的 concept（如果存在）会递归展开成最终原子约束的合取与析取形式。判断两个约束表达式之间 是否存在关系，需要进一步判断它们归一化后的原子约束之间是否存在相同（identical）关系。</p>
 <p>原子约束 Ai 和 Aj 的相同关系被定义为：它们是否词法上相等且来自于同一个 concept。这个例子中的两个约束表达式都没有 concept，归一化后的原子约束表达式分别为：</p>
-<p>原子约束表达式  P  和 Q 存在词法上相等的原子约束 <code>is_integral_v&lt;T&gt;</code>，但它们不是来自于同一个 concept ，因此这两个原子约束其实不相同，最终两个表达式没有包含关系，它们相当于“ R∧S 与 T 没有关系”，因此无法决策出谁最优。</p>
+<p>原子约束表达式 P 和 Q 存在词法上相等的原子约束 <code>is_integral_v&lt;T&gt;</code>，但它们不是来自于同一个 concept ，因此这两个原子约束其实不相同，最终两个表达式没有包含关系，它们相当于“ R∧S 与 T 没有关系”，因此无法决策出谁最优。</p>
 <p>使用 concept 改写这个例子，代码如下。</p>
 <p>同样地，当模板参数 T 为 int 时，两个版本都满足要求，但是这次编译器选择了第二个版本作为更优的版本。对这两个原子约束表达式进行归一化，过程如下。</p>
-<p>归一化后的结果和前面一样，唯一不同的是这期间Integral概念进行了展开：两个原子约束 <code>is_integral_v&lt;T&gt;</code> 来自于同一个概念 Integral。上一节的结论再次成立。</p>
-<p>虽然我们能够一眼看出来谁更优，但是编译器却不那样认为。当使用 concept时，编译器才会在需要的时候尝试计算它们之间的关系，这也是 concept具有的独特性质。</p>
-<p>更一般地，C++ 标准通过如下的规则来计算约束表达式 P 与 Q之间的偏序关系。P 包含 Q，当且仅当P的析取范式中的每个析取子句Pi包含Q的合取范式的每个合取子句 Qj，那么 P 包含 Q。原子约束归一化后可以标准化为析取范式与合取范式，其中析取范式的析取子句为约束合取表达式，合取范式的合取子句为约束析取表达式。</p>
+<p>归一化后的结果和前面一样，唯一不同的是这期间 Integral 概念进行了展开：两个原子约束 <code>is_integral_v&lt;T&gt;</code> 来自于同一个概念 Integral。上一节的结论再次成立。</p>
+<p>虽然我们能够一眼看出来谁更优，但是编译器却不那样认为。当使用 concept 时，编译器才会在需要的时候尝试计算它们之间的关系，这也是 concept 具有的独特性质。</p>
+<p>更一般地，C++ 标准通过如下的规则来计算约束表达式 P 与 Q 之间的偏序关系。P 包含 Q，当且仅当 P 的析取范式中的每个析取子句Pi包含Q的合取范式的每个合取子句 Qj，那么 P 包含 Q。原子约束归一化后可以标准化为析取范式与合取范式，其中析取范式的析取子句为约束合取表达式，合取范式的合取子句为约束析取表达式。</p>
 <p>考虑原子约束 A、B、C，归一化后的约束表达式 A∧(B∨C) ，将它写成析取范式时需要进一步转换成 (A∧B)∨(A∧C) ，它的两个析取子句分别为合取表达式 A∧B 和 A∧C；将它写成合取范式时为它本身，两个合取子句分别为析取表达式 A 和 B∨C。</p>
 <p>析取子句Pi包含合取子句 Qj 当且仅当 Pi 存在一个原子约束 Pia 且 Pia 与 Qj 中的一个原子约束 Qjb 相同。</p>
 <p>这些规则相当抽象，我们可以结合具体的例子来分析一下。</p>
-<p>考虑归一化后约束表达式 P&#x3D;R∧S与Q&#x3D;R，首先判断 P 是否包含 Q，将 P 写成析取范式，它只有一个析取子句 P0&#x3D;R∧S，将 Q 写成合取范式，同样只有一个合取子句 Q0&#x3D;R，P0 和 Q0 存在相同的原子约束 R，因此P包含 Q；接下来判断 Q 是否包含 P，将 Q 写成析取范式，它只有一个析取子句 Q0&#x3D;R，将P写成合取范式，它有两个合取子句P0&#x3D;R与P1&#x3D;S，显然Q0包含P0（因为存在相同的原子约束R），而 Q0 不包含 P1（因为不存在相同的原子约束），最后得到 Q 不包含 P。综上所述，R∧S 要比 R 更优。</p>
+<p>考虑归一化后约束表达式 P&#x3D;R∧S 与 Q&#x3D;R，首先判断 P 是否包含 Q，将 P 写成析取范式，它只有一个析取子句 P0&#x3D;R∧S，将 Q 写成合取范式，同样只有一个合取子句 Q0&#x3D;R，P0 和 Q0 存在相同的原子约束 R，因此 P 包含 Q；接下来判断 Q 是否包含 P，将 Q 写成析取范式，它只有一个析取子句 Q0&#x3D;R，将P写成合取范式，它有两个合取子句 P0&#x3D;R 与 P1&#x3D;S，显然 Q0 包含 P0（因为存在相同的原子约束R），而 Q0 不包含 P1（因为不存在相同的原子约束），最后得到 Q 不包含 P。综上所述，R∧S 要比 R 更优。</p>
 <p>考虑归一化后约束表达式 P&#x3D;R∨S 与 Q&#x3D;R，首先判断 P 是否包含 Q，将 P写成析取范式，它有两个析取子句 P0&#x3D;R 与 P1&#x3D;S，将 Q 写成合取范式，它只有一个合取子句 Q0&#x3D;R，P0 和 Q0 存在相同的原子约束R，因此 P0 包含 Q0，而 P1 不包含 Q0（由于不存在相同的原子约束），因此 P 不包含 Q；接下来判断 Q 是否包含 P，将 Q 写成析取范式，它只有一个析取子句 Q0&#x3D;R，将 P 写成合取范式，同样只有一个合取子句 P0&#x3D;R∨S，显然 Q0 包含 P0（因为存在相同的原子约束 R），最后得到 Q 包含 P。综上所述，R 比 R∨S 要更优。</p>
 <p>接下来考虑更为复杂的情况，考虑为一个假想的数学库提供概念设计，例如标量概念中要求为整数或者浮点类型。</p>
 <p>该数学库考虑为用户提供的类型进行扩展，提供一个叫作 MathematicalTraits 的元函数，用户需要通过特化实现该元函数，以便让数学库识别。</p>
-<p>同时，数学库提供了一个概念CustomMath用于识别给定类型是否为用户扩展的类型。最后，需要用一个概念 Mathematical 来表达要么为内置的标量类型，要么为用户扩展的自定义类型，即通过两个概念的析取来表达。</p>
+<p>同时，数学库提供了一个概念 CustomMath 用于识别给定类型是否为用户扩展的类型。最后，需要用一个概念 Mathematical 来表达要么为内置的标量类型，要么为用户扩展的自定义类型，即通过两个概念的析取来表达。</p>
 <p>数学库提供了一个计算函数 calculate，它接受两个模板参数类型，对类型的约束为 Mathematical，关联约束为合取表达式。</p>
 <p>这个计算函数要求的两个类型不一定一样，其中一个有可能属于标量类型，另一个属于自定义类型。该数学库可能会提供一个性能更优的计算函数的重载版本，只要给定的两个类型属于同一个概念：要么都属于标量概念 Scalar，要么都属于自定义概念 CustomMath。</p>
 <p>当用户使用两个标量类型对该函数进行调用时，可发现两个候选函数都满足要求，那么究竟哪个更优呢？</p>
@@ -998,7 +1082,7 @@
 <li>对于 P1 与 Q0 而言，存在相同的原子约束 <code>CustomMath&lt;T&gt;</code>。</li>
 <li>对于 P1 与 Q1 而言，存在相同的原子约束 <code>CustomMath&lt;U&gt;</code>。</li>
 </ul>
-<p>因此可以得出 P 包含 Q 的结论，为了证明 P 比 Q 更优而不是重载歧义，我们需要证明Q不包含P。类似地，将 Q 和 P 分别写成析取范式与合取范式。</p>
+<p>因此可以得出 P 包含 Q 的结论，为了证明 P 比 Q 更优而不是重载歧义，我们需要证明 Q 不包含 P。类似地，将 Q 和 P 分别写成析取范式与合取范式。</p>
 <p>析取范式与合取范式互相转换，每个子句间的原子约束将两两分配，最终子句数量最多为原范式子句数量的指数级别。</p>
 <p>在这个例子中 Q 的合取范式只有两个子句，每个子句由两个原子约束组成，转换成析取范式后各子句中的原子约束两两分配产生22&#x3D;4个子句。</p>
 <p>P的析取范式转换成合取范式也是类似的过程。</p>
@@ -1006,17 +1090,17 @@
 <p>最后的结果符合我们的预期，第二个重载 calculate 函数为最优的候选函数，最终输出的结果为 P。</p>
 <p>从这个过程中我们也能够发现，当涉及复杂的约束表达式时，编译器的计算量将大幅增加。约束合取表达式是难以避免的，因为可以通过多种方式引入，而约束析取表达式则没那么多。如果可能的话，应尽可能避免使用析取表达式，这将有助于减少编译器的计算量。</p>
 <h4 id="2-4-4-using-类型别名与-concept-表达式别名"><a href="#2-4-4-using-类型别名与-concept-表达式别名" class="headerlink" title="2.4.4 using 类型别名与 concept 表达式别名"></a>2.4.4 using 类型别名与 concept 表达式别名</h4><p>前面提到 concept 作为表达式别名，其机制和 using 作为类型别名类似。C++ 中判断两个类型别名是否相同也是通过展开后判断词法与位置是否相等。考虑如下两个类型。</p>
-<p>这里的类型别名A和B其实是一个类型，它们都为 Point。而如下两个类型却是不相同的类型，尽管它们词法上相等。</p>
+<p>这里的类型别名 A 和 B 其实是一个类型，它们都为 Point。而如下两个类型却是不相同的类型，尽管它们词法上相等。</p>
 <p>两个原子约束是否存在包含关系仅取决于它们是否相同，这就要求原子约束在词法上相等，并且来源于同一个 concept。</p>
 <h3 id="2-5-概念标准库"><a href="#2-5-概念标准库" class="headerlink" title="2.5 概念标准库 &lt;concepts&gt;"></a>2.5 概念标准库 <code>&lt;concepts&gt;</code></h3><p>C++20 标准库 <code>&lt;concepts&gt;</code> 提供了一些基本的概念，用于在编译期对模板参数进行校验和基于概念的函数重载。标准库中的许多概念都有语法和语义上的要求，如果一个模板参数符合语法上的约束，那么它通常被称为“满足（satisfy）要求”。更进一步，如果模板参数符合语义上的约束，则被称为“对该概念进行建模（model）”。通常编译器只能检查语法上的要求，对于语义上的要求需要程序员自行检查。</p>
 <p>本节将介绍一些常用的 concept，基于这些 concept 能够组合出更为强大的概念。</p>
 <h4 id="2-5-1-same-as（与某类相同）"><a href="#2-5-1-same-as（与某类相同）" class="headerlink" title="2.5.1 same_as（与某类相同）"></a>2.5.1 same_as（与某类相同）</h4><p>same_as 概念要求输入两个类型参数，借此判断这两个类型是否满足相同的约束。一个可能的实现如下。</p>
 <p>上述实现是有问题的，所以考虑要求两个模板参数类型一致的函数，并提供一个特别的重载版本。</p>
-<p>需要注意的是，特别版本中的 requires 子句中的约束 same_as 的类型参数正好与一般的版本相反，前者为 same_as&lt;U, T&gt;，后者为 same_as&lt;T, U&gt;，根据 same_as 的对称性可知，两者应该<br>是一样的，当使用 f(1, 1) 时，预期应该决策使用特别的版本。</p>
+<p>需要注意的是，特别版本中的 requires 子句中的约束 same_as 的类型参数正好与一般的版本相反，前者为 <code>same_as&lt;U, T&gt;</code>，后者为 <code>same_as&lt;T, U&gt;</code>，根据 same_as 的对称性可知，两者应该<br>是一样的，当使用 f(1, 1) 时，预期应该决策使用特别的版本。</p>
 <p>然而在编译器决策的时候发生了重载歧义，无法决策出最优的实现。分别将两个版本的约束表达式进行正规化后，得到如下结果。</p>
 <p>虽然这两个表达式最终的原子表达式 is_same_v 都来自于同一个概念 same_as，但是它们在词法上不相等，因此这两个原子约束不相同，也就没法进一步判断它们之间的偏序关系了。</p>
 <p>为了解决这个问题，标准中通过添加一层间接层来解决，即引入额外的 concept。最后，same_as 的正确实现如下。</p>
-<p>这表达了一种对称关系：same_as&lt;T，U&gt; 包含 same_as&lt;U，T&gt;，反之亦然。</p>
+<p>这表达了一种对称关系：<code>same_as&lt;T，U&gt;</code> 包含 <code>same_as&lt;U，T&gt;</code>，反之亦然。</p>
 <h4 id="2-5-2-derived-from（派生自某类）"><a href="#2-5-2-derived-from（派生自某类）" class="headerlink" title="2.5.2 derived_from（派生自某类）"></a>2.5.2 derived_from（派生自某类）</h4><p>derived_from 用于表达两个类之间是否存在 is-a 的关系，也就是判断两个类之间是否存在公有继承关系。在元编程场景中，通常定义一个空标签类来代表某一族类，然后同一族类派生自该特征标签，后续只需要判断某个类是否派生自该特征类即可判断是否为所需。derived_from 的实现比较简单，需要注意的是，同样的类在忽略 cv 修饰符的情况下也满足派生关系，这通过给类型都加上 cv 属性来保证。</p>
 <h4 id="2-5-3-convertible-to（可转换为某类）"><a href="#2-5-3-convertible-to（可转换为某类）" class="headerlink" title="2.5.3 convertible_to（可转换为某类）"></a>2.5.3 convertible_to（可转换为某类）</h4><p>除了要求表达式的类型严格相同之外，另一个常见的场景是，只要一个表达式的类型能够通过隐式或显式转换成目标类型即可。语义上要求这两种转换方式的结果应该是相等的，这种情况可以使用convertible_to 来表达。</p>
 <p>convertible_to 的实现如下，通过约束合取来表达。</p>
@@ -1029,7 +1113,7 @@
 <h4 id="2-5-5-值概念"><a href="#2-5-5-值概念" class="headerlink" title="2.5.5 值概念"></a>2.5.5 值概念</h4><p>在面向值语义编程与泛型编程时，常常会涉及一些相当重要的概念：regular（正则）与 semiregular（半正则）。</p>
 <p>regular（正则）的概念指的是一些类型看上去可以像基础数据（如 int）一样，能够进行默认构造、移动构造与赋值、拷贝构造与赋值，并且能够进行判等操作。标准库中的容器设计就使用了这个概念，这样对容器进行的一些操作与对基础数据类型进行的操作没什么区别，都能够以一致的形式编写泛型代码。</p>
 <p>semiregular 与 regular 类似，但放松了限制，无须支持判等操作。</p>
-<h4 id="2-5-6-invocable（可调用的）"><a href="#2-5-6-invocable（可调用的）" class="headerlink" title="2.5.6 invocable（可调用的）"></a>2.5.6 invocable（可调用的）</h4><p>除了值和对象之外，还有一些编程元素如函数和函数对象，它们都属于invocable（可调用）概念。</p>
+<h4 id="2-5-6-invocable（可调用的）"><a href="#2-5-6-invocable（可调用的）" class="headerlink" title="2.5.6 invocable（可调用的）"></a>2.5.6 invocable（可调用的）</h4><p>除了值和对象之外，还有一些编程元素如函数和函数对象，它们都属于 invocable（可调用）概念。</p>
 <p>若可调用类返回类型为 bool，那么也满足 predicate（谓词）的概念。</p>
 <p>若一个谓词入参仅接受两个参数，那么也满足 relation（关系）的概念。</p>
 <p>通过关系（relation）可以进一步定义等价关系（equivalence_relation）和弱序关系（strict_weak_order），这在 2.3.1 节中介绍过，这里不再赘述。虽然它们从语法定义上一样，但语义不同，正如程序员使用接口时需要关注它们的语义一样，使用概念同样也要关注语义。</p>
@@ -1050,7 +1134,7 @@
 <p>模板函数 mod2 仅检查模板参数T是否为整数概念 integral，而这个概念的定义并没有要求模板参数能够使用求余 % 操作，但在函数定义中使用未被约束的操作是允许的。</p>
 <p>这也体现了一个设计层面的问题，是否应该将实现细节暴露给 concept？需要记住的是，实现并不是接口规范，如果有一天你发现一个更高效的实现，理想情况下是通过重构实现，而不是去影响它的接口，这样可以避免破坏用户的代码。若概念设计的要求太宽泛则起不到约束的作用，若设计得太细则难以应对各种变化，因此应该在保证语义一致性的前提下定义与使用 concept。</p>
 <p>如果使用了概念中未被约束的操作，即使通过了约束检查，当该参数不支持这些操作时也会进一步导致模板实例化错误。不根据模板概念去检查模板的定义是一个深思熟虑的决定，而不是一个技术上不可行的问题。</p>
-<p>concept特性的贡献者们已经分析并尝试过，最终慎重地决定在 concept 的标准化中不包含这个功能，主要原因有以下几点。</p>
+<p>concept 特性的贡献者们已经分析并尝试过，最终慎重地决定在 concept 的标准化中不包含这个功能，主要原因有以下几点。</p>
 <ul>
 <li>减轻最初设计的复杂度，不想进一步延期标准化，因为延期意味着一些反馈与库的建设将会进一步延后。</li>
 <li>concept 的好处在于模板参数的接口规范化与模板使用之处检查。</li>
@@ -1062,8 +1146,9 @@
 <p>从上可见 C++ 是一门工程性非常强的语言，所有的特性引入都需要考虑是否破坏了已有代码，老代码能否容易迁移到新特性上，在以上问题未被恰当解决之前是不会去考虑那样做的。concept 曾经考虑通过定义检查将模板的声明与实现分离，而这会导致很多函数的间接调用，并严重影响最终代码的性能。一个可能的解决方案是将模板作为模块（module）特性的一部分，通过半编译形式实现。</p>
 <p>concept 的设计提供了几种语法形式，从简洁到复杂的 requires 子句，因为简单的形式不可避免地限制了它的表达力，而通过复杂的形式表达简单的场景又增加了冗余的噪声。</p>
 <p>在极少会出现两个概念语法一样而语义不同的情况，这就需要程序员手动将语义上的差别转换成语法上的差别：例如通过定义额外的方法或类型成员作为特征以便区分。此外，可以使用 static_assert 显式声明给定类型以满足概念上的要求。</p>
-<p>concept 非常容易定义与使用，这极大改善了模板与泛型编程的代码质量。它就和基础的语言特性（诸如函数、类）一样，需要理解才能高效使用。与未受约束的模板相比，它们没有引入额外的运行时开销。这也符合C++的设计原则：不要强迫程序员去做那些机器能做得更好的事，并且简单的事简单做，以及零成本抽象的哲学。</p>
+<p>concept 非常容易定义与使用，这极大改善了模板与泛型编程的代码质量。它就和基础的语言特性（诸如函数、类）一样，需要理解才能高效使用。与未受约束的模板相比，它们没有引入额外的运行时开销。这也符合 C++ 的设计原则：不要强迫程序员去做那些机器能做得更好的事，并且简单的事简单做，以及零成本抽象的哲学。</p>
 <p>concept 解决了模板与泛型编程的很多痛点，它达到了最初所设想的 C++ 模板系统应有的样子，而不是语言特性的扩展。</p>
+<p><em>本文摘自《C++20 高级编程》罗能&#x2F;著</em></p>
 
                 
               </div>
@@ -1176,6 +1261,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2023/08/25/cpp-value-categories/" title="C++ 值类别探究">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C++ 值类别探究</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
