@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/cpp-value-categories/index.png">
 <meta property="article:published_time" content="2023-08-24T19:46:07.000Z">
-<meta property="article:modified_time" content="2023-08-25T01:21:02.158Z">
+<meta property="article:modified_time" content="2023-08-25T10:42:19.078Z">
 <meta property="article:author" content="QiDianMaker">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="特性">
@@ -322,7 +322,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          8.4k 字
+          14k 字
         
       </span>
     
@@ -333,7 +333,7 @@
         
         
         
-          71 分钟
+          118 分钟
         
       </span>
     
@@ -854,7 +854,7 @@
 
 <p>因而，作为类型为<strong>右值引用</strong>的函数参数，唯一能匹配的就是<strong>右值</strong>。这也是移动构造函数能精确识别临时变量的原因。</p>
 <div class="note note-info">
-            <p><strong>重要</strong></p><ol><li><p>对于任何类型为<strong>右值引用</strong>的变量（当然也包括函数参数），只能由<strong>右值</strong>来初始化；</p></li><li><p>一旦初始化完成，<strong>右值引用</strong>类型的变量，其性质与一个<strong>左值引用</strong>再也没有任何差别。</p></li></ol>
+            <p><strong>重要</strong></p><ol><li>对于任何类型为<strong>右值引用</strong>的变量（当然也包括函数参数），只能由<strong>右值</strong>来初始化；</li><li>一旦初始化完成，<strong>右值引用</strong>类型的变量，其性质与一个<strong>左值引用</strong>再也没有任何差别。</li></ol>
           </div>
 
 <h3 id="2-4-将亡值"><a href="#2-4-将亡值" class="headerlink" title="2.4 将亡值"></a>2.4 将亡值</h3><p>我们现在已经明确了，只有右值临时对象可以初始化右值引用变量，从而也只有右值临时变量能够匹配参数类型为<strong>右值引用</strong>的函数，包括移动构造函数。</p>
@@ -878,6 +878,73 @@
 <p>最后，将亡表达式存在着一个异常场景，那就是函数类型的右值引用。因为函数地址被移动本身毫无意义。所以，对于返回值为<strong>函数类型右值引用</strong>的函数调用，或者 <code>static_cast&lt;FunctionType&amp;&amp;&gt;(expr)</code> 的表达式，其类别为<strong>左值</strong>，而不是<strong>将亡值</strong>。</p>
 <div class="note note-info">
             <p><strong>重要</strong></p><ul><li>类型为<strong>右值引用</strong>的变量，只能由<strong>右值</strong>表达式初始化；</li><li><strong>右值</strong>包括<strong>纯右值</strong>和<strong>将亡值</strong>，其中<strong>将亡值</strong>的类型是<strong>右值引用</strong>；</li><li>类型为<strong>右值引用</strong>的变量，是一个<strong>左值</strong>，因而不能赋值给其它类型为<strong>右值引用</strong>的变量， 当然也不能匹配参数类型为<strong>右值引用</strong>的函数。</li></ul>
+          </div>
+
+<h2 id="3-值与对象"><a href="#3-值与对象" class="headerlink" title="3. 值与对象"></a>3. 值与对象</h2><p>在理解现代 C++ 的各种令人眼花缭乱的特性之前，必须先搞清楚两个基本概念：<strong>值</strong>（ value ）与<strong>对象</strong>（ object ）。这是理解很多特性的基础。</p>
+<h3 id="3-1-值"><a href="#3-1-值" class="headerlink" title="3.1 值"></a>3.1 值</h3><p>简单说，<strong>值</strong>是一个纯粹的数学抽象概念，比如数字 <code>10</code> ，或者字符 <code>&#39;a&#39;</code> , 或者布尔值 <code>false</code>，等等。它们完全不需要依赖于计算机或者内存而存在，就只是一个纯粹的值：不需要存储到内存，当然也就不可修改。注意，这与存储在内存中，但不可变完全不是一个语义。</p>
+<p>那么 <code>1+2</code> 呢？这是一个表达式，但这个表达式的求值结果也是一个<strong>值</strong>。因而，这是一个值类别的表达式。而数字 <code>10</code> 同样是一个表达式，其求值的结果毫无疑问也是一个<strong>值</strong>——它自身。因而，在这个角度，<code>1+2</code> 和数字 <code>10</code>，从性质上没有任何区别，都是<strong>值</strong>类别的表达式。</p>
+<h3 id="3-2-对象"><a href="#3-2-对象" class="headerlink" title="3.2 对象"></a>3.2 对象</h3><p><strong>对象</strong>是一个在内存中占据了一定空间的有类型的东西。因而，它必然是与计算机内存这个物理上具体存在的设备关联在一起的一个物质。</p>
+<p>因而，每一个对象都必然有一个<strong>标识</strong>（Identifier），从而你可以知道这个对象在内存中唯一的起始位置。否则，对象是一个与内存关联在一起的物质就无从谈起。</p>
+<p>所以 <code>int i</code> 就定义了一个对象，系统必然会在内存中为其分配一段 <code>sizeof(int)</code> 大小的空间，而 <code>i</code> 就是这个对象的标识。</p>
+<p>既然对象与内存有关联，并且有自己区别于其它对象的唯一起始内存地址，那么任何对象都必然可以被引用。引用作为一个对象的别名，当然也是对象的一种<strong>标识</strong>。</p>
+<p>所以，区分<strong>对象</strong>和<strong>值</strong>的方法非常简单：是否有<strong>标识</strong>，或可否被<strong>引用</strong>（毕竟引用就是一种标识）。只有作为具体内存物质的对象才可能被引用；而值，作为一种抽象概念，引用无从谈起。</p>
+<h3 id="3-3-值与对象的关系"><a href="#3-3-值与对象的关系" class="headerlink" title="3.3 值与对象的关系"></a>3.3 值与对象的关系</h3><p>那么<strong>值</strong>和<strong>对象</strong>之间是什么关系？</p>
+<p>很简单，<strong>值</strong>用来初始化<strong>对象</strong>。比如：<code>bool b = true</code>，其语义是：用值 <code>true</code> 初始化对象 <code>b</code>；类似的，<code>int i = 1 + 2</code> 表示用值 <code>1+2</code> 的计算结果值，初始化对象 <code>i</code>。<strong>对象</strong>表示内存中的一段有类型的空间，<strong>值</strong>这则是个空间里的内容。用<strong>值</strong>来初始化<strong>对象</strong>的过程，是一个将值加载到空间的隐喻。</p>
+<h3 id="3-4-纯右值"><a href="#3-4-纯右值" class="headerlink" title="3.4 纯右值"></a>3.4 纯右值</h3><p>所有的<strong>值</strong>语义的表达式，都归类为<strong>纯右值</strong>（pure right value，简称 prvalue）。在 C++11 之前，它们被称做<strong>右值</strong>。</p>
+<p>规范对于纯右值的定义如下：</p>
+<blockquote>
+<p>A prvalue is an expression whose evaluation initializes an object or a bit-field, or computes the value of an operand of an operator, as specified by the context in which it appears, or an expression that has type cv void.</p>
+</blockquote>
+<p>其存在的唯一的目的，是为了初始化<strong>对象</strong>。单独写一个<strong>纯右值</strong>表达式的语句，比如：<code>1+2;</code>，或者 <code>true &amp;&amp; (1 == 2);</code>，这样的表达式被称做<strong>弃值表达式</strong>。从语义上，它们仍然会初始化一个临时对象，而临时对象也是泛左值。后面我们会进行解释。</p>
+<p>而既然是一个<strong>值</strong>，就必须是某种具体类型的值，而不可能是某种<strong>不完备类型</strong>。当然也不可能是一个<strong>抽象类型</strong>（包含有纯虚函数的类）的值，即便其基类是某种抽象类型，但它自身必然是一个具体类型，因而对其任何虚函数的调用，都是对其具体类型所对应的函数实现的调用。</p>
+<p>同时，你不可能对一个值进行取地址操作（语义上就不通），也不可能引用它。</p>
+<h3 id="3-5-泛左值"><a href="#3-5-泛左值" class="headerlink" title="3.5 泛左值"></a>3.5 泛左值</h3><p>与<strong>纯右值</strong>对应的是<strong>泛左值</strong>（glvalue）。整个表达式的世界被分为这两大类别。前者全部是<strong>值</strong>语义，后者全部是<strong>对象</strong>语义。</p>
+<p>规范对于泛左值的定义如下：</p>
+<blockquote>
+<p>A glvalue is an expression whose evaluation determines the identity of an object, bit-field, or function.</p>
+</blockquote>
+<p>从这个定义我们可以看出，泛左值表达式的求值结果是一个对象的标识。</p>
+<p><img src="/images/cpp-value-categories/value-category-3.png" srcset="/img/loading.gif" lazyload alt=" "></p>
+<h4 id="3-5-1-左值"><a href="#3-5-1-左值" class="headerlink" title="3.5.1 左值"></a>3.5.1 左值</h4><p>左值很容易辨别：任何可以对其通过符号 <code>&amp;</code> 取地址的表达式，都属于<strong>左值</strong>。因而，任何变量（包括常量），无论是全局的，还是类成员的，还是函数参数，还是函数名字，都肯定属于左值。</p>
+<p>另外，所有返回值是左值引用的函数调用表达式（包括用户自定义的重载操作符），以及 <code>static_cast&lt;T&amp;&gt;(expr)</code> 都必然也属于左值。毕竟，没有内存中的对象，哪里来的引用？而引用无非是对象的一个别名标识罢了。</p>
+<p>剩下的就是系统的一些内建操作符的定义，比如对一个指针求引用操作： <code>*p</code> ，或者 <code>++i</code> （ <code>i++</code> 却是一个<strong>右值</strong>）。</p>
+<p>其中，最为特殊的是字符串字面常量，比如： <code>&quot;abcd&quot;</code> ，这是一个左值对象。这有点违背直觉，但由于 C&#x2F;C++ 中字符串并不是一个内建基本类型。这些字符串字面常量都会在内存中得以存储。</p>
+<p>需要注意的是，这两种情况下，无论是变量 <code>i</code>，还是函数参数 <code>r</code>，它们都是一个<strong>左值</strong>，虽然它们的类型是<strong>右值引用</strong>。我们之前谈到过，任何变量，无论其属于什么类型，都必然是一个左值。变量的名字，就是对应对象的标识。</p>
+<h4 id="3-5-2-将亡值"><a href="#3-5-2-将亡值" class="headerlink" title="3.5.2 将亡值"></a>3.5.2 将亡值</h4><p>将亡值是所有返回类型为<strong>右值引用</strong>的非左值表达式。 这包括返回值类型为<strong>右值引用</strong>的函数调用表达式，<code>static_cast&lt;T&amp;&amp;&gt;(expr)</code> 表达式。</p>
+<p>其所引用的对象，从理论上同样也是可以取其地址的。其目的是为了初始化类型为<strong>右值引用</strong>类型的变量。借此，也可以匹配参数类型为右值引用的函数。一旦允许取其地址，程序的其它部分将无从判断，一个地址来自于将亡值对象，还是来自于左值对象，从而让将亡值的存在失去了本来的意义。因而，对其取地址操作被强行禁止。</p>
+<p>与右值引用和将亡值有关的详细讨论，请参考：<strong>右值引用</strong>。</p>
+<h4 id="3-5-3-对象？值？"><a href="#3-5-3-对象？值？" class="headerlink" title="3.5.3 对象？值？"></a>3.5.3 对象？值？</h4><p>上面给的那些与值有关的例子，简单而直观，不难理解它们是数学意义上的值。我们来看一个不那么直观的例子：在 <code>Foo</code> 是一个类的情况下，<code>Foo&#123;10&#125;</code> 是一个对象还是一个值？</p>
+<p>在 C++17 之前，这个表达式的语义是一个<strong>临时对象</strong>。</p>
+<p>非常有说服力的例子是： <code>Foo&amp;&amp; foo = Foo&#123;10&#125;</code> 或者 <code>const Foo&amp; foo = Foo&#123;10&#125;</code>。这这两个初始化表达式里，毫无疑问 <code>Foo&#123;10&#125;</code> 是一个对象，因为它可以被引用，无论是一个右值引用 <code>Foo&amp;&amp;</code>，还是一个左值引用 <code>const Foo&amp;</code>，能被引用的必然是<strong>对象</strong>。</p>
+<p>但后来人们发现，将其定义为对象语义，在一些场景下会带来不必要的麻烦：</p>
+<p>比如：<code>Foo foo = Foo&#123;10&#125;</code> 的语义是：构造一个临时对象，然后拷贝&#x2F;移动 给左边的对象 <code>foo</code> 。</p>
+<p>注意，只要 <code>Foo&#123;10&#125;</code> 被定义为<strong>对象</strong>，那么拷贝&#x2F;移动 语义也就变得不可避免，这就要求类 <code>Foo</code> 必须要隐式或显式的提供共有的拷贝&#x2F;移动构造函数。即便编译器肯定会将对拷贝&#x2F;移动构造函数的调用给优化掉，但这是到优化阶段的事，而语义检查发生在优化之前。如果类 <code>Foo</code> 没有共有的拷贝&#x2F;移动构造函数，语义检查阶段就会失败。</p>
+<p>这就给一些设计带来了麻烦，比如，程序员不希望类 <code>Foo</code> 可以被拷贝&#x2F;移动 ，所有 <code>Foo</code> 实例的创建都必须通过一个工厂函数，比如：<code>Foo makeFoo()</code> 来创建；并且程序员也知道拷贝&#x2F;移动构造函数的调用必然会被任何像样的编译器给优化掉，但就是过不了那该死的对实际运行毫无影响的语义检查那一关。</p>
+<p>于是，到了 C++17，对于类似于 <code>Foo&#123;10&#125;</code> 表达式的语义进行了重新定义，它们不再是一个<strong>对象</strong>语义，而只是一个<strong>值</strong>。即 <code>Foo&#123;10&#125;</code> 与内存临时对象再无任何关系，它就是一个<strong>值</strong>：其估值结果，是对构造函数 <code>Foo(int)</code> 进行调用所产生的<strong>值</strong>。而这个<strong>值</strong>，通过等号表达式，赋值给左边的<strong>对象</strong>，正如 <code>int i = 10</code> 所做的那样。从语义上，不再有对象间的拷贝&#x2F;移动，而是直接将构造函数调用表达式作用于等号左边的<strong>对象</strong>，从而完成用<strong>值</strong>初始化<strong>对象</strong>的过程。因而，<code>Foo foo = Foo&#123;10&#125;</code>，与 <code>Foo foo&#123;10&#125;</code>，在 C++17 之后，从语义上（而不是编译器优化上）完全等价。</p>
+<p>一旦将其当作<strong>值</strong>语义，很多表达式的理解上也不再一样。比如：<code>Foo foo = Foo&#123;Foo&#123;Foo&#123;10&#125;&#125;&#125;</code>，如果 <code>Foo foo = Foo&#123;10&#125;</code> 与 <code>Foo foo&#123;10&#125;</code> 完全等价，那么就可以进行下列等价转换：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp">    Foo foo = Foo&#123;Foo&#123;Foo&#123;<span class="hljs-number">10</span>&#125;&#125;&#125;<br>&lt;=&gt; Foo foo&#123;Foo&#123;Foo&#123;<span class="hljs-number">10</span>&#125;&#125;<br>&lt;=&gt; Foo foo = Foo&#123;Foo&#123;<span class="hljs-number">10</span>&#125;&#125;<br>&lt;=&gt; Foo Foo&#123;Foo&#123;<span class="hljs-number">10</span>&#125;&#125;<br>&lt;=&gt; Foo foo = Foo&#123;<span class="hljs-number">10</span>&#125;<br>&lt;=&gt; Foo foo&#123;<span class="hljs-number">10</span>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>注意，这是一个自然的语义推论，而不是编译器优化的结果。</p>
+<p>自然，对于 <code>Foo makeFoo()</code> 这样的函数，其调用表达式 <code>makeFoo()</code>，在 C++17 下也是<strong>值</strong>。而不像之前定义的那样：返回一个临时对象，然后在 <code>Foo foo = makeFoo()</code> 表示式里，拷贝&#x2F;移动 给等号左侧的对象 <code>Foo</code>。虽然 C&#x2F;C++ 编译器很早就有 RVO&#x2F;NRVO 优化技术；但同样，那是优化阶段的事，而不是语义分析阶段如何理解这个表达式语义的问题。</p>
+<h4 id="3-5-4-临时量实质化"><a href="#3-5-4-临时量实质化" class="headerlink" title="3.5.4 临时量实质化"></a>3.5.4 临时量实质化</h4><p>我们再回到前面的问题：<code>Foo&amp;&amp; foo = Foo&#123;10&#125;</code> 表达了什么语义？毕竟，按照我们之前的讨论，等号右边是一个<strong>值</strong>，而左边是一个对于对象的<strong>引用</strong>。而<strong>引用</strong>只能引用一个对象，引用一个<strong>值</strong>是逻辑上是讲不通的。</p>
+<p>这中间隐含着一个过程：<strong>临时量实质化</strong>。即将一个<strong>纯右值</strong>，赋值给一个<strong>临时对象</strong>，其标识是一个无名字的<strong>右值引用</strong>，即<strong>将亡值</strong>。然后再将等号左边的<strong>引用</strong>绑定到这个<strong>将亡值</strong>对象上。</p>
+<p><strong>临时量实质化</strong>的过程还发生在其它场景。</p>
+<p>比如，<code>Foo&#123;10&#125;</code> 是一个<strong>纯右值</strong>，但如果我们试图访问其非静态成员，比如：<code>Foo&#123;10&#125;.m</code>，此时就必需要将这个临时量实质化，转化成<strong>将亡值</strong>。毕竟，对于任何非静态成员的访问，都需要对象的<strong>地址</strong>，与成员变量所代表的<strong>偏移</strong>两部分配合。没有对象的存在，仅靠偏移量访问其成员，根本不可能。</p>
+<p>还有数组的订阅场景。比如:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">using</span> Array = <span class="hljs-type">char</span> [<span class="hljs-number">10</span>];<br><br>Array&#123;&#125;;    <span class="hljs-comment">// 纯右值</span><br>Array&#123;&#125;[<span class="hljs-number">0</span>]; <span class="hljs-comment">// 将亡值</span><br></code></pre></td></tr></table></figure>
+
+<p>另外，<code>static_cast&lt;T&gt;(expr)</code> 是一个<strong>直接初始化</strong>表达式， 即，中间存在一个隐含的 <code>T</code> 类型的未命名临时变量，通过 <code>expr</code> 进行初始化。如果 <code>expr</code> 是一个<strong>纯右值</strong>，而 <code>T</code> 是一个<strong>右值引用</strong>类型，则这个过程也是一个纯右值<strong>实质化</strong>的过程。</p>
+<p>而之前提到的<strong>弃值表达式</strong>，也会有一个<strong>临时量实质化</strong>的过程。这样的表达式的存在主要是为了利用其副作用。如果编译器发现其并不存在副作用，往往会将其优化掉。但这是优化阶段的职责。在语义分析阶段，统统是<strong>临时量实质化</strong>语义。</p>
+<p>在 C++17 之前的规范定义中，将<strong>纯右值</strong>和<strong>将亡值</strong>合在一起，称为<strong>右值</strong>。代表它们可以被一个<strong>右值引用类型的变量</strong>绑定（即初始化一个右值引用类型的变量）。因而，在进行重载匹配时，<strong>右值</strong>会优先匹配<strong>右值引用类型的参数</strong>。比如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func</span><span class="hljs-params">(Foo&amp;&amp;)</span></span>;       <span class="hljs-comment">// #1</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func</span><span class="hljs-params">(<span class="hljs-type">const</span> Foo&amp;)</span></span>;  <span class="hljs-comment">// #2</span><br><br><span class="hljs-function">Foo&amp;&amp; <span class="hljs-title">f</span><span class="hljs-params">()</span></span>;<br><br><br><span class="hljs-built_in">func</span>(Foo&#123;<span class="hljs-number">10</span>&#125;); <span class="hljs-comment">// #1</span><br><span class="hljs-built_in">func</span>(<span class="hljs-built_in">f</span>());     <span class="hljs-comment">// #1</span><br><br>Foo foo&#123;<span class="hljs-number">10</span>&#125;;<br><span class="hljs-built_in">func</span>(foo);     <span class="hljs-comment">// #2</span><br><br>Foo&amp;&amp; foo1 = Foo&#123;<span class="hljs-number">10</span>&#125;;<br><span class="hljs-built_in">func</span>(foo1);    <span class="hljs-comment">// #2</span><br></code></pre></td></tr></table></figure>
+
+<p>到了 C++17，从匹配行为上没有变化，但语义上却有了变化。最终导致匹配右值引用版本的不是<strong>纯右值</strong>类别，而是<strong>将亡值</strong>。因为<strong>纯右值</strong>会首先进行<strong>实质化</strong>，得到一个<strong>将亡值</strong>。最终是用<strong>将亡值</strong>初始化了函数的对应参数。</p>
+<p>一个<strong>纯右值</strong>，永远也无法匹配到移动构造函数。 因为 <code>Foo foo = Foo&#123;10&#125;</code> 与 <code>Foo foo&#123;10&#125;</code> 等价。这不需要将<strong>纯右值</strong>进行<strong>实质化</strong>，得到一个<strong>将亡值</strong>，然后匹配到移动构造函数的过程。</p>
+<p>只有<strong>将亡值</strong>，才能匹配到移动构造。比如：<code>Foo foo = std::move(Foo&#123;10&#125;)</code> 将会导致移动构造的调用。</p>
+<p>另外，一个表达式是<strong>将亡值</strong>，并不代表其所引用的对象一定是一个从<strong>纯右值</strong>实质化 得到的临时对象。 而是两种可能都存在。比如，如果 <code>foo</code> 是一个<strong>左值</strong>， <code>std::move(foo)</code> 这个<strong>将亡值</strong>所引用的对象就是一个<strong>左值</strong>； 而 <code>std::move(Foo&#123;10&#125;)</code> 则毫无疑问引用的是一个<strong>实质化</strong>后的到的临时对象。</p>
+<p><img src="/images/cpp-value-categories/value-category-4.png" srcset="/img/loading.gif" lazyload alt=" "></p>
+<div class="note note-warning">
+            <p><strong>注意</strong></p><p>-所有的表达式都可以归类为<strong>纯右值</strong>和<strong>泛左值</strong>；<br>-所有的<strong>纯右值</strong>都是<strong>值</strong>的概念；所有的<strong>泛左值</strong>都是<strong>对象</strong>的概念；<br>-左值 可以求地址，将亡值 不可以求地址；<br>-纯右值 在需要临时对象存在的场景下，会通过<strong>实质化</strong>，转化成<strong>将亡值</strong>。<br>-泛左值 可以是抽象类型和不完备类型，可以进行多态调用；纯右值 只能是具体类型，无法进行多态调用。<br>-用<strong>纯右值</strong>构造一个<strong>左值</strong>对象时，是 直接构造 语义； 用<strong>将亡值</strong>构造一个<strong>左值</strong>对象时，是 拷贝&#x2F;移动构造 语义。</p>
           </div>
 
                 
@@ -961,7 +1028,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>更新于</div>
-          <div>2023年8月24日</div>
+          <div>2023年8月25日</div>
         </div>
       
       
