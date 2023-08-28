@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/cpp-concepts-introduction/index.png">
 <meta property="article:published_time" content="2023-08-22T06:58:52.000Z">
-<meta property="article:modified_time" content="2023-08-24T02:52:19.789Z">
+<meta property="article:modified_time" content="2023-08-28T07:36:15.690Z">
 <meta property="article:author" content="QiDianMaker">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="特性">
@@ -322,7 +322,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          38k 字
+          41k 字
         
       </span>
     
@@ -333,7 +333,7 @@
         
         
         
-          314 分钟
+          342 分钟
         
       </span>
     
@@ -988,43 +988,91 @@
 <p>通过嵌套要求定义一个概念，它要求给定的类型大小大于指针大小，并且是平凡的。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">concept</span> C = <span class="hljs-keyword">requires</span> &#123; <span class="hljs-comment">// 使用嵌套要求连接编译期谓词</span><br>    <span class="hljs-keyword">requires</span> <span class="hljs-built_in">sizeof</span>(T) &gt; <span class="hljs-built_in">sizeof</span>(<span class="hljs-type">void</span>*);<br>    <span class="hljs-keyword">requires</span> is_trivial_v&lt;T&gt;;<br>&#125;;<br></code></pre></td></tr></table></figure>
 
-<h4 id="2-2-5-注意事项"><a href="#2-2-5-注意事项" class="headerlink" title="2.2.5 注意事项"></a>2.2.5 注意事项</h4><p>本小节介绍requires表达式的一些特殊性质，以及使用的时候需要注意的地方。requires 表达式为编译时谓词，它不一定需要在 concept 定义的时候出现，只要是能够接受布尔表达式的地方都允许它的存在。</p>
-<p>最容易想到的是在定义变量模板的时候，判断给定类型是否存在成员函数swap。requires 表达式难道只能对模板参数或者其对象提出要求么？如果对具体类型提出要求又会怎么样？</p>
+<h4 id="2-2-5-注意事项"><a href="#2-2-5-注意事项" class="headerlink" title="2.2.5 注意事项"></a>2.2.5 注意事项</h4><p>本小节介绍 requires 表达式的一些特殊性质，以及使用的时候需要注意的地方。requires 表达式为编译时谓词，它不一定需要在 concept 定义的时候出现，只要是能够接受布尔表达式的地方都允许它的存在。</p>
+<p>最容易想到的是在定义变量模板的时候，判断给定类型是否存在成员函数 swap。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">constexpr</span> <span class="hljs-type">bool</span> has_member_swap = <span class="hljs-built_in">requires</span>(T a, T b) &#123;<br>    a.<span class="hljs-built_in">swap</span>(b);<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>requires 表达式难道只能对模板参数或者其对象提出要求么？如果对具体类型提出要求又会怎么样？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">constexpr</span> <span class="hljs-type">bool</span> has_int_member_swap = <span class="hljs-built_in">requires</span>(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b) &#123;<br>    a.<span class="hljs-built_in">swap</span>(b); <span class="hljs-comment">// member reference base type &#x27;int&#x27; is not a structure or union</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
 <p>从设计角度来看。requires 表达式是服务于模板参数约束的，结果是编译错误而不是返回不满足（假）。除了支持类模板参数外，它还支持非类型模板参数，考虑定义一个偶数概念，要求输入的模板参数为偶数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-type">size_t</span> N&gt;<br><span class="hljs-keyword">concept</span> Even = <span class="hljs-keyword">requires</span> &#123;<br>    <span class="hljs-built_in">requires</span> (N % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>);<br>&#125;;<br></code></pre></td></tr></table></figure>
+
 <p>在模板函数 if constexpr 中，也有可能出现 requires 表达式。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">clever_swap</span><span class="hljs-params">(T&amp; a, T&amp; b)</span> </span>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">if</span> <span class="hljs-title">constexpr</span> <span class="hljs-params">(<span class="hljs-keyword">requires</span>(T a, T b) &#123; a.swap(b); &#125;)</span> </span>&#123;<br>        a.<span class="hljs-built_in">swap</span>(b);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">using</span> std::swap;<br>        <span class="hljs-built_in">swap</span>(a, b);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
 <p>除了以上场景外，还有很多地方能够接受布尔表达式，例如非类型模板参数中，定义 constexpr 谓词函数时，static_assert 中，实现 type traits 时，还有后面将介绍的 requires 子句等。一个容易混淆的地方是简单要求与嵌套要求中对布尔表达式的约束，考虑如下两种形式的差异。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">requires</span> &#123;<br>    布尔表达式; <span class="hljs-comment">// 只检查表达式的合法性</span><br>    <span class="hljs-keyword">requires</span> 布尔表达式; <span class="hljs-comment">// 在合法性基础上求值</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
 <p>如果用户写了如下代码，那么很可能违背约束条件。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">requires</span> &#123; <span class="hljs-comment">// 永远满足</span><br>    <span class="hljs-built_in">sizeof</span>(T) &lt;= <span class="hljs-built_in">sizeof</span>(<span class="hljs-type">int</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
 <p>用户可能要求模板类型 T 的大小不应该超过 int 的大小，然而从编译器的角度来看，这仅仅是检查表达式的合法性，对 sizeof 的结果进行比较是永远满足的。想达成用户的意图应该是用嵌套要求，让编译器进一步对这个布尔表达式进行求值判断以查看其是否满足。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">requires</span> &#123; <span class="hljs-comment">// 对布尔表达式进行求值</span><br>    <span class="hljs-function"><span class="hljs-keyword">requires</span> <span class="hljs-title">sizeof</span><span class="hljs-params">(T)</span> &lt;</span>= <span class="hljs-built_in">sizeof</span>(<span class="hljs-type">int</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
 <p>另一个容易出错的地方在于嵌套要求可以接受一个 requires 表达式，考虑如下代码。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-built_in">requires</span> (T v) &#123; <span class="hljs-comment">// 仅仅检查如下 requires 表达式是否合法</span><br>    <span class="hljs-built_in">requires</span> (<span class="hljs-keyword">typename</span> T::value_type x) &#123; ++x; &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
 <p>经过分析会发现，以上代码表达式体中的 requires 并不是表达嵌套要求，而是简单要求形式，仅仅检查了表达式体中的 requires 表达式是否合法。好在 C++ 标准不接受这种代码，只要是以 requires 开头的代码都会被当作嵌套要求处理，其后还紧接着一个编译时谓词；现有的编译器实现也会对该代码报错。这时需要通过添加 requires 前缀进一步表达嵌套要求，具体代码如下。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-built_in">requires</span> (T v) &#123; <span class="hljs-comment">// 嵌套要求，接受一个 requires 表达式</span><br>    <span class="hljs-function"><span class="hljs-keyword">requires</span> <span class="hljs-title">requires</span> <span class="hljs-params">(<span class="hljs-keyword">typename</span> T::value_type x)</span> </span>&#123; ++x; &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
 <p>最后一个需要注意的地方是，requires 表达式的可选形参列表中可能涉及非法表达式的问题，考虑如下代码。</p>
-<p>形参v是否有效取，决于类型T是否含有类型成员 value_type，在形参无效的情况下，requires 表达式是否应该返回不满足（假）？根据 C++ 标准提到，编译器仅检查 requires 表达式体中的表达式要求是否合法，如果形参列表中的表达式非法，那么程序非良构，所以上述代码将产生一个编译错误。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">// 若不存在关联类型 value_type 则编译错误</span><br><span class="hljs-keyword">constexpr</span> <span class="hljs-type">bool</span> P = <span class="hljs-built_in">requires</span>(<span class="hljs-keyword">typename</span> T::value_type v) &#123; ++v; &#125;;<br></code></pre></td></tr></table></figure>
+
+<p>形参 v 是否有效取，决于类型 T 是否含有类型成员 value_type，在形参无效的情况下，requires 表达式是否应该返回不满足（假）？根据 C++ 标准提到，编译器仅检查 requires 表达式体中的表达式要求是否合法，如果形参列表中的表达式非法，那么程序非良构，所以上述代码将产生一个编译错误。</p>
 <p>如果使用 concept 定义，那么在可选的形参无效的情况下，requires 表达式将返回假，不过这是 concept 的特殊性质，和 requires 表达式无关。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">// 若不存在关联类型 value_type 则编译错误</span><br><span class="hljs-keyword">concept</span> P = <span class="hljs-built_in">requires</span>(<span class="hljs-keyword">typename</span> T::value_type v) &#123; ++v; &#125;;<br></code></pre></td></tr></table></figure>
+
 <h3 id="2-3-requires子句"><a href="#2-3-requires子句" class="headerlink" title="2.3 requires子句"></a>2.3 requires子句</h3><p>我们通过 concept、requires 表达式、constexpr 谓词常量或函数及 type traits 能够定义对类型的谓词，本节将介绍如何应用这些编译期谓词对模板参数添加约束，所有可以用来实例化这个模板的参数都必须满足这些约束。</p>
 <p>使用 requires 子句可以为一个模板类或者模板函数添加约束，考虑如下代码。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-function"><span class="hljs-keyword">requires</span> is_integral_v&lt;T&gt;</span><br><span class="hljs-function">T <span class="hljs-title">gcd</span><span class="hljs-params">(T a, T b)</span></span>;<br><br><span class="hljs-built_in">gcd</span>(<span class="hljs-number">1.0</span>, <span class="hljs-number">2.0</span>); <span class="hljs-comment">// use of function &#x27;T gcd(T, T) [with T = double]&#x27;</span><br>               <span class="hljs-comment">// with unsatisfied constraints</span><br><span class="hljs-built_in">gcd</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">// OK</span><br></code></pre></td></tr></table></figure>
+
 <p>模板头中额外的 requires 子句表达了模板参数应该在什么条件下工作，同样地，它还可以接受一个约束表达式。当我们错误地使用受约束的 gcd 函数，编译器将产生一个友好的错误信息。设计 requires 子句的意图是判断它所约束的声明在某些上下文中是否可行。对于函数模板而言，上下文是在执行重载决议中进行的；对于模板类而言，是在决策合适的特化版本中；对于模板类中的成员函数而言，是决策当显式实例化时是否生成该函数。</p>
 <p>我们讨论第一个场景，在重载决议中，考虑如下代码。</p>
-<p>这里提供了两个模板函数f，前者要求类型是平凡的，后者则没有任何约束。当对函数进行调用时，传递一个非平凡对象 <code>vector&lt;int&gt;</code>，由于候选集中的第一个可行函数的类型不满足要求，将其从候选集中删除，只剩下一个不受约束的版本，因此重载决议没有产生歧义，最终输出的结果为2。</p>
-<p>这里的关键在于违反约束本身并不是一个错误，除非候选集中没有可行函数了，但那是另一回事。上述情况也可以被看作 SFINAE，但我们不需要继续使用诸如 enable_if 等变通方法。enable_if 提供的可行函数之间的条件必须两两互斥，以避免重载决策上的歧义。而 concept 本身存在优先级机制，这一机制能避免上述问题，这是重大的改进。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">// 受约束版本</span><br><span class="hljs-function"><span class="hljs-keyword">requires</span> is_trivial_v&lt;T&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(T)</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;1&quot;</span> &lt;&lt; std::endl; &#125;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">// 通用版本</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(T)</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;2&quot;</span> &lt;&lt; std::endl; &#125;<br><br><span class="hljs-built_in">f</span>(vector&lt;<span class="hljs-type">int</span>&gt;&#123;&#125;); <span class="hljs-comment">// 2</span><br></code></pre></td></tr></table></figure>
+
+<p>这里提供了两个模板函数f，前者要求类型是平凡的，后者则没有任何约束。当对函数进行调用时，传递一个非平凡对象 <code>vector&lt;int&gt;</code>，由于候选集中的第一个可行函数的类型不满足要求，将其从候选集中删除，只剩下一个不受约束的版本，因此重载决议没有产生歧义，最终输出的结果为 2。</p>
+<p>这里的关键在于违反约束本身并不是一个错误，除非候选集中没有可行函数了，但那是另一回事。上述情况也可以被看作 SFINAE，但我们不需要继续使用诸如 enable_if 等变通方法。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">// 曾经的元编程技巧：enable_if</span><br><span class="hljs-type">enable_if_t</span>&lt;is_trivial_v&lt;T&gt;&gt; <span class="hljs-built_in">f</span>(T) &#123; std::cout &lt;&lt; <span class="hljs-string">&quot;1&quot;</span> &lt;&lt; std::endl; &#125;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">// 否定条件</span><br><span class="hljs-type">enable_if_t</span>&lt;!is_trivial_v&lt;T&gt;&gt; <span class="hljs-built_in">f</span>(T) &#123; std::cout &lt;&lt; <span class="hljs-string">&quot;2&quot;</span> &lt;&lt; std::endl; &#125;<br></code></pre></td></tr></table></figure>
+
+<p>enable_if 提供的可行函数之间的条件必须两两互斥，以避免重载决策上的歧义。而 concept 本身存在优先级机制，这一机制能避免上述问题，这是重大的改进。</p>
 <p>在概念标准化之前，除了 enable_if 之外，人们常常使用 decltype 操作符与表达式进行组合来决策重载函数，考虑如下代码。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">// 如果类型提供了成员函数 OnInit，决策这个版本</span><br><span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">initialize</span><span class="hljs-params">(T&amp; obj)</span> -&gt; <span class="hljs-title">decltype</span><span class="hljs-params">(obj.OnInit())</span> </span>&#123;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;1&quot;</span> &lt;&lt; std::endl;<br>    <span class="hljs-keyword">return</span> obj.<span class="hljs-built_in">OnInit</span>();<br>&#125;<br><span class="hljs-comment">// 决策什么也不做的版本</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">initialize</span><span class="hljs-params">(...)</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;2&quot;</span> &lt;&lt; std::endl; &#125;<br></code></pre></td></tr></table></figure>
+
 <p>如果用户提供的类型拥有成员函数 OnInit，那么候选集中的这两个函数都可行，根据重载决议的规则，不定参数函数的优先级较低，编译器将选择正确的第一个版本；若用户提供的类型没有该成员函数，那么第一个版本将触发 SFINAE 机制，候选集中仅剩下第二个版本的函数，最终将什么也不做。</p>
 <p>如果使用 requires 子句结合 requires 表达式来实现将更加合理。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">// 使用 requires 子句，连接一个 requires 表达式</span><br><span class="hljs-function"><span class="hljs-keyword">requires</span> <span class="hljs-title">requires</span><span class="hljs-params">(T obj)</span> </span>&#123; obj.<span class="hljs-built_in">OnInit</span>(); &#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(T&amp; obj)</span> </span>&#123; <br>    std::cout &lt;&lt; <span class="hljs-string">&quot;1&quot;</span> &lt;&lt; std::endl;<br>    obj.<span class="hljs-built_in">OnInit</span>(); <br>&#125;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-comment">// 什么也不做的版本</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(T&amp;)</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;2&quot;</span> &lt;&lt; std::endl; &#125;<br></code></pre></td></tr></table></figure>
+
 <p>如果用户提供的类型拥有成员函数 OnInit，那么候选集中这两个函数都可行，根据标准，受约束的函数比未受约束的更优，编译器将选择正确的第一个版本；若用户提供的类型没有该成员函数，第一个版本不符合要求，候选集中仅剩下第二个版本的函数，同理最终将什么也不做。</p>
 <p>从这两个例子中我们能够看到 concept 特性所带来的优势，它不需要那么多元编程技巧，让新人也能够容易接受、上手，而无须理解变通技巧中涉及的一些隐晦问题。</p>
 <p>requires 子句拥有和 concept 类似的性质，考虑如下代码。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-function"><span class="hljs-keyword">requires</span> is_integral_v&lt;<span class="hljs-keyword">typename</span> T::type&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(T)</span></span>;<br></code></pre></td></tr></table></figure>
+
 <p>当用户对该函数进行调用时，首先检查表达式是否合法，如果模板参数类型没有类型成员 type，将不满足要求；否则进一步判断类型成员是否为整数类型，如果是则满足要求，函数能够被正常调用，否则不满足要求，产生编译错误。</p>
-<p>当对 requires 子句中的约束使用否定时需要额外注意，它可能并不是在表达否定的意思，回忆在3.1节提到的一个例子。</p>
-<p>程序员可能把这个否定理解为“要求模板参数类型没有类型成员 type 或类型成员不为整数”，而它真正的语义为“要求模板参数类型拥有类型成员 type 且类型成员不为整数”，如果需要表达前者语义，可以参考 3.1 节提到的方式，这里不再赘述。</p>
+<p>当对 requires 子句中的约束使用否定时需要额外注意，它可能并不是在表达否定的意思，回忆在 2.1 节提到的一个例子。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-built_in">requires</span>(!is_integral_v&lt;<span class="hljs-keyword">typename</span> T::type&gt;)<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(T)</span></span>;<br></code></pre></td></tr></table></figure>
+
+<p>程序员可能把这个否定理解为“要求模板参数类型没有类型成员 type 或类型成员不为整数”，而它真正的语义为“要求模板参数类型拥有类型成员 type 且类型成员不为整数”，如果需要表达前者语义，可以参考 2.1 节提到的方式，这里不再赘述。</p>
 <p>可能有读者注意到了 requires 子句中对约束的否定使用了圆括号，这是因为编译器对代码进行解析的过程中存在困难，考虑如下代码。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">constexpr</span> <span class="hljs-type">bool</span> <span class="hljs-title">P</span><span class="hljs-params">(<span class="hljs-type">int</span>)</span> </span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; &#125;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-function"><span class="hljs-keyword">requires</span> <span class="hljs-title">P</span><span class="hljs-params">(<span class="hljs-number">0</span>)</span> <span class="hljs-comment">// 语法错误，P(0) 需要通过括号括起来</span></span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(T )</span> </span>&#123; &#125;<br></code></pre></td></tr></table></figure>
+
 <p>编译器在解析这段代码时，遇到约束 P(0) 会认为这是一个类型转换表达式，将数值类型转换成其他类型 P，然而实际上表达的是一个谓词函数调用，这时候需要通过括号将 P(0) 括起来。好在编译器又足够智能，能通过错误信息提醒用户更正这个错误。</p>
-<p>requires 子句中的约束表达式也支持对约束进行合取与析取操作。除了通过requires子句引入约束之外，在简单情况下还可以通过更简洁的语法来引入约束。</p>
+<p>requires 子句中的约束表达式也支持对约束进行合取与析取操作。除了通过 requires 子句引入约束之外，在简单情况下还可以通过更简洁的语法来引入约束。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;integral T, integral U&gt;<br><span class="hljs-comment">// requires(integral&lt;T&gt; &amp;&amp; integral&lt;U&gt;)</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(T, U)</span></span>;<br></code></pre></td></tr></table></figure>
+
 <p>我们可以看到关键字 typename 被替换成了概念 integral，对多个模板参数添加概念约束，将产生一个约束合取表达式，正如注释中提到的一样。此外，不需要填充概念中的模板参数，根据 concept 的性质它会自动将模板参数补充到概念中第一个参数位置，这是 type traits 做不到的。</p>
 <p>另一方面也说明了，不需要通过 requires 子句也能施加约束。约束的合取比较容易得到，而约束的析取需要通过 requires 子句才能得到。</p>
 <p>如不关心模板参数类型，则 C++20 模板函数的参数可以使用 auto 来简化，并同时支持添加约束。如下函数原型和上面一样。</p>
-<p>此外，泛型lambda也能够通过使用概念进行约束。</p>
-<p>前面提到模板类与它的特化版本能够通过requires子句施加约束，根据约束比较规则可以决策出约束最强的版本。</p>
-<p>如果使用 <code>Optional&lt;int&gt;</code>，因为 int 类型为平凡类型，符合特化版本中的约束要求，那么将决策特化版本而不是更一般的版本，这样能够有针对性地进行优化。在传统的元编程技巧中，常常使用enable_if_t 与 void_t 进行特化版本的决策，通过使用约束方式降低了程序员学习的难度。</p>
+<p><code>void f(integral auto a, integral auto b);</code></p>
+<p>此外，泛型 lambda 也能够通过使用概念进行约束。</p>
+<p><code>auto f = [](integral auto lhs, integral auto rhs) &#123; return lhs + rhs; &#125;;</code></p>
+<p>前面提到模板类与它的特化版本能够通过 requires 子句施加约束，根据约束比较规则可以决策出约束最强的版本。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Optional</span> &#123; <span class="hljs-comment">// 主模板</span><br>    <span class="hljs-keyword">union</span> &#123; T val; <span class="hljs-type">char</span> dummy; &#125; storage_;<br>    <span class="hljs-type">bool</span> initialized_&#123;&#125;;<br>&#125;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">requires</span> is_trivial_v&lt;T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Optional</span>&lt;T&gt; &#123; <span class="hljs-comment">// 受约束的特化版本</span><br>    T storage_;<br>    <span class="hljs-type">bool</span> initialized_&#123;&#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如果使用 <code>Optional&lt;int&gt;</code>，因为 int 类型为平凡类型，符合特化版本中的约束要求，那么将决策特化版本而不是更一般的版本，这样能够有针对性地进行优化。在传统的元编程技巧中，常常使用 enable_if_t 与 void_t 进行特化版本的决策，通过使用约束方式降低了程序员学习的难度。</p>
 <p>当对模板类型进行显式实例化时，若受约束的成员函数不符合要求，编译器将不为这个函数生成代码，这是 enable_if_t 做不到的地方。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Wrapper</span> &#123;<br>    T value_;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    <span class="hljs-keyword">requires</span> is_invocable_v&lt;T&gt;</span><br><span class="hljs-function">    </span>&#123; <span class="hljs-built_in">value_</span>(); &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">reset</span><span class="hljs-params">(T v)</span> </span>&#123; value_ = v; &#125;<br>&#125;;<br><br><span class="hljs-comment">// 显式实例化，由于不满足约束，不生成成员函数 operator()()</span><br><span class="hljs-keyword">template</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">Wrapper</span>&lt;<span class="hljs-type">int</span>&gt;;<br></code></pre></td></tr></table></figure>
+
 <p>这里的 requires 子句写在了函数声明后，当对该模板类进行实例化时，由于成员函数 <code>operator()()</code> 不满足要求，编译器将不为它生成代码。</p>
 <h3 id="2-4-约束的偏序规则"><a href="#2-4-约束的偏序规则" class="headerlink" title="2.4 约束的偏序规则"></a>2.4 约束的偏序规则</h3><p>在前一节我们看到了通过给模板施加约束，受约束的版本比未受约束的版本更优，如果两个版本同样含有约束且都满足，哪个最优呢？</p>
 <p>之所以会有这个问题，要回到 C++ 最初的标准模板库中的设计，迭代器是算法与容器之间的桥梁，并且分为几类。同一个算法针对不同类的迭代器中拥有不同的高效实现：如 rotate 旋转算法在随机访问迭代器、双向迭代器、单向迭代器中拥有不同的实现，其中随机访问迭代器的效率最高。</p>
@@ -1084,8 +1132,8 @@
 </ul>
 <p>因此可以得出 P 包含 Q 的结论，为了证明 P 比 Q 更优而不是重载歧义，我们需要证明 Q 不包含 P。类似地，将 Q 和 P 分别写成析取范式与合取范式。</p>
 <p>析取范式与合取范式互相转换，每个子句间的原子约束将两两分配，最终子句数量最多为原范式子句数量的指数级别。</p>
-<p>在这个例子中 Q 的合取范式只有两个子句，每个子句由两个原子约束组成，转换成析取范式后各子句中的原子约束两两分配产生22&#x3D;4个子句。</p>
-<p>P的析取范式转换成合取范式也是类似的过程。</p>
+<p>在这个例子中 Q 的合取范式只有两个子句，每个子句由两个原子约束组成，转换成析取范式后各子句中的原子约束两两分配产生 22&#x3D;4 个子句。</p>
+<p>P 的析取范式转换成合取范式也是类似的过程。</p>
 <p>需要进一步判断 Q 的每个析取子句 Qi 是否包含 P 的每个合取子句 Pj，这需要证明 16 个命题，只要我们能够找到一个 Qj 不包含 Pi 即可证明 Q 不包含 P。仔细观察可以发现，Q1 与 P2 之间、Q2 与 P1 之间都不存在相同的原子约束，这就证明了 Q 不包含 P。</p>
 <p>最后的结果符合我们的预期，第二个重载 calculate 函数为最优的候选函数，最终输出的结果为 P。</p>
 <p>从这个过程中我们也能够发现，当涉及复杂的约束表达式时，编译器的计算量将大幅增加。约束合取表达式是难以避免的，因为可以通过多种方式引入，而约束析取表达式则没那么多。如果可能的话，应尽可能避免使用析取表达式，这将有助于减少编译器的计算量。</p>
@@ -1105,7 +1153,7 @@
 <h4 id="2-5-3-convertible-to（可转换为某类）"><a href="#2-5-3-convertible-to（可转换为某类）" class="headerlink" title="2.5.3 convertible_to（可转换为某类）"></a>2.5.3 convertible_to（可转换为某类）</h4><p>除了要求表达式的类型严格相同之外，另一个常见的场景是，只要一个表达式的类型能够通过隐式或显式转换成目标类型即可。语义上要求这两种转换方式的结果应该是相等的，这种情况可以使用convertible_to 来表达。</p>
 <p>convertible_to 的实现如下，通过约束合取来表达。</p>
 <p>第一个约束要求类型From能够通过隐式类型转换成 To，第二个约束根据 requires 表达式要求进行显式类型转换。</p>
-<p>requires表达式的形参列表中声明了一个无参函数类型，其返回类型为 From&amp;&amp;，通过符号 f 来指代这个函数。在表达式体中使用 static_cast 将函数调用的结果显式类型转换成 To，由于 requires 表达式为不求值环境，所以不会发生真正的函数调用。</p>
+<p>requires 表达式的形参列表中声明了一个无参函数类型，其返回类型为 From&amp;&amp;，通过符号 f 来指代这个函数。在表达式体中使用 static_cast 将函数调用的结果显式类型转换成 To，由于 requires 表达式为不求值环境，所以不会发生真正的函数调用。</p>
 <p>为何需要进一步要求类型能够通过显式转换？什么类型能够通过隐式转换成目标类型但又无法通过显式转换？虽然在实际场景中几乎不可能出现这种类型，但是在 C++ 中，允许用户定义这种“奇怪”的类型。</p>
 <p>我们构造的这种“奇怪”类型 To 删除了显式类型转换构造函数，而另一个类型 From 拥有类型转换操作符，由于没有使用 explicit 修饰，所以能够隐式地转换成类型 To。</p>
 <p>C++ 标准中正是考虑了这种能够通过隐式类型转换而无法通过显式类型转换的奇怪场景，才使用 convertible_to 的概念，这样我们在编写泛型代码时就无须考虑这种奇怪场景，它们将无法通过概念检查。</p>
@@ -1231,7 +1279,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>更新于</div>
-          <div>2023年8月23日</div>
+          <div>2023年8月27日</div>
         </div>
       
       
