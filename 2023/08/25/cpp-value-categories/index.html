@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/cpp-value-categories/index.png">
 <meta property="article:published_time" content="2023-08-24T19:46:07.000Z">
-<meta property="article:modified_time" content="2023-08-25T10:42:19.078Z">
+<meta property="article:modified_time" content="2023-08-25T18:06:52.287Z">
 <meta property="article:author" content="QiDianMaker">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="特性">
@@ -322,7 +322,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          14k 字
+          22k 字
         
       </span>
     
@@ -333,7 +333,7 @@
         
         
         
-          118 分钟
+          181 分钟
         
       </span>
     
@@ -391,7 +391,7 @@
         aria-expanded="true"
       >
         技术
-        <span class="list-group-count">(14)</span>
+        <span class="list-group-count">(17)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
@@ -418,7 +418,7 @@
         aria-expanded="true"
       >
         C++
-        <span class="list-group-count">(12)</span>
+        <span class="list-group-count">(15)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
@@ -527,7 +527,7 @@
         aria-expanded="false"
       >
         翻译
-        <span class="list-group-count">(6)</span>
+        <span class="list-group-count">(9)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
@@ -538,6 +538,24 @@
           
   <div class="category-post-list">
     
+    
+      
+      
+        <a href="/2023/10/28/boost/boost_graph_library/07_A%20Quick%20Tour%20of%20the%20Boost%20Graph%20Library/Boost%20%E5%9B%BE%E7%B1%BB%E5%BA%93%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" title="Boost 图类库快速入门"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Boost 图类库快速入门</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/10/26/boost/boost_graph_library/01_Introduction%20to%20the%20BGL/Boost%20%E5%9B%BE%E7%B1%BB%E5%BA%93%E7%AE%80%E4%BB%8B/" title="Boost 图类库简介"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Boost 图类库简介</span>
+        </a>
+      
     
       
       
@@ -590,6 +608,15 @@
            class="list-group-item list-group-item-action
            ">
           <span class="category-post">Range-v3 库官方文档</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/10/30/boost/boost_graph_library/08_Review%20of%20Elementary%20Graph%20Theory/%E5%9F%BA%E7%A1%80%E5%9B%BE%E8%AE%BA%E5%9B%9E%E9%A1%BE/" title="基础图论回顾"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">基础图论回顾</span>
         </a>
       
     
@@ -716,7 +743,7 @@
 
 <p>你并没有创建一个签名为 <code>ArrayType&lt;T&gt;</code> 的新模板，而只是对已存在模板 <code>Array&lt;T, N&gt;</code> 进行部分实例化后得到的模板，赋予了一个新名字。</p>
 <p>因而，<strong>引用</strong>作为<strong>对象别名</strong>，并没有创建任何<strong>新对象</strong>（包括引用自身），而仅仅是给已存在对象赋予了一个新名字。</p>
-<h3 id="1-3-空间"><a href="#1-3-空间" class="headerlink" title="1.3 空间"></a>1.3 空间</h3><p>正是因为其<strong>别名</strong>的含义，C++ 没有规定<strong>引用</strong>的尺寸（事实上，从<strong>别名</strong>语义的角度，它本身不需要内存，因而也就没有尺寸而言）。</p>
+<h3 id="1-3-空间大小"><a href="#1-3-空间大小" class="headerlink" title="1.3 空间大小"></a>1.3 空间大小</h3><p>正是因为其<strong>别名</strong>的含义，C++ 没有规定<strong>引用</strong>的尺寸（事实上，从<strong>别名</strong>语义的角度，它本身不需要内存，因而也就没有尺寸而言）。</p>
 <p>因而，如果你试图通过 <code>sizeof</code> 去获取一个<strong>引用</strong>的大小，是不可能的。你只能得到它所引用的对象的大小（由于别名语义）。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Foo</span> &#123;<br>    std::<span class="hljs-type">size_t</span> a;<br>    std::<span class="hljs-type">size_t</span> b;<br>&#125;;<br><br>Foo  foo;<br>Foo&amp; ref = foo;<br><br><span class="hljs-built_in">static_assert</span>(<span class="hljs-built_in">sizeof</span>(ref) == <span class="hljs-built_in">sizeof</span>(Foo));<br></code></pre></td></tr></table></figure>
 
@@ -860,7 +887,7 @@
 <h3 id="2-4-将亡值"><a href="#2-4-将亡值" class="headerlink" title="2.4 将亡值"></a>2.4 将亡值</h3><p>我们现在已经明确了，只有右值临时对象可以初始化右值引用变量，从而也只有右值临时变量能够匹配参数类型为<strong>右值引用</strong>的函数，包括移动构造函数。</p>
 <p>这中间依然有一个重要的缺口：如果程序员就是想把一个左值移动给另外一个对象，该怎么办？</p>
 <p>最简单的选择是通过 <code>static_cast</code> 进行类型转换：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp">Foo   foo &#123;<span class="hljs-number">10</span>&#125;;<br>Foo&amp;&amp; ref  = Foo&#123;<span class="hljs-number">10</span>&#125;;<br>Foo   obj1 = <span class="hljs-built_in">static_cast</span>&lt;Foo&amp;&amp;&gt;(foo); <span class="hljs-comment">//移动构造</span><br>Foo   obj2 = <span class="hljs-built_in">static_cast</span>&lt;Foo&amp;&amp;&gt;(ref); <span class="hljs-comment">//移动构造</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp">Foo   foo &#123;<span class="hljs-number">10</span>&#125;;<br>Foo&amp;&amp; ref  = Foo&#123;<span class="hljs-number">10</span>&#125;;<br>Foo   obj1 = <span class="hljs-built_in">static_cast</span>&lt;Foo&amp;&amp;&gt;(foo); <span class="hljs-comment">// 移动构造</span><br>Foo   obj2 = <span class="hljs-built_in">static_cast</span>&lt;Foo&amp;&amp;&gt;(ref); <span class="hljs-comment">// 移动构造</span><br></code></pre></td></tr></table></figure>
 
 <p>我们之前说过，只有<strong>右值</strong>，才可以用来初始化一个<strong>右值引用</strong>类型的变量，因而也只有<strong>右值</strong>才能匹配移动构造。所以，<code>static_cast&lt;Foo&amp;&amp;&gt;(foo)</code>表达式，肯定是一个<strong>右值</strong>。</p>
 <p>但同时，它返回的类型又非常明确的是一个<strong>引用</strong>，而这一点又不符合<strong>右值</strong>的定义。因为，所有的右值，都必须是一个<strong>具体类型</strong>，不能是不完备类型，也不能是抽象类型，但<strong>引用</strong>，无论左值引用，还是右值引用，都可以是不完备类型的引用或抽象类型的引用。这是<strong>左值</strong>才有的特征。</p>
@@ -907,7 +934,7 @@
 <p><img src="/images/cpp-value-categories/value-category-3.png" srcset="/img/loading.gif" lazyload alt=" "></p>
 <h4 id="3-5-1-左值"><a href="#3-5-1-左值" class="headerlink" title="3.5.1 左值"></a>3.5.1 左值</h4><p>左值很容易辨别：任何可以对其通过符号 <code>&amp;</code> 取地址的表达式，都属于<strong>左值</strong>。因而，任何变量（包括常量），无论是全局的，还是类成员的，还是函数参数，还是函数名字，都肯定属于左值。</p>
 <p>另外，所有返回值是左值引用的函数调用表达式（包括用户自定义的重载操作符），以及 <code>static_cast&lt;T&amp;&gt;(expr)</code> 都必然也属于左值。毕竟，没有内存中的对象，哪里来的引用？而引用无非是对象的一个别名标识罢了。</p>
-<p>剩下的就是系统的一些内建操作符的定义，比如对一个指针求引用操作： <code>*p</code> ，或者 <code>++i</code> （ <code>i++</code> 却是一个<strong>右值</strong>）。</p>
+<p>剩下的就是系统的一些内建操作符的定义，比如对一个指针求引用操作：<code>*p</code> ，或者 <code>++i</code> （ <code>i++</code> 却是一个<strong>右值</strong>）。</p>
 <p>其中，最为特殊的是字符串字面常量，比如： <code>&quot;abcd&quot;</code> ，这是一个左值对象。这有点违背直觉，但由于 C&#x2F;C++ 中字符串并不是一个内建基本类型。这些字符串字面常量都会在内存中得以存储。</p>
 <p>需要注意的是，这两种情况下，无论是变量 <code>i</code>，还是函数参数 <code>r</code>，它们都是一个<strong>左值</strong>，虽然它们的类型是<strong>右值引用</strong>。我们之前谈到过，任何变量，无论其属于什么类型，都必然是一个左值。变量的名字，就是对应对象的标识。</p>
 <h4 id="3-5-2-将亡值"><a href="#3-5-2-将亡值" class="headerlink" title="3.5.2 将亡值"></a>3.5.2 将亡值</h4><p>将亡值是所有返回类型为<strong>右值引用</strong>的非左值表达式。 这包括返回值类型为<strong>右值引用</strong>的函数调用表达式，<code>static_cast&lt;T&amp;&amp;&gt;(expr)</code> 表达式。</p>
@@ -917,15 +944,15 @@
 <p>在 C++17 之前，这个表达式的语义是一个<strong>临时对象</strong>。</p>
 <p>非常有说服力的例子是： <code>Foo&amp;&amp; foo = Foo&#123;10&#125;</code> 或者 <code>const Foo&amp; foo = Foo&#123;10&#125;</code>。这这两个初始化表达式里，毫无疑问 <code>Foo&#123;10&#125;</code> 是一个对象，因为它可以被引用，无论是一个右值引用 <code>Foo&amp;&amp;</code>，还是一个左值引用 <code>const Foo&amp;</code>，能被引用的必然是<strong>对象</strong>。</p>
 <p>但后来人们发现，将其定义为对象语义，在一些场景下会带来不必要的麻烦：</p>
-<p>比如：<code>Foo foo = Foo&#123;10&#125;</code> 的语义是：构造一个临时对象，然后拷贝&#x2F;移动 给左边的对象 <code>foo</code> 。</p>
-<p>注意，只要 <code>Foo&#123;10&#125;</code> 被定义为<strong>对象</strong>，那么拷贝&#x2F;移动 语义也就变得不可避免，这就要求类 <code>Foo</code> 必须要隐式或显式的提供共有的拷贝&#x2F;移动构造函数。即便编译器肯定会将对拷贝&#x2F;移动构造函数的调用给优化掉，但这是到优化阶段的事，而语义检查发生在优化之前。如果类 <code>Foo</code> 没有共有的拷贝&#x2F;移动构造函数，语义检查阶段就会失败。</p>
+<p>比如：<code>Foo foo = Foo&#123;10&#125;</code> 的语义是：构造一个临时对象，然后拷贝&#x2F;移动给左边的对象 <code>foo</code> 。</p>
+<p>注意，只要 <code>Foo&#123;10&#125;</code> 被定义为<strong>对象</strong>，那么拷贝&#x2F;移动语义也就变得不可避免，这就要求类 <code>Foo</code> 必须要隐式或显式的提供公有的拷贝&#x2F;移动构造函数。即便编译器肯定会将对拷贝&#x2F;移动构造函数的调用给优化掉，但这是到优化阶段的事，而语义检查发生在优化之前。如果类 <code>Foo</code> 没有公有的拷贝&#x2F;移动构造函数，语义检查阶段就会失败。</p>
 <p>这就给一些设计带来了麻烦，比如，程序员不希望类 <code>Foo</code> 可以被拷贝&#x2F;移动 ，所有 <code>Foo</code> 实例的创建都必须通过一个工厂函数，比如：<code>Foo makeFoo()</code> 来创建；并且程序员也知道拷贝&#x2F;移动构造函数的调用必然会被任何像样的编译器给优化掉，但就是过不了那该死的对实际运行毫无影响的语义检查那一关。</p>
 <p>于是，到了 C++17，对于类似于 <code>Foo&#123;10&#125;</code> 表达式的语义进行了重新定义，它们不再是一个<strong>对象</strong>语义，而只是一个<strong>值</strong>。即 <code>Foo&#123;10&#125;</code> 与内存临时对象再无任何关系，它就是一个<strong>值</strong>：其估值结果，是对构造函数 <code>Foo(int)</code> 进行调用所产生的<strong>值</strong>。而这个<strong>值</strong>，通过等号表达式，赋值给左边的<strong>对象</strong>，正如 <code>int i = 10</code> 所做的那样。从语义上，不再有对象间的拷贝&#x2F;移动，而是直接将构造函数调用表达式作用于等号左边的<strong>对象</strong>，从而完成用<strong>值</strong>初始化<strong>对象</strong>的过程。因而，<code>Foo foo = Foo&#123;10&#125;</code>，与 <code>Foo foo&#123;10&#125;</code>，在 C++17 之后，从语义上（而不是编译器优化上）完全等价。</p>
 <p>一旦将其当作<strong>值</strong>语义，很多表达式的理解上也不再一样。比如：<code>Foo foo = Foo&#123;Foo&#123;Foo&#123;10&#125;&#125;&#125;</code>，如果 <code>Foo foo = Foo&#123;10&#125;</code> 与 <code>Foo foo&#123;10&#125;</code> 完全等价，那么就可以进行下列等价转换：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp">    Foo foo = Foo&#123;Foo&#123;Foo&#123;<span class="hljs-number">10</span>&#125;&#125;&#125;<br>&lt;=&gt; Foo foo&#123;Foo&#123;Foo&#123;<span class="hljs-number">10</span>&#125;&#125;<br>&lt;=&gt; Foo foo = Foo&#123;Foo&#123;<span class="hljs-number">10</span>&#125;&#125;<br>&lt;=&gt; Foo Foo&#123;Foo&#123;<span class="hljs-number">10</span>&#125;&#125;<br>&lt;=&gt; Foo foo = Foo&#123;<span class="hljs-number">10</span>&#125;<br>&lt;=&gt; Foo foo&#123;<span class="hljs-number">10</span>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp">    Foo foo = Foo&#123;Foo&#123;Foo&#123;<span class="hljs-number">10</span>&#125;&#125;&#125;<br>&lt;=&gt; Foo foo&#123;Foo&#123;Foo&#123;<span class="hljs-number">10</span>&#125;&#125;&#125;<br>&lt;=&gt; Foo foo = Foo&#123;Foo&#123;<span class="hljs-number">10</span>&#125;&#125;<br>&lt;=&gt; Foo Foo&#123;Foo&#123;<span class="hljs-number">10</span>&#125;&#125;<br>&lt;=&gt; Foo foo = Foo&#123;<span class="hljs-number">10</span>&#125;<br>&lt;=&gt; Foo foo&#123;<span class="hljs-number">10</span>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>注意，这是一个自然的语义推论，而不是编译器优化的结果。</p>
-<p>自然，对于 <code>Foo makeFoo()</code> 这样的函数，其调用表达式 <code>makeFoo()</code>，在 C++17 下也是<strong>值</strong>。而不像之前定义的那样：返回一个临时对象，然后在 <code>Foo foo = makeFoo()</code> 表示式里，拷贝&#x2F;移动 给等号左侧的对象 <code>Foo</code>。虽然 C&#x2F;C++ 编译器很早就有 RVO&#x2F;NRVO 优化技术；但同样，那是优化阶段的事，而不是语义分析阶段如何理解这个表达式语义的问题。</p>
+<p>自然，对于 <code>Foo makeFoo()</code> 这样的函数，其调用表达式 <code>makeFoo()</code>，在 C++17 下也是<strong>值</strong>。而不像之前定义的那样：返回一个临时对象，然后在 <code>Foo foo = makeFoo()</code> 表示式里，拷贝&#x2F;移动给等号左侧的对象 <code>Foo</code>。虽然 C&#x2F;C++ 编译器很早就有 RVO&#x2F;NRVO 优化技术；但同样，那是优化阶段的事，而不是语义分析阶段如何理解这个表达式语义的问题。</p>
 <h4 id="3-5-4-临时量实质化"><a href="#3-5-4-临时量实质化" class="headerlink" title="3.5.4 临时量实质化"></a>3.5.4 临时量实质化</h4><p>我们再回到前面的问题：<code>Foo&amp;&amp; foo = Foo&#123;10&#125;</code> 表达了什么语义？毕竟，按照我们之前的讨论，等号右边是一个<strong>值</strong>，而左边是一个对于对象的<strong>引用</strong>。而<strong>引用</strong>只能引用一个对象，引用一个<strong>值</strong>是逻辑上是讲不通的。</p>
 <p>这中间隐含着一个过程：<strong>临时量实质化</strong>。即将一个<strong>纯右值</strong>，赋值给一个<strong>临时对象</strong>，其标识是一个无名字的<strong>右值引用</strong>，即<strong>将亡值</strong>。然后再将等号左边的<strong>引用</strong>绑定到这个<strong>将亡值</strong>对象上。</p>
 <p><strong>临时量实质化</strong>的过程还发生在其它场景。</p>
@@ -941,11 +968,109 @@
 <p>到了 C++17，从匹配行为上没有变化，但语义上却有了变化。最终导致匹配右值引用版本的不是<strong>纯右值</strong>类别，而是<strong>将亡值</strong>。因为<strong>纯右值</strong>会首先进行<strong>实质化</strong>，得到一个<strong>将亡值</strong>。最终是用<strong>将亡值</strong>初始化了函数的对应参数。</p>
 <p>一个<strong>纯右值</strong>，永远也无法匹配到移动构造函数。 因为 <code>Foo foo = Foo&#123;10&#125;</code> 与 <code>Foo foo&#123;10&#125;</code> 等价。这不需要将<strong>纯右值</strong>进行<strong>实质化</strong>，得到一个<strong>将亡值</strong>，然后匹配到移动构造函数的过程。</p>
 <p>只有<strong>将亡值</strong>，才能匹配到移动构造。比如：<code>Foo foo = std::move(Foo&#123;10&#125;)</code> 将会导致移动构造的调用。</p>
-<p>另外，一个表达式是<strong>将亡值</strong>，并不代表其所引用的对象一定是一个从<strong>纯右值</strong>实质化 得到的临时对象。 而是两种可能都存在。比如，如果 <code>foo</code> 是一个<strong>左值</strong>， <code>std::move(foo)</code> 这个<strong>将亡值</strong>所引用的对象就是一个<strong>左值</strong>； 而 <code>std::move(Foo&#123;10&#125;)</code> 则毫无疑问引用的是一个<strong>实质化</strong>后的到的临时对象。</p>
+<p>另外，一个表达式是<strong>将亡值</strong>，并不代表其所引用的对象一定是一个从<strong>纯右值</strong>实质化得到的临时对象。而是两种可能都存在。比如，如果 <code>foo</code> 是一个<strong>左值</strong>，<code>std::move(foo)</code> 这个<strong>将亡值</strong>所引用的对象就是一个<strong>左值</strong>； 而 <code>std::move(Foo&#123;10&#125;)</code> 则毫无疑问引用的是一个<strong>实质化</strong>后的到的临时对象。</p>
 <p><img src="/images/cpp-value-categories/value-category-4.png" srcset="/img/loading.gif" lazyload alt=" "></p>
 <div class="note note-warning">
-            <p><strong>注意</strong></p><p>-所有的表达式都可以归类为<strong>纯右值</strong>和<strong>泛左值</strong>；<br>-所有的<strong>纯右值</strong>都是<strong>值</strong>的概念；所有的<strong>泛左值</strong>都是<strong>对象</strong>的概念；<br>-左值 可以求地址，将亡值 不可以求地址；<br>-纯右值 在需要临时对象存在的场景下，会通过<strong>实质化</strong>，转化成<strong>将亡值</strong>。<br>-泛左值 可以是抽象类型和不完备类型，可以进行多态调用；纯右值 只能是具体类型，无法进行多态调用。<br>-用<strong>纯右值</strong>构造一个<strong>左值</strong>对象时，是 直接构造 语义； 用<strong>将亡值</strong>构造一个<strong>左值</strong>对象时，是 拷贝&#x2F;移动构造 语义。</p>
+            <p><strong>注意</strong></p><ul><li>所有的表达式都可以归类为<strong>纯右值</strong>和<strong>泛左值</strong>；</li><li>所有的<strong>纯右值</strong>都是<strong>值</strong>的概念；所有的<strong>泛左值</strong>都是<strong>对象</strong>的概念；</li><li><strong>左值</strong>可以求地址，<strong>将亡值</strong>不可以求地址；</li><li><strong>纯右值</strong>在需要临时对象存在的场景下，会通过<strong>实质化</strong>，转化成<strong>将亡值</strong>；</li><li><strong>泛左值</strong>可以是抽象类型和不完备类型，可以进行多态调用；<strong>纯右值</strong>只能是具体类型，无法进行多态调用；</li><li>用<strong>纯右值</strong>构造一个<strong>左值</strong>对象时，是<strong>直接构造</strong>语义；用<strong>将亡值</strong>构造一个<strong>左值</strong>对象时，是拷贝&#x2F;移动构造语义。</li></ul>
           </div>
+
+<h2 id="4-decltype-类型推导"><a href="#4-decltype-类型推导" class="headerlink" title="4. decltype 类型推导"></a>4. decltype 类型推导</h2><p><code>decltype</code> 是 C++11 加入的一个重要特性。它允许求一切合法表达式的类型。从而，让从类型到值，从值到类型形成了一个闭环，极大的扩展了泛型编程的能力。</p>
+<p>C++ 规范中，对于 <code>decltype</code> 类型推导规则的定义如下：</p>
+<ol>
+<li>若实参为无括号的<strong>标识表达式</strong>或无括号的<strong>类成员访问表达式</strong>，则 <code>decltype</code> 产生以此表达式命名的实体的类型。 若无这种实体，或该实参指名某个重载函数，则程序非良构。</li>
+<li>若实参是其他类型为 <code>T</code> 的任何表达式，且<br>a. 若<strong>表达式</strong>的值类别为<strong>将亡值</strong>，则 <code>decltype</code> 产生 <code>T&amp;&amp;</code>；<br>b. 若<strong>表达式</strong>的值类别为<strong>左值</strong>，则 <code>decltype</code> 产生 <code>T&amp;</code>；<br>c. 若<strong>表达式</strong>的值类别为<strong>纯右值</strong>，则 <code>decltype</code> 产生 <code>T</code>。</li>
+</ol>
+<p>若表达式是<strong>纯右值</strong>，则不从该纯右值<strong>实质化</strong>临时对象：这种纯右值无结果对象。</p>
+<p>注意如果对象的名字带有括号，则它被当做通常的<strong>左值</strong>表达式，从而 <code>decltype(x)</code> 和 <code>decltype((x))</code> 通常是不同的类型。</p>
+<p>这些规则，初看起来，有些让人困惑。但如果真的理解了背后的机制，其实非常容易理解。</p>
+<p><code>decltype</code> 有两种表达方法：</p>
+<ol>
+<li>有括号：<code>decltype((expr))</code></li>
+<li>无括号：<code>decltype(expr)</code></li>
+</ol>
+<h3 id="4-1-有括号语义"><a href="#4-1-有括号语义" class="headerlink" title="4.1 有括号语义"></a>4.1 有括号语义</h3><p>有括号的表达方法，语义是简单而统一的：它站在表达式类别的角度求类型。</p>
+<ol>
+<li>如果表达式属于<strong>纯右值</strong>，结果必然是<strong>非引用</strong>类型；</li>
+<li>如果表达式属于<strong>泛左值</strong>，结果必然是<strong>引用</strong>类型；<ul>
+<li>如果表达式属于<strong>左值</strong>，结果必然是<strong>左值引用</strong>；</li>
+<li>如果表达式属于<strong>将亡值</strong>，结果必然是<strong>右值引用</strong>；</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Foo</span> &#123; <span class="hljs-type">int</span> a; &#125;;<br><br><span class="hljs-keyword">using</span> Func  = Foo&amp;();<br><span class="hljs-keyword">using</span> Array = <span class="hljs-type">char</span>[<span class="hljs-number">2</span>];<br><br><span class="hljs-keyword">enum class</span> <span class="hljs-title class_">E</span> &#123; OK, FAIL &#125;;<br><br><span class="hljs-function"><span class="hljs-type">const</span> Foo   <span class="hljs-title">f_v</span><span class="hljs-params">()</span></span>;<br>      <span class="hljs-function">Foo&amp;  <span class="hljs-title">f_ref</span><span class="hljs-params">()</span></span>;<br>      <span class="hljs-function">Foo&amp;&amp; <span class="hljs-title">f_r</span><span class="hljs-params">()</span></span>;<br><br>      <span class="hljs-type">int</span>   a    = <span class="hljs-number">0</span>;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span>   b    = <span class="hljs-number">1</span>;<br><span class="hljs-type">const</span> Foo   foo  = &#123;<span class="hljs-number">10</span>&#125;;<br>      Foo&amp;&amp; rref = Foo&#123;<span class="hljs-number">1</span>&#125;;<br><span class="hljs-type">const</span> Foo&amp;  ref  = foo;<br>      <span class="hljs-type">char</span>  c[<span class="hljs-number">2</span>] = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>&#125;;<br>      <span class="hljs-type">int</span>*  p    = &amp;a;<br><span class="hljs-type">const</span> Foo*  pFoo = &amp;foo;<br><br><span class="hljs-comment">// 左值</span><br><span class="hljs-keyword">decltype</span>((a))       v1;   <span class="hljs-comment">// int&amp;</span><br><span class="hljs-keyword">decltype</span>((foo))     v2;   <span class="hljs-comment">// const Foo&amp;</span><br><span class="hljs-keyword">decltype</span>((foo.a))   v3;   <span class="hljs-comment">// const int&amp;</span><br><span class="hljs-keyword">decltype</span>((<span class="hljs-built_in">f_ref</span>())) v4;   <span class="hljs-comment">// Foo&amp;</span><br><span class="hljs-keyword">decltype</span>((f_r))     v5;   <span class="hljs-comment">// Foo&amp;&amp; (&amp;)()</span><br><span class="hljs-keyword">decltype</span>((c))       v6;   <span class="hljs-comment">// char (&amp;)[2]</span><br><span class="hljs-keyword">decltype</span>((a += <span class="hljs-number">10</span>)) v7;   <span class="hljs-comment">// int&amp;</span><br><span class="hljs-keyword">decltype</span>((++a))     v8;   <span class="hljs-comment">// int&amp;</span><br><span class="hljs-keyword">decltype</span>((c[<span class="hljs-number">1</span>]))    v9;   <span class="hljs-comment">// char&amp;</span><br><span class="hljs-keyword">decltype</span>((*p))      v10;  <span class="hljs-comment">// int&amp;</span><br><span class="hljs-keyword">decltype</span>((p))       v11;  <span class="hljs-comment">// int*&amp;</span><br><span class="hljs-keyword">decltype</span>((pFoo))    v12;  <span class="hljs-comment">// const Foo*&amp;</span><br><span class="hljs-keyword">decltype</span>((pFoo-&gt;a)) v13;  <span class="hljs-comment">// const int&amp;</span><br><span class="hljs-keyword">decltype</span>((Foo::a))  v14;  <span class="hljs-comment">// int&amp;</span><br><span class="hljs-keyword">decltype</span>((rref))    v15;  <span class="hljs-comment">// Foo&amp;</span><br><span class="hljs-keyword">decltype</span>((ref))     v16;  <span class="hljs-comment">// const Foo&amp;</span><br><span class="hljs-keyword">decltype</span>((a &gt; <span class="hljs-number">0</span> ? a : b)) v;  <span class="hljs-comment">// int&amp;</span><br><span class="hljs-keyword">decltype</span>((<span class="hljs-built_in">static_cast</span>&lt;Func&amp;&amp;&gt;(f_ref))) f;  <span class="hljs-comment">// Foo&amp; (&amp;)()</span><br><br><span class="hljs-comment">// 纯右值</span><br><span class="hljs-keyword">decltype</span>((<span class="hljs-number">1</span>+<span class="hljs-number">2</span>))         v1;  <span class="hljs-comment">// int</span><br><span class="hljs-keyword">decltype</span>((Foo&#123;<span class="hljs-number">10</span>&#125;))     v2;  <span class="hljs-comment">// Foo</span><br><span class="hljs-keyword">decltype</span>((<span class="hljs-built_in">f_v</span>()))       v3;  <span class="hljs-comment">// const Foo</span><br><span class="hljs-keyword">decltype</span>((Array&#123;<span class="hljs-number">0</span>, <span class="hljs-number">1</span>&#125;)) v4;  <span class="hljs-comment">// char[2]</span><br><span class="hljs-keyword">decltype</span>((a++))         v5;  <span class="hljs-comment">// int</span><br><span class="hljs-keyword">decltype</span>((&amp;b))          v6;  <span class="hljs-comment">// const int*</span><br><span class="hljs-keyword">decltype</span>((OK))          v7;  <span class="hljs-comment">// E</span><br><span class="hljs-keyword">decltype</span>((a &gt; <span class="hljs-number">0</span> ? <span class="hljs-number">10</span> : Foo&#123;<span class="hljs-number">0</span>&#125;.a)) v;  <span class="hljs-comment">// int</span><br><br><span class="hljs-comment">// 将亡值</span><br><span class="hljs-keyword">decltype</span>((Foo&#123;<span class="hljs-number">10</span>&#125;.a))    v1;  <span class="hljs-comment">// int&amp;&amp;</span><br><span class="hljs-keyword">decltype</span>((<span class="hljs-built_in">f_r</span>()))        v2;  <span class="hljs-comment">// Foo&amp;&amp;</span><br><span class="hljs-keyword">decltype</span>((Array&#123;&#125;[<span class="hljs-number">0</span>]))   v3;  <span class="hljs-comment">// char&amp;&amp;</span><br><span class="hljs-keyword">decltype</span>((std::<span class="hljs-built_in">move</span>(a))) v4;  <span class="hljs-comment">// int&amp;&amp;</span><br><span class="hljs-keyword">decltype</span>((a &gt; <span class="hljs-number">0</span> ? Foo&#123;<span class="hljs-number">1</span>&#125;.a : Foo&#123;<span class="hljs-number">0</span>&#125;.a)) v;  <span class="hljs-comment">// int&amp;&amp;</span><br></code></pre></td></tr></table></figure>
+
+<p>这其中，最有趣的是 <code>decltype((rref))</code>，<code>rref</code> 本身的类型是一个右值引用 <code>Foo&amp;&amp;</code>，但做为左值表达式，它的类型却是 <code>Foo&amp;</code>，而这一点，请参见<strong>右值引用变量</strong>。</p>
+<h3 id="4-2-无括号语义"><a href="#4-2-无括号语义" class="headerlink" title="4.2 无括号语义"></a>4.2 无括号语义</h3><p>无括号的情况下，除了一种例外，其它情况下，都与有括号场景一致。</p>
+<p>这个例外就是对于变量（包括常量）名字的直接求类型。这种情况，会返回变量被定义时的类型。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Foo</span> &#123; <span class="hljs-type">int</span> a; &#125;;<br><br><span class="hljs-keyword">using</span> Func  = Foo&amp;();<br><span class="hljs-keyword">using</span> Array = <span class="hljs-type">char</span>[<span class="hljs-number">2</span>];<br><br><span class="hljs-function"><span class="hljs-type">const</span> Foo   <span class="hljs-title">f_v</span><span class="hljs-params">()</span></span>;<br>      <span class="hljs-function">Foo&amp;  <span class="hljs-title">f_ref</span><span class="hljs-params">()</span></span>;<br>      <span class="hljs-function">Foo&amp;&amp; <span class="hljs-title">f_r</span><span class="hljs-params">()</span></span>;<br><br>      <span class="hljs-type">int</span>   a    = <span class="hljs-number">0</span>;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span>   b    = <span class="hljs-number">1</span>;<br><span class="hljs-type">const</span> Foo   foo  = &#123;<span class="hljs-number">10</span>&#125;;<br>      Foo&amp;&amp; rref = Foo&#123;<span class="hljs-number">1</span>&#125;;<br><span class="hljs-type">const</span> Foo&amp;  ref  = foo;<br>      <span class="hljs-type">char</span>  c[<span class="hljs-number">2</span>] = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>&#125;;<br>      <span class="hljs-type">int</span>*  p    = &amp;a;<br><span class="hljs-type">const</span> Foo*  pFoo = &amp;foo;<br><br><span class="hljs-keyword">decltype</span>(a)        v1;   <span class="hljs-comment">// int</span><br><span class="hljs-keyword">decltype</span>(b)        v2;   <span class="hljs-comment">// const int</span><br><span class="hljs-keyword">decltype</span>(foo)      v3;   <span class="hljs-comment">// const Foo</span><br><span class="hljs-keyword">decltype</span>(ref)      v4;   <span class="hljs-comment">// const Foo&amp;</span><br><span class="hljs-keyword">decltype</span>(rref)     v5;   <span class="hljs-comment">//       Foo&amp;&amp;</span><br><span class="hljs-keyword">decltype</span>(c)        v6;   <span class="hljs-comment">// char[2]</span><br><span class="hljs-keyword">decltype</span>(p)        v7;   <span class="hljs-comment">// int*</span><br><span class="hljs-keyword">decltype</span>(foo.a)    v8;   <span class="hljs-comment">// int</span><br><span class="hljs-keyword">decltype</span>(ref.a)    v9;   <span class="hljs-comment">// int</span><br><span class="hljs-keyword">decltype</span>(rref.a)   v10;  <span class="hljs-comment">// int</span><br><span class="hljs-keyword">decltype</span>(pFoo)     v11;  <span class="hljs-comment">// const Foo*</span><br><span class="hljs-keyword">decltype</span>(pFoo-&gt;a)  v12;  <span class="hljs-comment">// int</span><br><span class="hljs-keyword">decltype</span>(Foo&#123;<span class="hljs-number">1</span>&#125;.a) v13;  <span class="hljs-comment">// int</span><br><span class="hljs-keyword">decltype</span>(Foo::a)   v14;  <span class="hljs-comment">// int</span><br></code></pre></td></tr></table></figure>
+
+<p>从例子中不难看出，对于所有的变量访问，无论直接还是间接，由于每个变量在定义时都有自己的类型，因而求类型的结果就是这些变量被定义时的类型。</p>
+<p>所以，之所以会出现有括号，无括号两种用法，正是因为每一个被定义的变量，都面临着两种需求：</p>
+<ol>
+<li>它们被定义时的类型</li>
+<li>整体做为一个表达式的类型（一定是泛左值）</li>
+</ol>
+<p>前者是不关心表达式的，比如 <code>decltype(Foo&#123;1&#125;.a)</code>，它只关心 <code>a</code> 被定义时的类型：<code>int</code>； 而不关心整个表达式本身是一个<strong>将亡值</strong>，因而表达式必然应该是一种右值引用类型：<code>int&amp;&amp;</code>。</p>
+<p>正是对于变量有这两种需求的存在，而其它表达式没有这样的问题，所以，才专门为变量定义了两种求类型的方法。而对于其它表达式则两种方式无差别。</p>
+<h2 id="5-auto-类型推导"><a href="#5-auto-类型推导" class="headerlink" title="5. auto 类型推导"></a>5. auto 类型推导</h2><p><code>auto</code> 类型推导脱胎于模版函数的类型推导，它们的能力几乎等价（除了初始化列表的情况）。 这也就意味着，其实在 C++11 之前，C++ 早就具备了 <code>auto</code> 的能力，只是没有从语法上允许而已。</p>
+<h3 id="5-1-auto-的语义"><a href="#5-1-auto-的语义" class="headerlink" title="5.1 auto 的语义"></a>5.1 auto 的语义</h3><p>和直觉不同的是，对于任意表达式：<code>auto v = expr</code>，<code>v</code> 的类型并不总是和 <code>expr</code> 所返回的类型一致。</p>
+<p>首先，<code>auto</code> 不可能是一个<strong>引用</strong>，无论是<strong>左值引用</strong>，还是<strong>右值引用</strong>，所以，如果 <code>expr</code> 返回类型里包含任何引用，都会被舍弃。比如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp">Foo   foo &#123;<span class="hljs-number">1</span>&#125;;<br>Foo&amp;  ref  = foo;<br>Foo&amp;&amp; rref = Foo&#123;<span class="hljs-number">2</span>&#125;;<br><br><span class="hljs-function">Foo&amp;  <span class="hljs-title">getRef</span><span class="hljs-params">()</span></span>;<br><span class="hljs-function">Foo&amp;&amp; <span class="hljs-title">getRref</span><span class="hljs-params">()</span></span>;<br><br><span class="hljs-keyword">auto</span> v1 = ref;        <span class="hljs-comment">// v1 type: Foo</span><br><span class="hljs-keyword">auto</span> v2 = rref;       <span class="hljs-comment">// v2 type: Foo</span><br><span class="hljs-keyword">auto</span> v3 = <span class="hljs-built_in">getRef</span>();   <span class="hljs-comment">// v3 type: Foo</span><br><span class="hljs-keyword">auto</span> v4 = <span class="hljs-built_in">getRref</span>();  <span class="hljs-comment">// v4 type: Foo</span><br></code></pre></td></tr></table></figure>
+
+<p>其次，所有对值所修饰的 <code>const</code> 都会被丢弃。比如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">const</span> Foo   foo &#123;<span class="hljs-number">1</span>&#125;;<br><span class="hljs-type">const</span> Foo&amp;  ref    = foo;<br><span class="hljs-type">const</span> Foo&amp;&amp; rref   = Foo&#123;<span class="hljs-number">2</span>&#125;;<br><span class="hljs-type">const</span> Foo* <span class="hljs-type">const</span> p = &amp;foo;<br><br><span class="hljs-keyword">auto</span> v1 = foo;  <span class="hljs-comment">// Foo</span><br><span class="hljs-keyword">auto</span> v2 = ref;  <span class="hljs-comment">// Foo</span><br><span class="hljs-keyword">auto</span> v3 = rref; <span class="hljs-comment">// Foo</span><br><span class="hljs-keyword">auto</span> v4 = p;    <span class="hljs-comment">// const Foo*</span><br></code></pre></td></tr></table></figure>
+
+<p>究其原因，是因为这种直接给出 <code>auto</code> 的写法，是一种拷贝&#x2F;移动语义。因而，等号右边的表达式本身类型是引用，并不影响等号左侧对象本身不是引用；同样的，等号右边表达式本身的常量性，拷贝&#x2F;移动后，并不会影响新定义变量的常量性 。</p>
+<p>其推演语义，完全等价于：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(T value)</span></span>;<br></code></pre></td></tr></table></figure>
+
+<p>其中 <code>T</code> 就是 <code>auto</code>，<code>value</code> 就是你用 <code>auto</code> 所定义的变量。</p>
+<p>注意，到了 C++17 之后，并非所有的场景下，都是拷贝&#x2F;移动语义，比如 <code>auto v = Foo&#123;1&#125;</code>，其行为完全等价于：<code>Foo v&#123;1&#125;</code> 。具体可参见<strong>对象？值？</strong>。</p>
+<p>因而，更准确的说，这不是拷贝&#x2F;移动语义，而属于构造初始化语义。</p>
+<h3 id="5-2-引用及-const"><a href="#5-2-引用及-const" class="headerlink" title="5.2 引用及 const"></a>5.2 引用及 const</h3><p>因而，如果你希望让新定义的变量属于引用类型，或具备 <code>const</code>，则需要明确指定。比如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp">      <span class="hljs-keyword">auto</span>   foo  = Foo&#123;<span class="hljs-number">1</span>&#125;;<br><span class="hljs-type">const</span> <span class="hljs-keyword">auto</span>&amp;  ref  = foo;<br>      <span class="hljs-keyword">auto</span>&amp;&amp; rref = Foo&#123;<span class="hljs-number">2</span>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>而指针的情况则稍有特殊。</p>
+<h3 id="5-3-指针"><a href="#5-3-指针" class="headerlink" title="5.3 指针"></a>5.3 指针</h3><p>当你不指定指针的情况下，如果等号右侧的表达式是一个指针类型，那么左侧的变量类型当然也是一个指针。</p>
+<p>当你明确指定指针的情况下，则是要求右侧表达式必须是一个指针类型。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp">Foo  foo &#123;<span class="hljs-number">1</span>&#125;;<br>Foo* pFoo = &amp;foo;<br><br><span class="hljs-keyword">auto</span>  v1 = foo;  <span class="hljs-comment">// v1 type: Foo</span><br><span class="hljs-keyword">auto</span>  p1 = pFoo; <span class="hljs-comment">// p1 type: Foo*</span><br><span class="hljs-keyword">auto</span>* p2 = pFoo; <span class="hljs-comment">// p2 type: Foo*</span><br><span class="hljs-keyword">auto</span>* p3 = foo;  <span class="hljs-comment">// Error: foo is not a pointer</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-4-万能引用"><a href="#5-4-万能引用" class="headerlink" title="5.4 万能引用"></a>5.4 万能引用</h3><p>更为特殊的是 <code>auto&amp;&amp; v = expr</code> 的表达式。这并不必然导致 <code>v</code> 是一个右值引用。而是取决于 <code>expr</code> 的类别。</p>
+<p>如果 <code>expr</code> 是一个<strong>左值</strong>表达式，那么 <code>v</code> 将是左值引用类型；</p>
+<p>如果 <code>expr</code> 是一个<strong>右值</strong>表达式（参见<strong>对象？值？</strong>），那么 <code>v</code> 将会是右值引用类型。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs cpp">Foo   foo &#123;<span class="hljs-number">1</span>&#125;;<br>Foo&amp;  ref  = foo;<br>Foo&amp;&amp; rref = Foo&#123;<span class="hljs-number">2</span>&#125;;<br><span class="hljs-function">Foo&amp;&amp; <span class="hljs-title">getRref</span><span class="hljs-params">()</span></span>;<br><span class="hljs-function">Foo&amp;  <span class="hljs-title">getRef</span><span class="hljs-params">()</span></span>;<br><span class="hljs-function">Foo   <span class="hljs-title">getFoo</span><span class="hljs-params">()</span></span>;<br><br><span class="hljs-keyword">auto</span>&amp;&amp; v1 = foo;       <span class="hljs-comment">// v1 type: Foo&amp;</span><br><span class="hljs-keyword">auto</span>&amp;&amp; v2 = Foo&#123;<span class="hljs-number">2</span>&#125;;    <span class="hljs-comment">// v2 type: Foo&amp;&amp;</span><br><span class="hljs-keyword">auto</span>&amp;&amp; v3 = <span class="hljs-built_in">getRref</span>(); <span class="hljs-comment">// v3 type: Foo&amp;&amp;</span><br><span class="hljs-keyword">auto</span>&amp;&amp; v4 = <span class="hljs-built_in">getRef</span>();  <span class="hljs-comment">// v4 type: Foo&amp;</span><br><span class="hljs-keyword">auto</span>&amp;&amp; v5 = <span class="hljs-built_in">getFoo</span>();  <span class="hljs-comment">// v5 type: Foo&amp;&amp;</span><br><span class="hljs-keyword">auto</span>&amp;&amp; v6 = ref;       <span class="hljs-comment">// v6 type: Foo&amp;</span><br><span class="hljs-keyword">auto</span>&amp;&amp; v7 = rref;      <span class="hljs-comment">// v7 type: Foo&amp;</span><br></code></pre></td></tr></table></figure>
+
+<p>正是因为这样的写法，允许等号右侧是任意合法的表达式，而等号左侧总是可以根据表达式类别，推演出合适的引用类型。所以这种写法被称做<strong>万能引用</strong>。</p>
+<p>其中，我们可以清晰的看出，虽然 <code>ref</code> 和 <code>rref</code> 分别被定义为<strong>左值引用</strong>和<strong>右值引用</strong>，但它们做为左值来讲，是等价的。都是左值引用。具体可参考<strong>右值引用变量</strong>。</p>
+<h3 id="5-5-初始化列表"><a href="#5-5-初始化列表" class="headerlink" title="5.5 初始化列表"></a>5.5 初始化列表</h3><p>由于初始化列表不是一个表达式，因而类型也就无从谈起。所以 C++14 对其做了特殊的规定：</p>
+<p>如果使用<strong>直接初始化</strong>（不用等号）的方式，比如：<code>auto i&#123;1&#125;</code> ，则初始化列表只允许有一个元素，其等价于 <code>auto i = 1</code>； 如果初始化列表超过一个元素，比如 <code>auto j&#123;1,2&#125;</code> ，则编译失败。</p>
+<p>如果使用<strong>拷贝初始化</strong>（用等号）的方式，比如：<code>auto v = &#123;1, 2&#125;</code>，则初始化列表允许有多个同一类型的元素。其等价于 <code>std::initializer_list&lt;int&gt; v = &#123;1, 2&#125;</code> 。而 <code>auto v = &#123;1&#125;</code> 则等价于 <code>std::initializer_list&lt;int&gt; v = &#123;1&#125;</code>。</p>
+<h3 id="5-6-decltype-auto"><a href="#5-6-decltype-auto" class="headerlink" title="5.6 decltype(auto)"></a>5.6 decltype(auto)</h3><p>由于 <code>auto</code> 推演总是会丢弃<strong>引用</strong>及 <code>const</code> 信息，明确给出<strong>引用</strong>又总是得到一个引用。明确给出 <code>const</code>，则总是得到一个 <code>const</code> 类型。这对于想精确遵从等号后面类型的情况非常不便，尤其在进行泛型编程时，很难通过 <code>auto</code> 符合通用的情况。</p>
+<p>而 <code>decltype</code> 恰恰相反，它总是能准确捕捉右侧表达式的类型（参见 <code>decltype</code> ）。因而，我们可以这样写：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs cpp">      Foo   foo &#123;<span class="hljs-number">1</span>&#125;;<br><span class="hljs-type">const</span> Foo&amp;  ref  = foo;<br>      Foo&amp;&amp; rref = Foo&#123;<span class="hljs-number">2</span>&#125;;<br>      <span class="hljs-type">int</span>   a    = <span class="hljs-number">0</span>;<br><br><span class="hljs-keyword">decltype</span>(foo)    v1 = foo;   <span class="hljs-comment">// Foo</span><br><span class="hljs-keyword">decltype</span>((foo))  v2 = foo;   <span class="hljs-comment">// Foo&amp;</span><br><span class="hljs-keyword">decltype</span>(ref)    v3 = ref;   <span class="hljs-comment">// const Foo&amp;</span><br><span class="hljs-keyword">decltype</span>(rref)   v4 = rref;  <span class="hljs-comment">// Foo&amp;&amp;</span><br><span class="hljs-keyword">decltype</span>((rref)) v5 = rref;  <span class="hljs-comment">// Foo&amp;</span><br><span class="hljs-keyword">decltype</span>(<span class="hljs-number">1</span>+<span class="hljs-number">2</span>)    v6 = <span class="hljs-number">1</span> + <span class="hljs-number">2</span>; <span class="hljs-comment">// int</span><br><br><span class="hljs-keyword">decltype</span>((a &gt; <span class="hljs-number">0</span> ? Foo&#123;<span class="hljs-number">0</span>&#125;.a : Foo&#123;<span class="hljs-number">1</span>&#125;.a)) v7 = \<br>   a &gt; <span class="hljs-number">0</span> ? Foo&#123;<span class="hljs-number">0</span>&#125;.a : Foo&#123;<span class="hljs-number">1</span>&#125;.a; <span class="hljs-comment">// int&amp;&amp;</span><br></code></pre></td></tr></table></figure>
+
+<p>但这样的写法，总是要把右边的表达式在 <code>decltype</code> 里重复写一遍，才能做到。到了 C++14 ，推出了一种新的写法：<code>decltype(auto)</code>，其中 <code>auto</code> 是一个自动占位符，代表等号右侧的表达式，这就大大简化了程序员的工作：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">decltype</span>(<span class="hljs-keyword">auto</span>) v1 = foo;    <span class="hljs-comment">// Foo</span><br><span class="hljs-keyword">decltype</span>(<span class="hljs-keyword">auto</span>) v2 = (foo);  <span class="hljs-comment">// Foo&amp;</span><br><span class="hljs-keyword">decltype</span>(<span class="hljs-keyword">auto</span>) v7 = (a &gt; <span class="hljs-number">0</span> ? Foo&#123;<span class="hljs-number">0</span>&#125;.a : Foo&#123;<span class="hljs-number">1</span>&#125;.a); <span class="hljs-comment">// int&amp;&amp;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-7-函数返回值类型的自动推演"><a href="#5-7-函数返回值类型的自动推演" class="headerlink" title="5.7 函数返回值类型的自动推演"></a>5.7 函数返回值类型的自动推演</h3><p>到了 C++14 之后，对于普通函数的返回值自动推演，可以通过 <code>auto</code> 来完成，比如：</p>
+<p><code>auto f() &#123; return Foo&#123;1&#125;.a; &#125; // 返回值类型为int</code></p>
+<p>当然，如果希望返回值类型运用 <code>decltype</code> 规则，则可以用 <code>decltype(auto)</code> 。比如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> -&gt; <span class="hljs-keyword">decltype</span>(<span class="hljs-keyword">auto</span>) </span>&#123; <span class="hljs-comment">// 返回值为 int&amp;&amp;</span><br>  <span class="hljs-keyword">return</span> (Foo&#123;<span class="hljs-number">1</span>&#125;.a);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-8-非类型模版参数"><a href="#5-8-非类型模版参数" class="headerlink" title="5.8 非类型模版参数"></a>5.8 非类型模版参数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">auto</span> V&gt;<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">C</span> &#123;<br>   <span class="hljs-comment">// ....</span><br>&#125;;<br><br>C&lt;<span class="hljs-number">10</span>&gt;   a; <span class="hljs-comment">// C&lt;int&gt;</span><br>C&lt;<span class="hljs-string">&#x27;c&#x27;</span>&gt;  b; <span class="hljs-comment">// C&lt;char&gt;</span><br>C&lt;<span class="hljs-literal">true</span>&gt; c; <span class="hljs-comment">// C&lt;bool&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-9-函数模版的便捷写法"><a href="#5-9-函数模版的便捷写法" class="headerlink" title="5.9 函数模版的便捷写法"></a>5.9 函数模版的便捷写法</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T1, <span class="hljs-keyword">typename</span> T2&gt;<br><span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">add</span><span class="hljs-params">(T1 lhs, T2 rhs)</span> </span>&#123;<br>   <span class="hljs-keyword">return</span> lhs + rhs;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>到了 C++20 ，允许让普通函数可以有更加便捷的写法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-keyword">auto</span> lhs, <span class="hljs-keyword">auto</span> rhs)</span> </span>&#123;<br>   <span class="hljs-keyword">return</span> lhs + rhs;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>当然，如果你想指明两个参数属于同一种类型，但另外的参数没有这样的约束，则仍然需要写模版头：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">f</span><span class="hljs-params">(T a, <span class="hljs-keyword">auto</span> b, T c, <span class="hljs-keyword">auto</span> d)</span></span>; <span class="hljs-comment">// a, c 必须同一类型，b, d 各自有各自类型</span><br></code></pre></td></tr></table></figure>
+
+<p>其等价于：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T, <span class="hljs-keyword">typename</span> T1, <span class="hljs-keyword">typename</span> T2&gt;<br><span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">f</span><span class="hljs-params">(T a, T1 b, T c, T2 d)</span></span>;<br></code></pre></td></tr></table></figure>
+
+<p><em>本文摘自博客：<a target="_blank" rel="noopener" href="https://modern-cpp.readthedocs.io/zh_CN/latest/index.html">https://modern-cpp.readthedocs.io/zh_CN/latest/index.html</a></em></p>
 
                 
               </div>
@@ -1058,6 +1183,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2023/10/25/modern-cpp-programming-cookbook/09_%E9%B2%81%E6%A3%92%E6%80%A7%E5%92%8C%E6%80%A7%E8%83%BD/00_%E6%A6%82%E8%BF%B0/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
