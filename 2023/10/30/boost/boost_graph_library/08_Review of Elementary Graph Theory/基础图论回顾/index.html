@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/boost/graph-theory.jpg">
 <meta property="article:published_time" content="2023-10-29T22:16:26.000Z">
-<meta property="article:modified_time" content="2023-10-30T07:56:39.617Z">
+<meta property="article:modified_time" content="2023-10-30T07:58:11.036Z">
 <meta property="article:author" content="QiDianMaker">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="Boost">
@@ -763,7 +763,7 @@
 <p>$w(T) &#x3D; T 中所有边 (u,v) 的权重 w(u, v) 的和$</p>
 <p>$T$ 被称为最小生成树。</p>
 <h3 id="最短路径算法"><a href="#最短路径算法" class="headerlink" title="最短路径算法"></a>最短路径算法</h3><p>图论中的经典问题之一是找到图中两个顶点之间的最短路径。形式上，路径是图 $G &#x3D; (V, E)$ 中的一系列顶点 $&lt;v0,v1,…,vk&gt;$，使得每个顶点都连接到序列中的下一个顶点（边 $(vi,vi +1)$ 对于 i&#x3D;0,1,…,k-1 位于边集 $E$） 中。在最短路径问题中，每条边都被赋予实值权重。因此我们可以讨论路径的权重</p>
-<p>w(p) &#x3D; sum of w(vi-1,vi) for i&#x3D;1..k</p>
+<p>$w(p) &#x3D; sum of w(vi-1,vi) for i&#x3D;1..k$</p>
 <p>从顶点 $u$ 到 $v$ 的最短路径权重为</p>
 <p>$delta (u,v) &#x3D; min { w(p) : u –&gt; v } if there is a path from u to v$<br>$delta (u,v) &#x3D; infinity otherwise$</p>
 <p>最短路径是路径权重等于最短路径权重的任何路径。最短路径问题有多种变体。 上面我们定义了单对问题，但还存在单源问题（图中从一个顶点到每个其他顶点的所有最短路径）、等效的单目的地问题和全对问题。事实证明，解决单对问题的算法没有比解决单源问题的算法渐近更快的。</p>
