@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/cpp-template/index.png">
 <meta property="article:published_time" content="2023-08-08T20:31:07.000Z">
-<meta property="article:modified_time" content="2023-08-15T13:02:43.556Z">
+<meta property="article:modified_time" content="2023-08-15T01:30:02.734Z">
 <meta property="article:author" content="QiDianMaker">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="特性">
@@ -391,7 +391,7 @@
         aria-expanded="true"
       >
         技术
-        <span class="list-group-count">(17)</span>
+        <span class="list-group-count">(19)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
@@ -418,7 +418,7 @@
         aria-expanded="true"
       >
         C++
-        <span class="list-group-count">(15)</span>
+        <span class="list-group-count">(17)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
@@ -527,7 +527,7 @@
         aria-expanded="true"
       >
         翻译
-        <span class="list-group-count">(9)</span>
+        <span class="list-group-count">(11)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
@@ -538,6 +538,24 @@
           
   <div class="category-post-list">
     
+    
+      
+      
+        <a href="/2023/11/01/boost/boost_graph_library/09_Boost%20Graph%20Library%20Tutorial/9.1_%E5%B1%9E%E6%80%A7%E6%98%A0%E5%B0%84/" title="9.1 属性映射"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">9.1 属性映射</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/11/01/boost/boost_graph_library/09_Boost%20Graph%20Library%20Tutorial/9.2_adjacency_list%E7%B1%BB/" title="9.1 属性映射"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">9.1 属性映射</span>
+        </a>
+      
     
       
       
@@ -725,7 +743,7 @@
             
               <div class="markdown-body">
                 
-                <h4 id=""><a href="#" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch00/" title="">前言</a></h4><h3 id="第-1-部分-基础概念"><a href="#第-1-部分-基础概念" class="headerlink" title="第 1 部分 基础概念"></a>第 1 部分 基础概念</h3><hr>
+                <h4 id=""><a href="#" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch00/" title="">前言</a></h4><h3 id="第-1-部分-基础概念"><a href="#第-1-部分-基础概念" class="headerlink" title="第 1 部分 基础概念"></a>第 1 部分 基础概念</h3><hr>
 <p>本部分将会介绍 C++ 模板的一些基础概念和语言特性。将会通过函数模板和类模板的例子来讨论模板的目的和概念。然后会继续介绍一些其他的模板特性，比如非类型模板参数（nontype template parameters），变参模板（variadic templates），typename 关键字和成员模板（member templates）。也会讨论如何处理移动语义（move semantics），如何声明模板参数，以及如何使用泛型代码实现可以在编译阶段执行的程序（compile-time programming）。在结尾处我们会针对一些术语和模板在实际中的应用，给应用开发工程师和泛型库的开发者们提供一些建议。</p>
 <p><strong>为什么要使用模板？</strong></p>
 <p>C++ 要求我们要用特定的类型来声明变量，函数以及其他一些内容。这样很多代码可能就只是处理的变量类型有所不同。比如对不同的数据类型，快速排序的算法实现在结构上可能完全一样，不管是对整型的数组，还是字符串类型的向量（vector），只要他们所包含的内容之间可以相互比较。</p>
@@ -743,7 +761,7 @@
 </ol>
 <p>而模板这一方案就不会有这些问题。模板是为了一种或者多种未明确定义的类型而定义的函数或者类。在使用模板时，需要显式地或者隐式地指定模板参数。由于模板是 C++ 的语言特性，类型和作用域检查将依然得到支持。</p>
 <p>目前模板正在被广泛使用。比如在 C++ 标准库中，几乎所有的代码都用到了模板。标准库提供了一些排序算法来排序某种特定类型的值或者对象，也提供类一些数据结构（亦称容器）来维护某种特定类型的元素，对于字符串而言，这一“特定类型”指的就是“字符”。当然这只是最基础的功能。模板还允许我们参数化函数或者类的行为，优化代码以及参数化其他信息。这些高级特性会在后面某些章节介绍，我们接下来将先从一些简单模板开始介绍。</p>
-<h4 id="-1"><a href="#-1" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch01/" title="">第 1 章 函数模板</a></h4><h4 id="-2"><a href="#-2" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch02/" title="">第 2 章 类模板</a></h4><h4 id="-3"><a href="#-3" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch03/" title="">第 3 章 非类型模板参数</a></h4><h4 id="-4"><a href="#-4" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch04/" title="">第 4 章 可变参数模板</a></h4><h4 id="-5"><a href="#-5" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch05/" title="">第 5 章 基础技术</a></h4><h4 id="-6"><a href="#-6" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch06/" title="第 6 章 移动语义与 enable_if()">第 6 章 移动语义与 enable_if()</a></h4><h4 id="-7"><a href="#-7" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch07/" title="">第 7 章 按值传递还是按引用传递？</a></h4><h4 id="-8"><a href="#-8" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch08/" title="">第 8 章 编译期编程</a></h4><h4 id="-9"><a href="#-9" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch09/" title="">第 9 章 在实战中使用模板</a></h4><h4 id="-10"><a href="#-10" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch10/" title="">第 10 章 基础模板术语</a></h4><h4 id="-11"><a href="#-11" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch11/" title="">第 11 章 泛型库</a></h4><h3 id="第-2-部分-深入模板"><a href="#第-2-部分-深入模板" class="headerlink" title="第 2 部分 深入模板"></a>第 2 部分 深入模板</h3><hr>
+<h4 id="-1"><a href="#-1" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch01/" title="">第 1 章 函数模板</a></h4><h4 id="-2"><a href="#-2" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch02/" title="">第 2 章 类模板</a></h4><h4 id="-3"><a href="#-3" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch03/" title="">第 3 章 非类型模板参数</a></h4><h4 id="-4"><a href="#-4" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch04/" title="">第 4 章 可变参数模板</a></h4><h4 id="-5"><a href="#-5" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch05/" title="">第 5 章 基础技术</a></h4><h4 id="-6"><a href="#-6" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch06/" title="第 6 章 移动语义与 enable_if()">第 6 章 移动语义与 enable_if()</a></h4><h4 id="-7"><a href="#-7" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch07/" title="">第 7 章 按值传递还是按引用传递？</a></h4><h4 id="-8"><a href="#-8" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch08/" title="">第 8 章 编译期编程</a></h4><h4 id="-9"><a href="#-9" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch09/" title="">第 9 章 在实战中使用模板</a></h4><h4 id="-10"><a href="#-10" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch10/" title="">第 10 章 基础模板术语</a></h4><h4 id="-11"><a href="#-11" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch11/" title="">第 11 章 泛型库</a></h4><h3 id="第-2-部分-深入模板"><a href="#第-2-部分-深入模板" class="headerlink" title="第 2 部分 深入模板"></a>第 2 部分 深入模板</h3><hr>
 <p>本书的第一部分提供了基于 C++ 模板的大部分语法概念的解读，这足以对日常 C++ 编程所能遇到的问题进行解答。本书的第二部分提供了一个参考，旨在回答在推动语言发展过程中实现某些高级软件效果时遇到的更不寻常的问题。如果需要，您可以在初读时跳过此部分，并根据后面各章中的引用提示或在索引中查找某个概念时返回特定主题。</p>
 <p>我们的目标是在清楚和完整的前提下，保持讨论的简洁性。为此，示例都很简短，通常也有些虚假。这也确保了我们不会错开手头的话题而陷入到无关的议题中。</p>
 <p>此外，我们还前瞻了 C++ 模板语言特性未来的变化与扩展。这一部分的议题包含以下内容：</p>
@@ -755,8 +773,8 @@
 <li>特化与重载</li>
 <li>未来的可能性</li>
 </ul>
-<h4 id="-12"><a href="#-12" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch12/" title="">第 12 章 深入模板基础</a></h4><h4 id="-13"><a href="#-13" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch13/" title="">第 13 章 模板中的名称</a></h4><h4 id="-14"><a href="#-14" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch14/" title="">第 14 章 实例化</a></h4><h4 id="-15"><a href="#-15" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch15/" title="">第 15 章 模板实参推导</a></h4><h4 id="-16"><a href="#-16" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch16/" title="">第 16 章 特化和重载</a></h4><h4 id="-17"><a href="#-17" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch17/" title="">第 17 章 未来发展方向</a></h4><h3 id="第-3-部分-模板和设计"><a href="#第-3-部分-模板和设计" class="headerlink" title="第 3 部分 模板和设计"></a>第 3 部分 模板和设计</h3><hr>
-<h4 id="-18"><a href="#-18" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch18/" title="">第 18 章 模板的多态性</a></h4><h4 id="-19"><a href="#-19" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch19/" title="">第 19 章 Trait 的实现</a></h4><h4 id="-20"><a href="#-20" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch20/" title="">第 20 章 类型属性上的重载</a></h4><h4 id="-21"><a href="#-21" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch21/" title="">第 21 章 模板和继承</a></h4><h4 id="-22"><a href="#-22" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch22/" title="">第 22 章 桥接静态和动态多态性</a></h4><h4 id="-23"><a href="#-23" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch23/" title="">第 23 章 元编程</a></h4><h4 id="-24"><a href="#-24" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch24/" title="">第 24 章 类型列表</a></h4><h4 id="-25"><a href="#-25" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch25/" title="">第 25 章 元组</a></h4><h4 id="-26"><a href="#-26" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch26/" title="">第 26 章 可识别的联合</a></h4><h4 id="-27"><a href="#-27" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch27/" title="">第 27 章 表达式模板</a></h4><h4 id="-28"><a href="#-28" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch28/" title="">第 28 章 调试模板</a></h4><h4 id="-29"><a href="#-29" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch29/" title="">附录</a></h4><h4 id="-30"><a href="#-30" class="headerlink" title=""></a><a href="/2023/08/11/cpp-template-ch/cpp-template-ch30/" title="">参考文献</a></h4>
+<h4 id="-12"><a href="#-12" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch12/" title="">第 12 章 深入模板基础</a></h4><h4 id="-13"><a href="#-13" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch13/" title="">第 13 章 模板中的名称</a></h4><h4 id="-14"><a href="#-14" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch14/" title="">第 14 章 实例化</a></h4><h4 id="-15"><a href="#-15" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch15/" title="">第 15 章 模板实参推导</a></h4><h4 id="-16"><a href="#-16" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch16/" title="">第 16 章 特化和重载</a></h4><h4 id="-17"><a href="#-17" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch17/" title="">第 17 章 未来发展方向</a></h4><h3 id="第-3-部分-模板和设计"><a href="#第-3-部分-模板和设计" class="headerlink" title="第 3 部分 模板和设计"></a>第 3 部分 模板和设计</h3><hr>
+<h4 id="-18"><a href="#-18" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch18/" title="">第 18 章 模板的多态性</a></h4><h4 id="-19"><a href="#-19" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch19/" title="">第 19 章 Trait 的实现</a></h4><h4 id="-20"><a href="#-20" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch20/" title="">第 20 章 类型属性上的重载</a></h4><h4 id="-21"><a href="#-21" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch21/" title="">第 21 章 模板和继承</a></h4><h4 id="-22"><a href="#-22" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch22/" title="">第 22 章 桥接静态和动态多态性</a></h4><h4 id="-23"><a href="#-23" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch23/" title="">第 23 章 元编程</a></h4><h4 id="-24"><a href="#-24" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch24/" title="">第 24 章 类型列表</a></h4><h4 id="-25"><a href="#-25" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch25/" title="">第 25 章 元组</a></h4><h4 id="-26"><a href="#-26" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch26/" title="">第 26 章 可识别的联合</a></h4><h4 id="-27"><a href="#-27" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch27/" title="">第 27 章 表达式模板</a></h4><h4 id="-28"><a href="#-28" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch28/" title="">第 28 章 调试模板</a></h4><h4 id="-29"><a href="#-29" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch29/" title="">附录</a></h4><h4 id="-30"><a href="#-30" class="headerlink" title=""></a><a href="/2023/08/15/cpp-template-ch/cpp-template-ch30/" title="">参考文献</a></h4>
                 
               </div>
             
@@ -838,7 +856,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>更新于</div>
-          <div>2023年8月15日</div>
+          <div>2023年8月14日</div>
         </div>
       
       
