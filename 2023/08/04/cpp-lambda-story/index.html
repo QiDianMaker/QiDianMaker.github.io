@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/cpp-lambda-story/index.png">
 <meta property="article:published_time" content="2023-08-03T23:30:29.000Z">
-<meta property="article:modified_time" content="2023-08-15T01:30:03.764Z">
+<meta property="article:modified_time" content="2025-05-31T04:57:50.162Z">
 <meta property="article:author" content="QiDianMaker">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="特性">
@@ -322,7 +322,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          35k 字
+          39k 字
         
       </span>
     
@@ -333,7 +333,7 @@
         
         
         
-          295 分钟
+          323 分钟
         
       </span>
     
@@ -891,7 +891,39 @@
 <h3 id="捕获"><a href="#捕获" class="headerlink" title="捕获"></a>捕获</h3><p>方括号 [] 不仅引导了 Lambda而且还保存了捕获变量的列表。因此，它也被称作“捕获子句”。</p>
 <p>通过从 lambda 外部作用域捕获一个变量， 你为闭包类型创建了一个非静态数据成员。进而在 lambda 主体内部，你可以访问到它。</p>
 <p>在 C++98&#x2F;03 章节，我们为 Printer 函数对象做了相似的事情。在那个类里，我添加了一个 std::string 类型的数据成员 strText 并在构造函<br>数中做了初始化。可调用对象拥有一个数据成员使我们能够保存它的状态。</p>
-<p>C++11 中的捕获语法是这样的：<br>| 语法 | 描述 |<br>|  |  |<br>| [&amp;]    |   通过引用捕获在到达作用域中声明的所有自动存储持续时间变量     |<br>| [&#x3D;] | 按值捕获(创建副本)在到达范围中声明的所有自动存储持续时间变量 |<br>| [x, &amp;y] | 通过值显式捕获x，通过引用显式捕获y |<br>| [args…] | 按值捕获模板参数包 |<br>| [&amp;args…] | 按引用捕获模板参数包 |<br>| this | 捕获成员函数内部的this指针 |</p>
+<p>C++11 中的捕获语法是这样的：</p>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>[&amp;]</code></td>
+<td>通过引用捕获在到达作用域中声明的所有自动存储持续时间变量</td>
+</tr>
+<tr>
+<td><code>[=]</code></td>
+<td>按值捕获(创建副本)在到达范围中声明的所有自动存储持续时间变量</td>
+</tr>
+<tr>
+<td><code>[x, &amp;y]</code></td>
+<td>通过值显式捕获x，通过引用显式捕获 y</td>
+</tr>
+<tr>
+<td><code>[args...]</code></td>
+<td>按值捕获模板参数包</td>
+</tr>
+<tr>
+<td><code>[&amp;args...]</code></td>
+<td>按引用捕获模板参数包</td>
+</tr>
+<tr>
+<td><code>[this]</code></td>
+<td>捕获成员函数内部的 this 指针</td>
+</tr>
+</tbody></table>
 <p>请注意，对于 [&#x3D;] 和 [&amp;] 情况，编译器会为 lambda 主体内所有使用的变量生成数据成员。这是一种方便的语法，您不需要显式提及捕获的变量。</p>
 <p>下面是基本语法的总结和示例：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-type">int</span> x = <span class="hljs-number">2</span>, y = <span class="hljs-number">3</span>;<br><span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> l1 = []() &#123; <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>; &#125;; <span class="hljs-comment">// 无捕获</span><br><span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> l2 = [=]() &#123; <span class="hljs-keyword">return</span> x; &#125;; <span class="hljs-comment">// lambda 中使用的所有变量都会被复制</span><br><span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> l3 = [&amp;]() &#123; <span class="hljs-keyword">return</span> y; &#125;; <span class="hljs-comment">// lambda 中使用的所有变量都会被引用</span><br><span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> l4 = [x]() &#123; <span class="hljs-keyword">return</span> x; &#125;; <span class="hljs-comment">// 仅通过值捕获 x (复制)</span><br><span class="hljs-comment">// const auto lx = [=x]() &#123; return x; &#125;; // 语法错误，显示复制 x 不需要 =</span><br><span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> l5 = [&amp;y]() &#123; <span class="hljs-keyword">return</span> y; &#125;; <span class="hljs-comment">// 仅通过引用捕获 y</span><br><span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> l6 = [x, &amp;y]() &#123; <span class="hljs-keyword">return</span> x * y; &#125;; <span class="hljs-comment">// x 值捕获 y 引用捕获</span><br><span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> l7 = [=, &amp;x]() &#123; <span class="hljs-keyword">return</span> x + y; &#125;; <span class="hljs-comment">// x 以引用捕获，除此之外都以值捕获</span><br><span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> l8 = [&amp;, y]() &#123; <span class="hljs-keyword">return</span> x - y; &#125;; <span class="hljs-comment">// y 以值捕获，除此之外都以引用捕获</span><br></code></pre></td></tr></table></figure>
@@ -1147,11 +1179,61 @@
 </ul>
 <h3 id="Lambda-的默认参数"><a href="#Lambda-的默认参数" class="headerlink" title="Lambda 的默认参数"></a>Lambda 的默认参数</h3><p>让我们从一些较小的更新开始：</p>
 <p>在 C++14 中，可以在函数调用中使用默认参数。这是一个小功能，但可以使 lambda 更像一个常规函数。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// Ex3_1: Lambda with Default Parameter.</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> lam = [](<span class="hljs-type">int</span> x = <span class="hljs-number">10</span>) &#123; std::cout &lt;&lt; x &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>; &#125;;<br>    <span class="hljs-built_in">lam</span>();<br>    <span class="hljs-built_in">lam</span>(<span class="hljs-number">100</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// Ex3_1: Lambda with Default Parameter.</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> lam = [](<span class="hljs-type">int</span> x = <span class="hljs-number">10</span>) &#123; std::cout &lt;&lt; x &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>; &#125;;<br>    <span class="hljs-built_in">lam</span>();<br>    <span class="hljs-built_in">lam</span>(<span class="hljs-number">100</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>在上例中，我们调用了 lambda 两次。第一次没有传入任何参数，因此它使用了默认值 <code>x = 10</code>。第二次我们传入了 100。</p>
 <p>有趣的是 GCC 和 CLang 编译器早在 C++11 时就支持该特性了。</p>
-<h3 id="返回类型推导"><a href="#返回类型推导" class="headerlink" title="返回类型推导"></a>返回类型推导</h3>
+<h3 id="返回类型推导"><a href="#返回类型推导" class="headerlink" title="返回类型推导"></a>返回类型推导</h3><p>如之前章节所述，简单 lambda 表达式的返回类型可由编译器自动推导。C++14 将这一特性扩展至常规函数，允许使用 auto 作为返回类型：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">myFunction</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">const</span> <span class="hljs-type">int</span> x = <span class="hljs-built_in">computeX</span>(...);<br>    <span class="hljs-type">const</span> <span class="hljs-type">int</span> y = <span class="hljs-built_in">computeY</span>(...);<br>    <span class="hljs-keyword">return</span> x + y;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>对于以上代码，编译器将会推导出 <code>int</code> 作为返回类型。</p>
+<p>对于 lambda 表达式而言，C++14 意味着它们遵循与 auto 返回类型函数相同的规则。我们查看标准文档 [expr.prim.lambda#4] 中的定义：</p>
+<blockquote>
+<p>lambda表达式的返回类型为 auto —— 若提供了尾置返回类型 (trailing-return-type)，则替换该 auto 类型；否则按 [dcl.spec.auto] 章节所述，通过 return 语句推导返回类型。</p>
+</blockquote>
+<p>当存在多个 return 语句时，所有语句必须推导出相同的类型。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">auto</span> foo = [] (<span class="hljs-type">int</span> x) &#123;<br>    <span class="hljs-keyword">if</span> (x &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> x * <span class="hljs-number">1.1f</span>; <span class="hljs-comment">// float!</span><br>    <span class="hljs-keyword">return</span> x * <span class="hljs-number">2.1</span>;<span class="hljs-comment">// double!</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>上述代码无法通过编译：第一个 <code>return</code> 语句返回 <code>float</code> 类型，而第二个返回 <code>double</code> 类型。编译器无法自行裁决，必须由开发者明确指定单一返回类型。</p>
+<p>虽然数值类型（如整型&#x2F;浮点型）的自动推导有其便利性，但返回类型推导的真正价值体现在更重要的场景中。该特性在模板编程和处理”未知类型”时具有关键作用。</p>
+<p>例如，Lambda 闭包类型本身是匿名类型，我们无法在代码中显式声明。若需要从函数返回一个lambda，该如何指定返回类型？在 C++14 之前，只能通过 <code>std::function</code> 实现：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// Ex3_2: Returning std::function.</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;functional&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-function">std::function&lt;<span class="hljs-title">int</span><span class="hljs-params">(<span class="hljs-type">int</span>)</span>&gt; <span class="hljs-title">CreateMulLambda</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>&#123;<br>    <span class="hljs-keyword">return</span> [x](<span class="hljs-type">int</span> param) <span class="hljs-keyword">noexcept</span> &#123; <span class="hljs-keyword">return</span> x * param; &#125;;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> lam = <span class="hljs-built_in">CreateMulLambda</span>(<span class="hljs-number">10</span>);<br>    <br>    std::cout &lt;&lt; <span class="hljs-built_in">sizeof</span>(lam);<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">lam</span>(<span class="hljs-number">2</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>然而，上述解决方案并不简洁。它要求开发者显式指定函数签名，甚至需要额外包含 <code>&lt;functional&gt;</code> 头文件。如果你回顾 C++11 章节的内容，<code>std::function</code> 是一个重型对象（在 GCC 9 中 <code>sizeof</code> 显示为 32 字节），它需要复杂的内部机制才能处理任意可调用对象。</p>
+<p>得益于 C++14 的改进，我们现在可以简化代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs C++"># Ex3_3: Auto <span class="hljs-keyword">return</span> type deduction <span class="hljs-keyword">for</span> lambdas.<br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-keyword">auto</span> <span class="hljs-built_in">CreateMulLambda</span>(<span class="hljs-type">int</span> x) <span class="hljs-keyword">noexcept</span> &#123;<br>    <span class="hljs-keyword">return</span> [x](<span class="hljs-type">int</span> param) <span class="hljs-keyword">noexcept</span> &#123; <span class="hljs-keyword">return</span> x * param; &#125;;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> lam = <span class="hljs-built_in">CreateMulLambda</span>(<span class="hljs-number">10</span>);<br><br>    std::cout &lt;&lt; <span class="hljs-built_in">sizeof</span>(lam);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">lam</span>(<span class="hljs-number">2</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>现在我们可以完全依赖编译时类型推导，无需任何辅助类型。在 GCC 中，lambda 表达式的大小 <code>sizeof(lam)</code> 仅为 4 字节，其开销远低于 <code>std::function</code> 方案。请注意，由于该函数不可能抛出任何异常，我们还可以将 <code>CreateMulLambda</code> 标记为 <code>noexcept</code> ——而返回 <code>std::function</code> 时则无法做到这一点。</p>
+<h3 id="带初始化器的捕获​"><a href="#带初始化器的捕获​" class="headerlink" title="带初始化器的捕获​"></a>带初始化器的捕获​</h3><p>现在带来更重要的更新！<br>如您所知，lambda 表达式可以捕获外部作用域的变量。编译器会展开捕获语法，在闭包类型中创建对应的非静态数据成员。</p>
+<p>在 C++14 中，您可以直接在捕获子句中初始化新的数据成员，随后在 lambda 函数体内访问这些变量。此特性被称为：​带初始化器的捕获​​（capture with an initialiser）或​​广义 lambda 捕获​​（generalised lambda capture）。</p>
+<p>例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// Ex3_4: Capture With an Initialiser. </span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">int</span> x = <span class="hljs-number">30</span>;<br>    <span class="hljs-type">int</span> y = <span class="hljs-number">12</span>;<br>    <span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> foo = [z = x+y]() &#123; std::cout &lt;&lt; z &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>; &#125;;<br>    x = <span class="hljs-number">0</span>;<br>    y = <span class="hljs-number">0</span>;<br>    <span class="hljs-built_in">foo</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>输出：42</p>
+<p>在上面的例子中，编译器会生成一个新的数据成员并用 x + y 初始化它。这个新变量的类型推导方式，等同于在该变量前使用 auto 关键字。例如：</p>
+<p><code>auto z = x + y;</code></p>
+<p>总结来说，前例中的 lambda 表达式会被解析为以下（简化后的）可调用类型：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">_unnamedLambda</span> &#123;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123;<br>        std::cout &lt;&lt; z &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;<br>    &#125;<br>    <span class="hljs-type">int</span> z;<br>&#125; someInstance;<br></code></pre></td></tr></table></figure>
+
+<p>当 lambda 表达式被定义时，z 会被直接初始化（使用 x + y 的值）。<br>请牢记：新变量是在定义 lambda 时初始化，而非调用时初始化。</p>
+<p>因此，如果在创建 lambda 后修改 x 或 y 的值，变量 z 不会改变。在示例中可以看到，即便在定义 lambda 后立即修改了 x 和 y 的值，输出仍然是 42，因为 z 早已完成初始化。</p>
+<p>通过初始化器创建变量非常灵活，例如您还可以创建对外部作用域变量的引用。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// Ex3_5: Reference as Capture With an Initialiser. </span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">int</span> x = <span class="hljs-number">30</span>;<br>    <span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> foo = [&amp;z = x]() &#123; std::cout &lt;&lt; z &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>; &#125;;<br>    <span class="hljs-built_in">foo</span>();<br>    x = <span class="hljs-number">0</span>;<br>    <span class="hljs-built_in">foo</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这一次，变量 z 是 x 的引用。它的创建方式等同于这样写：</p>
+<p><code>auto &amp;z = x;</code></p>
+<p>如果你运行这个例子，会看到第一行输出 30，但第二行显示 0。这是因为我们捕获的是引用，所以当你修改被引用的变量时，z 对象的值也会随之改变。</p>
+<h4 id="限制条件"><a href="#限制条件" class="headerlink" title="限制条件"></a>限制条件</h4><p>需要注意的是，虽然可以通过初始化器捕获引用，但不能使用右值引用 &amp;&amp; 语法。因此以下代码是无效的：</p>
+<p><code>[&amp;&amp;z = x] // 无效语法！</code></p>
+<p>该特性的另一个限制是不支持参数包。请参考标准文档 [expr.prim.lambda] 第 24 节中的说明：</p>
+<blockquote>
+<p>简单捕获后接省略号属于包展开（[temp.variadic]）。而初始化捕获后接省略号的语法是 ill-formed（非法的）。</p>
+</blockquote>
+<p>换句话说，在 C++14 中，你无法写出：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span>... Args&gt;<br><span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">captureTest</span><span class="hljs-params">(Args... args)</span> </span>&#123;<br>    <span class="hljs-keyword">return</span> lambda = [...capturedArgs = std::<span class="hljs-built_in">move</span>(args)]()&#123;&#125;;<br>    <span class="hljs-comment">// ...</span><br></code></pre></td></tr></table></figure>
+
+<p>不过，这一语法将在 C++20 中成为可能，具体可参见本标准文档第 114 页的相关章节。</p>
+<h4 id="现有问题的改进"><a href="#现有问题的改进" class="headerlink" title="现有问题的改进"></a>现有问题的改进</h4><h5 id="移动"><a href="#移动" class="headerlink" title="移动"></a>移动</h5><h5 id="std-function-的一个陷阱​"><a href="#std-function-的一个陷阱​" class="headerlink" title="std::function 的一个陷阱​"></a><code>std::function</code> 的一个陷阱​</h5><h5 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h5><h5 id="捕获类的数据成员"><a href="#捕获类的数据成员" class="headerlink" title="捕获类的数据成员"></a>捕获类的数据成员</h5><h3 id="泛型-Lambda"><a href="#泛型-Lambda" class="headerlink" title="泛型 Lambda"></a>泛型 Lambda</h3><h4 id="可变泛型参数"><a href="#可变泛型参数" class="headerlink" title="可变泛型参数"></a>可变泛型参数</h4><h4 id="泛型-Lambda-的完美转发​"><a href="#泛型-Lambda-的完美转发​" class="headerlink" title="泛型 Lambda 的完美转发​"></a>泛型 Lambda 的完美转发​</h4><h4 id="正确类型的推导​"><a href="#正确类型的推导​" class="headerlink" title="正确类型的推导​"></a>正确类型的推导​</h4><h3 id="使用-Lambdas-替代-std-bind1st-和-std-bind2nd"><a href="#使用-Lambdas-替代-std-bind1st-和-std-bind2nd" class="headerlink" title="使用 Lambdas 替代 std::bind1st 和 std::bind2nd"></a>使用 Lambdas 替代 <code>std::bind1st</code> 和 <code>std::bind2nd</code></h3><h4 id="使用现代-C-技术"><a href="#使用现代-C-技术" class="headerlink" title="使用现代 C++ 技术"></a>使用现代 C++ 技术</h4><h4 id="函数组合"><a href="#函数组合" class="headerlink" title="函数组合"></a>函数组合</h4><h3 id="基于-Lambda-的-LIFT-技术​"><a href="#基于-Lambda-的-LIFT-技术​" class="headerlink" title="基于 Lambda 的 LIFT 技术​"></a>基于 Lambda 的 LIFT 技术​</h3><h3 id="递归-Lambda"><a href="#递归-Lambda" class="headerlink" title="递归 Lambda"></a>递归 Lambda</h3><h4 id="使用-std-function"><a href="#使用-std-function" class="headerlink" title="使用 std::function"></a>使用 <code>std::function</code></h4><h4 id="内部-Lambda-与泛型参数​"><a href="#内部-Lambda-与泛型参数​" class="headerlink" title="内部 Lambda 与泛型参数​"></a>内部 Lambda 与泛型参数​</h4><h4 id="进阶技巧"><a href="#进阶技巧" class="headerlink" title="进阶技巧"></a>进阶技巧</h4><h4 id="递归-Lambda-是最佳选择吗？​"><a href="#递归-Lambda-是最佳选择吗？​" class="headerlink" title="递归 Lambda 是最佳选择吗？​"></a>递归 Lambda 是最佳选择吗？​</h4><h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><h2 id="C-17-中的-Lambda"><a href="#C-17-中的-Lambda" class="headerlink" title="C++17 中的 Lambda"></a>C++17 中的 Lambda</h2><h3 id=""><a href="#" class="headerlink" title=""></a></h3><h2 id="C-20-中的-Lambda"><a href="#C-20-中的-Lambda" class="headerlink" title="C++20 中的 Lambda"></a>C++20 中的 Lambda</h2><h2 id="附录-A-技术列表"><a href="#附录-A-技术列表" class="headerlink" title="附录 A - 技术列表"></a>附录 A - 技术列表</h2><h2 id="附录-B-C-Lambda-表达式的六大优势​"><a href="#附录-B-C-Lambda-表达式的六大优势​" class="headerlink" title="附录 B - C++ Lambda 表达式的六大优势​"></a>附录 B - C++ Lambda 表达式的六大优势​</h2>
                 
               </div>
             
@@ -1233,7 +1315,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>更新于</div>
-          <div>2023年8月14日</div>
+          <div>2025年5月30日</div>
         </div>
       
       
