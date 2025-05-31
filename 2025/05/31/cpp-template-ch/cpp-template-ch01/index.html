@@ -1,0 +1,857 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/about/favicon.png">
+  <link rel="icon" href="/images/about/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="QiDianMaker">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="第 1 章 函数模板本章将介绍函数模板。函数模板是被参数化的函数，因此他们代表的是一组具有相似行为的函数。 1.1 函数模板初探函数模板提供了适用于不同数据类型的函数行为。也就是说，函数模板代表的是一组函数。除了某些信息未被明确指定之外，他们看起来很像普通函数。这些未被指定的信息就是被参数化的信息。我们将通过下面一个简单的例子来说明这一问题。 1.1.1 定义模板以下就是一个函数模板， 它返回两个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="奇点创客">
+<meta property="og:url" content="http://example.com/2025/05/31/cpp-template-ch/cpp-template-ch01/index.html">
+<meta property="og:site_name" content="奇点创客">
+<meta property="og:description" content="第 1 章 函数模板本章将介绍函数模板。函数模板是被参数化的函数，因此他们代表的是一组具有相似行为的函数。 1.1 函数模板初探函数模板提供了适用于不同数据类型的函数行为。也就是说，函数模板代表的是一组函数。除了某些信息未被明确指定之外，他们看起来很像普通函数。这些未被指定的信息就是被参数化的信息。我们将通过下面一个简单的例子来说明这一问题。 1.1.1 定义模板以下就是一个函数模板， 它返回两个">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-05-31T03:57:27.498Z">
+<meta property="article:modified_time" content="2025-05-31T03:57:27.498Z">
+<meta property="article:author" content="QiDianMaker">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>奇点创客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"cpp"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"6xahBDKE9bVdQzuufG4r0SrN-gzGzoHsz","app_key":"aS53wAMJ32RwAJRsefQAsX9P","server_url":"https://6xahbdke.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>奇点创客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>文库</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    <span>归档</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    <span>分类</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    <span>标签</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-th-large"></i>
+                <span>精神家园</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/books/">
+                    <i class="iconfont icon-book"></i>
+                    <span>读书</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/music/">
+                    <i class="iconfont icon-music"></i>
+                    <span>音乐</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/movies/">
+                    <i class="iconfont icon-youtube-fill"></i>
+                    <span>电影</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/travel/">
+                    <i class="iconfont icon-instagram-fill"></i>
+                    <span>旅行</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/about/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        QiDianMaker
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-30 19:57" pubdate>
+          2025年5月30日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="第-1-章-函数模板"><a href="#第-1-章-函数模板" class="headerlink" title="第 1 章 函数模板"></a>第 1 章 函数模板</h2><p>本章将介绍函数模板。函数模板是被参数化的函数，因此他们代表的是一组具有相似行为的函数。</p>
+<h3 id="1-1-函数模板初探"><a href="#1-1-函数模板初探" class="headerlink" title="1.1 函数模板初探"></a>1.1 函数模板初探</h3><p>函数模板提供了适用于不同数据类型的函数行为。也就是说，函数模板代表的是一组函数。除了某些信息未被明确指定之外，他们看起来很像普通函数。这些未被指定的信息就是被参数化的信息。我们将通过下面一个简单的例子来说明这一问题。</p>
+<h4 id="1-1-1-定义模板"><a href="#1-1-1-定义模板" class="headerlink" title="1.1.1 定义模板"></a>1.1.1 定义模板</h4><p>以下就是一个函数模板， 它返回两个数之中的最大值：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function">T <span class="hljs-title">max</span><span class="hljs-params">(T a, T b)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">// 如果 b &lt; a, 返回 a，否则返回 b</span><br>    <span class="hljs-keyword">return</span> b &lt; a ? a : b;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这个模板定义了一组函数，它们都返回函数的两个参数中值较大的那一个。这两个参数的类型并没有被明确指定，而是被表示为模板参数 <code>T</code>。如你所见，模板参数必须按照如下语法声明：</p>
+<p><code>template&lt;由逗号分割的模板参数&gt;</code></p>
+<p>在我们的例子中，模板参数是 <code>typename T</code>。请留意 <code>&lt;</code> 和 <code>&gt;</code> 的使用，它们在这里被称为尖括号。关键字 <code>typename</code> 标识了一个类型参数。这是到目前为止 C++ 中模板参数最典型的用法，当然也有其他参数（非类型模板参数），我们将在第 3 章介绍。</p>
+<p>在这里 <code>T</code> 是类型参数。你可以用任意标识作为类型参数名，但是习惯上是用 <code>T</code>。类型参数可以代表任意类型，它在模板被调用的时候决定。但是该类型（可以是基础类型，类或者其它类型）应该支持模板中用到的运算符。在本例中，类型 <code>T</code> 必须支持小于运算符，因为 <code>a</code> 和 <code>b</code> 在做比较时用到了它。例子中不太容易看出的一点是，为了支持返回值， <code>T</code> 还应该是可拷贝的。</p>
+<p>由于历史原因，除了 <code>typename</code> 之外你还可以使用 <code>class</code> 来定义类型参数。关键字 <code>typename</code> 在 C++98 标准发展过程中引入的较晚。在那之前，关键字 <code>class</code> 是唯一可以用来定义类型参数的方法，而且目前这一方法依然有效。因此模板 <code>max()</code> 也可以被定义成如下等效的方式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// basics/max1.hpp</span><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span> T&gt;</span><br><span class="hljs-function">T <span class="hljs-title">max</span><span class="hljs-params">(T a, T b)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">// 如果 b &lt; a, 返回 a，否则返回 b</span><br>    <span class="hljs-keyword">return</span> b &lt; a ? a : b;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>从语义上来讲，这样写不会有任何不同。因此，在这里你依然可以使用任意类型作为类型参数。只是用 <code>class</code> 的话可能会引起一些歧义（T 并不是只能是 <code>class</code> 类型），你应该优先使用 <code>typename</code>。但是与定义 <code>class</code> 的情况不同，在声明模板类型参数的时候，不可以用关键字 <code>struct</code> 取代 <code>typename</code>。</p>
+<h4 id="1-1-2-使用模板"><a href="#1-1-2-使用模板" class="headerlink" title="1.1.2 使用模板"></a>1.1.2 使用模板</h4><p>下面的程序展示了使用模板的方法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// basics/max1.cpp</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;max1.hpp&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">int</span> i = <span class="hljs-number">42</span>;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;max(7,i): &quot;</span> &lt;&lt; ::<span class="hljs-built_in">max</span>(<span class="hljs-number">7</span>,i) &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;<br>    <span class="hljs-type">double</span> f1 = <span class="hljs-number">3.4</span>;<br>    <span class="hljs-type">double</span> f2 = <span class="hljs-number">-6.7</span>;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;max(f1,f2): &quot;</span> &lt;&lt; ::<span class="hljs-built_in">max</span>(f1,f2) &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;<br>    std::string s1 = <span class="hljs-string">&quot;mathematics&quot;</span>;<br>    std::string s2 = <span class="hljs-string">&quot;math&quot;</span>;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;max(s1,s2): &quot;</span> &lt;&lt; ::<span class="hljs-built_in">max</span>(s1,s2) &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在这段代码中，<code>max()</code>被调用了三次：一次是比较两个<code>int</code>，一次是比较两个<code>double</code>，还有一次是比较两个<code>std::string</code>。每一次都会算出最大值。下面是输出结果：</p>
+<p><code>max(7,i): 42</code><br><code>max(f1,f2): 3.4</code><br><code>max(s1,s2): mathematics</code></p>
+<p>注意在调用<code>max()</code>模板的时候使用了作用域限制符<code>::</code>。这样程序将会在全局作用域中查找<code>max()</code>模板。否则的话，在某些情况下标准库中的<code>std::max()</code>模板将会被调用，或者有时候不太容易确定具体哪一个模板会被调用。</p>
+<p>在编译阶段，模板并不是被编译成一个可以支持多种类型的实体。而是对每一个用于该模板的类型都会产生一个独立的实体。因此在本例中，<code>max()</code>会被编译出三个实体，因为它被用于三种类型。比如第一次调用时：</p>
+<p><code>int i = 42;</code><br><code>... max(7,i) ...</code></p>
+<p>函数模板的类型参数是<code>int</code>。 因此语义上等效于调用了如下函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">max</span> <span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> b &lt; a ? a : b;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>以上用具体类型取代模板类型参数的过程叫做“实例化”。它会产生模板的一个实例。</p>
+<p>值得注意的是，模板的实例化不需要程序员做额外的请求，只是简单的使用函数模板就会触发这一实例化过程。</p>
+<p>同样的，另外两次调用也会分别为<code>double</code>和<code>std::string</code>各实例化出一个实例，就像是分别定义了下面两个函数一样：</p>
+<p><code>double max (double, double);</code><br><code>std::string max (std::string, std::string);</code></p>
+<p>另外，只要结果是有意义的，<code>void</code>作为模板参数也是有效的。比如:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function">T <span class="hljs-title">foo</span><span class="hljs-params">(T*)</span></span><br><span class="hljs-function"></span>&#123; &#125;<br><br><span class="hljs-type">void</span>* vp = <span class="hljs-literal">nullptr</span>;<br><span class="hljs-built_in">foo</span>(vp); <span class="hljs-comment">// OK: 推导出 void foo(void*)</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="1-1-3-两阶段编译检查"><a href="#1-1-3-两阶段编译检查" class="headerlink" title="1.1.3 两阶段编译检查"></a>1.1.3 两阶段编译检查</h4><p>在实例化模板的时候，如果模板参数类型不支持所有模板中用到的操作符，将会遇到编译期错误。比如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp">std::complex&lt;<span class="hljs-type">float</span>&gt; c1, c2; <span class="hljs-comment">// std::complex&lt;&gt; 没有提供小于运算符</span><br>...<br>::<span class="hljs-built_in">max</span>(c1, c2); <span class="hljs-comment">// 编译期 ERROR</span><br></code></pre></td></tr></table></figure>
+
+<p>但是在定义的地方并没有遇到错误提示。这是因为模板是被分两步编译的：</p>
+<ol>
+<li>在模板定义阶段， 模板的检查并不包含类型参数的检查。 只包含下面几个方面：<br>- 语法检查。比如少了分号。<br>- 使用了未定义的不依赖于模板参数的名称（类型名，函数名，……）。<br>- 未使用模板参数的静态断言。  </li>
+<li>在模板实例化阶段， 为确保所有代码都是有效的， 模板会再次被检查， 尤其是那些依赖于类型参数的部分。</li>
+</ol>
+<p>比如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">foo</span><span class="hljs-params">(T t)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">undeclared</span>();  <span class="hljs-comment">// 如果 undeclared() 未定义，第一阶段就会报错，因为与模板参数无关</span><br>    <span class="hljs-built_in">undeclared</span>(t); <span class="hljs-comment">// 如果 undeclared(t) 未定义，第二阶段会报错，因为与模板参数有关</span><br>    <span class="hljs-built_in">static_assert</span>(<span class="hljs-built_in">sizeof</span>(<span class="hljs-type">int</span>) &gt; <span class="hljs-number">10</span>, <span class="hljs-string">&quot;int too small&quot;</span>); <span class="hljs-comment">// 如果 sizeof(int) &lt;= 10，总是会报错</span><br>    <span class="hljs-built_in">static_assert</span>(<span class="hljs-built_in">sizeof</span>(T) &gt; <span class="hljs-number">10</span>, <span class="hljs-string">&quot;T too small&quot;</span>); <span class="hljs-comment">// 如果实例化出的 T的 size &lt;= 10，则会失败</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>名称被检查两次这一现象被称为“两阶段查找”，在 14.3.1 节中会进行更细致的讨论。</p>
+<p>需要注意的是，有些编译器并不会执行第一阶段中的所有检查。因此如果模板没有被至少实例化一次的话，你可能一直都不会发现代码中的常规错误。</p>
+<p><strong>编译和链接</strong></p>
+<p>两阶段的编译检查给模板的处理带来了一个问题：当实例化一个模板的时候，编译器需要（一定程度上）看到模板的完整定义。这不同于函数编译和链接分离的思想，函数在编译阶段只需要声明就够了。第 9 章将讨论如何应对这一问题。我们将暂时采取最简单的方法：将模板的实现写在头文件里。</p>
+<h3 id="1-2-模板实参推导"><a href="#1-2-模板实参推导" class="headerlink" title="1.2 模板实参推导"></a>1.2 模板实参推导</h3><p>当我们调用形如<code>max()</code>的函数模板来处理某些变量时，模板参数将由被传递的调用参数决定。如果我们传递两个<code>int</code>类型的参数给模板函数，C++ 编译器会将模板参数<code>T</code>推断为<code>int</code>。</p>
+<p>不过<code>T</code>可能只是实际传递的函数参数类型的一部分。比如我们定义了如下接受常量引用作为函数参数的模板：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function">T <span class="hljs-title">max</span> <span class="hljs-params">(T <span class="hljs-type">const</span>&amp; a, T <span class="hljs-type">const</span>&amp; b)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> b &lt; a ? a : b;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>此时如果我们传递<code>int</code>类型的调用参数，由于调用参数和<code>int const&amp;</code>匹配，类型参数<code>T</code>将被推断为<code>int</code>。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/05/31/cpp-template-ch/cpp-template-ch01/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>QiDianMaker</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月30日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"6xahBDKE9bVdQzuufG4r0SrN-gzGzoHsz","appKey":"aS53wAMJ32RwAJRsefQAsX9P","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div style="font-size: 0.85rem"> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

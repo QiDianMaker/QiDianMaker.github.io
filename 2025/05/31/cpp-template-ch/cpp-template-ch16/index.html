@@ -1,0 +1,1051 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/about/favicon.png">
+  <link rel="icon" href="/images/about/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="QiDianMaker">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="第 16 章 特化和重载到目前为止，我们已经研究了C++模板如何允许将泛型定义扩展为一系列相关的类，函数或变量。尽管这是一种强大的机制，但是在许多情况下，对于模板参数的特定替换，操作的泛化形式远非最佳。 C++与其他流行的编程语言相比，对于泛型编程来说有着一独到之处，这是因为它有着一个丰富的特性集，使得某一个更加特化的设施对泛型定义进行无形替代。本章中，我们会学习两种C++语言机制，它们允许从纯粹">
+<meta property="og:type" content="article">
+<meta property="og:title" content="奇点创客">
+<meta property="og:url" content="http://example.com/2025/05/31/cpp-template-ch/cpp-template-ch16/index.html">
+<meta property="og:site_name" content="奇点创客">
+<meta property="og:description" content="第 16 章 特化和重载到目前为止，我们已经研究了C++模板如何允许将泛型定义扩展为一系列相关的类，函数或变量。尽管这是一种强大的机制，但是在许多情况下，对于模板参数的特定替换，操作的泛化形式远非最佳。 C++与其他流行的编程语言相比，对于泛型编程来说有着一独到之处，这是因为它有着一个丰富的特性集，使得某一个更加特化的设施对泛型定义进行无形替代。本章中，我们会学习两种C++语言机制，它们允许从纯粹">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-05-31T03:57:27.505Z">
+<meta property="article:modified_time" content="2025-05-31T03:57:27.505Z">
+<meta property="article:author" content="QiDianMaker">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>奇点创客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"cpp"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"6xahBDKE9bVdQzuufG4r0SrN-gzGzoHsz","app_key":"aS53wAMJ32RwAJRsefQAsX9P","server_url":"https://6xahbdke.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>奇点创客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>文库</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    <span>归档</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    <span>分类</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    <span>标签</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-th-large"></i>
+                <span>精神家园</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/books/">
+                    <i class="iconfont icon-book"></i>
+                    <span>读书</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/music/">
+                    <i class="iconfont icon-music"></i>
+                    <span>音乐</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/movies/">
+                    <i class="iconfont icon-youtube-fill"></i>
+                    <span>电影</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/travel/">
+                    <i class="iconfont icon-instagram-fill"></i>
+                    <span>旅行</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/about/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        QiDianMaker
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-30 19:57" pubdate>
+          2025年5月30日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          27k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          227 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="第-16-章-特化和重载"><a href="#第-16-章-特化和重载" class="headerlink" title="第 16 章 特化和重载"></a>第 16 章 特化和重载</h2><p>到目前为止，我们已经研究了C++模板如何允许将泛型定义扩展为一系列相关的类，函数或变量。尽管这是一种强大的机制，但是在许多情况下，对于模板参数的特定替换，操作的泛化形式远非最佳。</p>
+<p>C++与其他流行的编程语言相比，对于泛型编程来说有着一独到之处，这是因为它有着一个丰富的特性集，使得某一个更加特化的设施对泛型定义进行无形替代。本章中，我们会学习两种C++语言机制，它们允许从纯粹的泛化产生实际的偏差：模板特化和函数模板重载。</p>
+<h3 id="16-1-当“泛型代码”不完全契合时"><a href="#16-1-当“泛型代码”不完全契合时" class="headerlink" title="16.1 当“泛型代码”不完全契合时"></a>16.1 当“泛型代码”不完全契合时</h3><p>考虑下例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Array</span> &#123;<br>  <span class="hljs-keyword">private</span>:<br>    T* data;<br>    ...<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Array</span>(Array&lt;T&gt; <span class="hljs-type">const</span>&amp;);<br>    Array&lt;T&gt;&amp; <span class="hljs-keyword">operator</span>=(Array&lt;T&gt; <span class="hljs-type">const</span>&amp;);<br>    <br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">exchangeWith</span><span class="hljs-params">(Array&lt;T&gt;* b)</span> </span>&#123;<br>      T* tmp = data;<br>      data = b-&gt;data;<br>      b-&gt;data = tmp;<br>    &#125;<br>    <br>    T&amp; <span class="hljs-keyword">operator</span>[](std::<span class="hljs-type">size_t</span> k) &#123;<br>      <span class="hljs-keyword">return</span> data[k];<br>    &#125;<br>    ...<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">inline</span></span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">exchange</span><span class="hljs-params">(T* a, T* b)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-function">T <span class="hljs-title">tmp</span><span class="hljs-params">(*a)</span></span>;<br>  *a = *b;<br>  *b = tmp;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>对简单类型来说，<code>exchange()</code>的泛型实现表现良好。然而，对于有着昂贵的拷贝操作符的类型来说，相比于为特定的给定结构体量身定制的实现来说，泛型实现体更为昂贵（从机器周期和内存使用两方面来说）。在我们的例子中，泛型实现体需要调用一次<code>Array&lt;T&gt;</code>的拷贝构造器和两次<code>Array&lt;T&gt;</code>的拷贝操作符（译者注：作者这里应该是想用<code>Array&lt;T&gt;</code>代入<code>exchange</code>的模板参数<code>T</code>）。对于大尺寸的数据结构来说，这些拷贝动作通常会涉及复制相对大量的内存。然而，<code>exchange()</code>的功能可以通过仅仅交换内部的<code>data</code>指针来取而代之，就好像在其成员函数<code>exchangeWith()</code>中所作的那样。</p>
+<h4 id="16-1-1-透明客制化"><a href="#16-1-1-透明客制化" class="headerlink" title="16.1.1 透明客制化"></a>16.1.1 透明客制化</h4><p>在前例中，成员函数<code>exchangeWith()</code>提供了一个对泛型<code>exchange()</code>函数的一个高效替换体，但是这样一来，就需要使用一个不同的函数，而这会在以下几个方面给我们带来不便：</p>
+<ol>
+<li><code>Array</code>类的使用者不得不记住其额外接口，并且必须在可以使用时万分小心。</li>
+<li>泛型算法通常无法区分不同的可能性。例如：</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">genericAlgorithm</span><span class="hljs-params">(T* x, T* y)</span></span><br><span class="hljs-function"></span>&#123;<br>  ...<br>  <span class="hljs-built_in">exchange</span>(x, y);    <span class="hljs-comment">// How do we select the right algorithm?</span><br>  ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>基于这些考虑，C++模板提供了透明地客制化函数模板和类模板的方法。对函数模板来说，是通过重载机制来达成。例如，我们可以编写一个重载的<code>quickExchange()</code>函数模板集合，如下所示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">quickExchange</span><span class="hljs-params">(T* a, T* b)</span>    <span class="hljs-comment">// #1</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-function">T <span class="hljs-title">tmp</span><span class="hljs-params">(*a)</span></span>;<br>  *a = *b;<br>  *b = tmp;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">quickExchange</span><span class="hljs-params">(Array&lt;T&gt;* a, Array&lt;T&gt;* b)</span> <span class="hljs-comment">// #2</span></span><br><span class="hljs-function"></span>&#123;<br>  a-&gt;<span class="hljs-built_in">exchangeWith</span>(b);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">demo</span><span class="hljs-params">(Array&lt;<span class="hljs-type">int</span>&gt;* p1, Array&lt;<span class="hljs-type">int</span>&gt;* p2)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-type">int</span> x = <span class="hljs-number">42</span>, y = <span class="hljs-number">-7</span>;<br>  <span class="hljs-built_in">quickExchange</span>(&amp;x, &amp;y);    <span class="hljs-comment">// uses #1</span><br>  <span class="hljs-built_in">quickExchange</span>(p1, p2);    <span class="hljs-comment">// uses #2</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>第一个<code>quickExchange()</code>的调用有两个类型为<code>int*</code>的实参，因此只有第一个模板才能推导成功，<code>T</code>由<code>int</code>替换。因此对于哪个函数应该被调用毫无疑义。相对地，第二个调用就可以同时匹配上面的两个模板：第一个模板使用<code>Array&lt;int&gt;</code>替换<code>T</code>，第二个模板使用<code>int</code>替换<code>T</code>。另一方面，在两个函数替换的结果中，参数类型都是严格匹配调用实参的。通常来说，这应该得出一个调用有歧义的结论，但是相对于第一个模板来说，C++语言认为第二个模板“更加特化”。在其他项都相同的情况下，重载解析会倾向于更加特化的模板，因此这里会选择第二个函数模板。</p>
+<h4 id="16-1-2-语义透明性"><a href="#16-1-2-语义透明性" class="headerlink" title="16.1.2 语义透明性"></a>16.1.2 语义透明性</h4><p>在上一节中使用的重载对达成实例化过程的透明客制化来说非常有用，但是有一点非常重要：该“透明性”非常非常依赖于实现体的细节。为了阐明这一点，考虑一下我们的<code>quickExchange()</code>解决方案。尽管泛型算法和为<code>Array&lt;T&gt;</code>类型客制化的算法最后都可以交换指针所指向的值，但是二者各自所带来的边缘效应却是截然不同的。</p>
+<p>下面的代码对比了交换结构对象和交换<code>Array&lt;T&gt;</code>对象的值，这可以形象地阐释上面两者的不同之处：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">S</span> &#123;<br>  <span class="hljs-type">int</span> x;<br>&#125; s1, s2;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">distinguish</span><span class="hljs-params">(Array&lt;<span class="hljs-type">int</span>&gt; a1, Array&lt;<span class="hljs-type">int</span>&gt; a2)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-type">int</span>* p = &amp;a1[<span class="hljs-number">0</span>];<br>  <span class="hljs-type">int</span>* q = &amp;s1.x;<br>  a1[<span class="hljs-number">0</span>] = s1.x = <span class="hljs-number">1</span>;<br>  a2[<span class="hljs-number">0</span>] = s2.x = <span class="hljs-number">2</span>;<br>  <span class="hljs-built_in">quickExchange</span>(&amp;a1, &amp;a2);    <span class="hljs-comment">// *p == 1 after this(still)</span><br>  <span class="hljs-built_in">quickExchange</span>(&amp;s1, &amp;s2);    <span class="hljs-comment">// *q == 2 after this</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如示例所展示，在调用<code>quick_exchange()</code>后，指向第1个<code>Array</code>的指针<code>p</code>变成了指向第2个<code>Array</code>的指针（即使值没有改变）；然而，指向非<code>Array</code>（即<code>struct S</code>）<code>s1</code>的指针在交换操作执行之后，仍然指向<code>s1</code>，只是指针所指向的值发生了交换。这一区别非常显著，足以让客户端混淆模板实现。前缀quick_有助于吸引人们注意以下事实：可以采取捷径来实现所需的操作。然而，原始的泛型<code>exchange()</code>模板也可以对<code>Array&lt;T&gt;</code>进行一个有效的优化：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">exchange</span><span class="hljs-params">(Array&lt;T&gt;* a, Array&lt;T&gt;* b)</span></span><br><span class="hljs-function"></span>&#123;<br>  T* p = &amp;(*a)[<span class="hljs-number">0</span>];<br>  T* q = &amp;(*b)[<span class="hljs-number">0</span>];<br>  <span class="hljs-keyword">for</span> (std::<span class="hljs-type">size_t</span> k = a-&gt;<span class="hljs-built_in">size</span>(); k-- != <span class="hljs-number">0</span>; ) &#123;<br>    <span class="hljs-built_in">exchange</span>(p++, q++);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>对泛型代码来说，这一版本的优势在于不再需要额外的大尺寸临时<code>Array&lt;T&gt;</code>对象。<code>exchange()</code>模板会被递归地调用，因此对于诸如<code>Array&lt;Array&lt;char&gt;&gt;</code>这样的类型来说，可以获得更好的性能。同时也注意到模板的更加特化的版本并没有声明<code>inline</code>，这是因为它本身会做很多的递归操作，相对而言，原始的泛型实现体声明了<code>inline</code>，因为它仅仅执行了少数的几个操作（每一个操作可能都很昂贵）。</p>
+<h3 id="16-2-重载函数模板"><a href="#16-2-重载函数模板" class="headerlink" title="16.2 重载函数模板"></a>16.2 重载函数模板</h3><p>在前面的章节中我们已经看到了两个同名函数模板可以共存，尽管它们可能会实例化出相同的参数类型。这里有另一个简单的例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// details/funcoverload1.hpp</span><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">(T)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">(T*)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">2</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>当第一个模板使用<code>int*</code>替换<code>T</code>、第二个模板使用<code>int</code>替换<code>T</code>时，二者就会得到一个参数类型（以及返回类型）完全相同的函数。不仅是这些模板可以共存，就连它们各自的实例化体也可以共存（即使它们有相同的参数和返回类型）。</p>
+<p>下例展示了像这样生成的两个函数要如何使用显式模板实参语法来调用：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// details/funcoverload1.cpp</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;funcoverload1.hpp&quot;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  std::cout &lt;&lt; <span class="hljs-built_in">f</span>&lt;<span class="hljs-type">int</span>*&gt;((<span class="hljs-type">int</span>*)<span class="hljs-literal">nullptr</span>);    <span class="hljs-comment">// calls f&lt;T&gt;(T)</span><br>  std::cout &lt;&lt; <span class="hljs-built_in">f</span>&lt;<span class="hljs-type">int</span>&gt;((<span class="hljs-type">int</span>*)<span class="hljs-literal">nullptr</span>);    <span class="hljs-comment">// calls f&lt;T&gt;(T*)</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>该程序输出如下：<br><code>12</code></p>
+<p>为了说明这一结果，我们来详细分析一下<code>f&lt;int*&gt;((int*)nullptr)</code>调用。<code>f&lt;int*&gt;()</code>表示我们想要用<code>int*</code>来替换<code>f()</code>模板的第一个参数，此时无需依赖模板实参推导。本例中有多个模板<code>f()</code>，因此得以创造一个包含两个函数的重载集合，这两个函数通过模板<code>f&lt;int*&gt;(int*)</code>（由第一个模板生成）和<code>f&lt;int*&gt;(int**)</code>（由第二个模板生成）生成。调用实参<code>(int*)nullptr</code>的类型为<code>int*</code>。这仅仅与第一个模板生成的函数匹配，因此最终调用的就是该函数。</p>
+<p>相对而言，第二个调用所创造的重载集合中包含了<code>f&lt;int&gt;(int)</code>（由第一个模板生成）和<code>f&lt;int&gt;(int*)</code>（由第二个模板生成），其中第二个模板是匹配的。</p>
+<h4 id="16-2-1-签名"><a href="#16-2-1-签名" class="headerlink" title="16.2.1 签名"></a>16.2.1 签名</h4><p>两个函数如果拥有不同的签名，那么就可以在一个程序中共存。我们将函数的签名定义为如下信息：</p>
+<ol>
+<li>非受限函数的名称（或者生成该函数的函数模板名称）。</li>
+<li>函数名称所属的类或命名空间作用域；如果函数名称拥有内部链接，还包括该名称声明所在的编译单元。</li>
+<li>函数的<code>const</code>、<code>volatile</code>或<code>const volatile</code>限定（前提是拥有这样一个限定符的成员函数）</li>
+<li>函数的<code>&amp;</code>或<code>&amp;&amp;</code>限定（如果是拥有这样一个限定符的成员函数）</li>
+<li>函数参数的类型（如果函数是从函数模板中生成的，那么指的是替换前的模板参数）</li>
+<li>如果函数是从函数模板中生成，则包括它的函数返回类型</li>
+<li>如果函数是从函数模板中生成，则包括模板参数和模板实参</li>
+</ol>
+<p>这意味着下面的模板和它们的实例化体可以在同一个程序中共存：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T1, <span class="hljs-keyword">typename</span> T2&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f1</span><span class="hljs-params">(T1, T2)</span></span>;<br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T1, <span class="hljs-keyword">typename</span> T2&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f1</span><span class="hljs-params">(T2, T1)</span></span>;<br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">long</span> <span class="hljs-title">f2</span><span class="hljs-params">(T)</span></span>;<br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">char</span> <span class="hljs-title">f2</span><span class="hljs-params">(T)</span></span>;<br></code></pre></td></tr></table></figure>
+
+<p>然而，当它们定义在相同的作用域中时，它们并不能总被使用，这是因为实例化会产生重载歧义。例如，调用<code>f2(42)</code>对于上面声明的模板来说显然会产生歧义。另一个例子在下面演示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T1, <span class="hljs-keyword">typename</span> T2&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f1</span><span class="hljs-params">(T1, T2)</span></span><br><span class="hljs-function"></span>&#123;<br>  std::cout &lt;&lt; <span class="hljs-string">&quot;f1(T1, T2)\n&quot;</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T1, <span class="hljs-keyword">typename</span> T2&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f1</span><span class="hljs-params">(T2, T1)</span></span><br><span class="hljs-function"></span>&#123;<br>  std::cout &lt;&lt; <span class="hljs-string">&quot;f1(T2, T1)\n&quot;</span>;<br>&#125;<br><span class="hljs-comment">// fine so far</span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-built_in">f1</span>&lt;<span class="hljs-type">char</span>, <span class="hljs-type">char</span>&gt;(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>);        <span class="hljs-comment">// ERROR: ambiguous</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里，函数<code>f1&lt;T1 = char, T2 = char&gt;(T1, T2)</code>可以与函数<code>f1&lt;T1 = char, T2 = char&gt;(T2, T1)</code>共存，但是重载解析永远无法抉择出哪一个更合适。如果模板在不同的编译单元中出现，这两个实例化体实际上可以在同一个程序中共存（并且，链接器不应该抱怨重复的定义，这是因为实例化体的签名是有所区别的）：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// translation unit 1:</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T1, <span class="hljs-keyword">typename</span> T2&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f1</span><span class="hljs-params">(T1, T2)</span></span><br><span class="hljs-function"></span>&#123;<br>  std::cout &lt;&lt; <span class="hljs-string">&quot;f1(T1, T2)\n&quot;</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">g</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-built_in">f1</span>&lt;<span class="hljs-type">char</span>, <span class="hljs-type">char</span>&gt;(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>);<br>&#125;<br><br><span class="hljs-comment">// translation unit 2:</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T1, <span class="hljs-keyword">typename</span> T2&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f1</span><span class="hljs-params">(T2, T1)</span></span><br><span class="hljs-function"></span>&#123;<br>  std::cout &lt;&lt; <span class="hljs-string">&quot;f1(T2, T1)\n&quot;</span>;<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">extern</span> <span class="hljs-type">void</span> <span class="hljs-title">g</span><span class="hljs-params">()</span></span>;        <span class="hljs-comment">// defined in translation unit 1</span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-built_in">f1</span>&lt;<span class="hljs-type">char</span>, <span class="hljs-type">char</span>&gt;(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>);<br>  <span class="hljs-built_in">g</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>该程序是有效的，它的输出如下：</p>
+<p><code>f1(T2, T1)</code><br><code>f1(T1, T2)</code></p>
+<h4 id="16-2-2-重载函数模板的偏序"><a href="#16-2-2-重载函数模板的偏序" class="headerlink" title="16.2.2 重载函数模板的偏序"></a>16.2.2 重载函数模板的偏序</h4><p>再次考虑一下我们早先的例子：我们发现在替换了给定的模板实参列表后(<code>&lt;int*&gt;</code>和<code>&lt;int&gt;</code>)，重载解析最终会选择最合适的函数并进行调用：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp">std::cout &lt;&lt; <span class="hljs-built_in">f</span>&lt;<span class="hljs-type">int</span>*&gt;((<span class="hljs-type">int</span>*)<span class="hljs-literal">nullptr</span>);        <span class="hljs-comment">// calls f&lt;T&gt;(T)</span><br>std::cout &lt;&lt; <span class="hljs-built_in">f</span>&lt;<span class="hljs-type">int</span>&gt;((<span class="hljs-type">int</span>*)<span class="hljs-literal">nullptr</span>);            <span class="hljs-comment">// calls f&lt;T&gt;(T*)</span><br></code></pre></td></tr></table></figure>
+
+<p>然而，即使显式模板实参没有提供，函数依然会有做这样的选择。本例中，模板实参推导发挥了作用。让我们稍微修改一下<code>main()</code>函数来讨论这一机制：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// details/funcoverload2.cpp</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">(T)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">(T*)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">2</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  std::cout &lt;&lt; <span class="hljs-built_in">f</span>(<span class="hljs-number">0</span>);                <span class="hljs-comment">// calls f&lt;T&gt;(T)</span><br>  std::cout &lt;&lt; <span class="hljs-built_in">f</span>(<span class="hljs-literal">nullptr</span>);            <span class="hljs-comment">// calls f&lt;T&gt;(T)</span><br>  std::cout &lt;&lt; <span class="hljs-built_in">f</span>((<span class="hljs-type">int</span>*)<span class="hljs-literal">nullptr</span>);    <span class="hljs-comment">// calls f&lt;T&gt;(T*)</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>考虑一下第一调用<code>f(0)</code>：实参的类型是<code>int</code>，如果我们用<code>int</code>替换<code>T</code>，那么它与第一个模板的参数类型匹配。然而，第二个模板的参数类型始终都是一个指针，因此，在推导之后，对于该调用来说只会从第一个模板生成一个唯一的实例作为候选。对这一情景来说，重载解析是多余的。</p>
+<p>对于第二个调用<code>f(nullptr)</code>来说也类似：实参类型是<code>std::nullptr_t</code>，它再一次仅与第一个模板匹配。</p>
+<p>第三个调用<code>f((int*)nullptr)</code>比较有意思：实参推导对于两个模板来说都会成功，产生函数<code>f&lt;int*&gt;(int*)</code>和<code>f&lt;int&gt;(int*)</code>。从传统的重载解析视角来看，这两个使用<code>int*</code>实参的函数同等优秀，如此理应指出调用存在歧义（参考附录C）。然而，这一案例中，额外的重载解析发挥了作用：更加特化的模板所生成的函数会被选择。在这里，第二个模板被认为是更加特化的，因此该代码示例的输出就是<code>112</code>。</p>
+<h4 id="16-2-3-正式的排序规则"><a href="#16-2-3-正式的排序规则" class="headerlink" title="16.2.3 正式的排序规则"></a>16.2.3 正式的排序规则</h4><p>在上例中，我们可以很直观地看出第二个模板比第一个模板更加特化，这是因为第一个模板可以适配各种类型的实参，而第二个则只能容纳指针类型。然而，其他的例子可能没有那么直观。在下面的内容中，我们描述了确定一个函数模板是否比另一个重载模板更特化的确切过程。请注意这些是偏序规则：可以给定两个模板，彼此之间没有更加特化之分。如果重载解析必须从这样的两个模板中选择一个，那么将无法做出决定，且程序会产生一个歧义错误。</p>
+<p>假设我们正在比较两个名称相同的函数模板，这些模板对于给定的函数调用似乎可行。重载解析按如下决定：</p>
+<ul>
+<li>函数调用参数中没有被使用的默认实参和省略号参数在后续将不被纳入考虑。</li>
+<li>然后我们通过以下方式替换每一个模板实参，为两个模板各自构造出两份实参类型列表（或者对转型函数模板来说，还包括返回类型）：<ol>
+<li>使用唯一的虚构类型替换每一个模板类型参数。</li>
+<li>使用唯一的虚构类模板替换每一个模板模板参数。</li>
+<li>使用唯一的适当类型的虚构值替换每一个非类型模板参数。（虚构出的类型、模板和值在这一上下文中都与任何其他的类型、模板或值不同，这些其他的类型、模板或值要么是开发者使用的，要么是编译器在其他上下文中合成的。）</li>
+</ol>
+</li>
+<li>如果第二个模板对于第一份合成出来的实参类型列表可以进行成功的实参推导（能够进行精确的匹配），而反过来却不行（即第一个模板对第二份实参类型列表无法推导成功），那么我们就认为第一个模板要比第二个模板更加特化。相反地，如果第一个模板对于第二份实参类型列表可以精确匹配而推导成功，反过来则不行，那么我们就认为第二个模板比第一个模板更加特化。否则（要么无法推导成功，要么两个都成功），两个模板之间就没有顺序可言。让我们将此应用于前例的两个模板之上，使得这一概念更加具体。我们从这两个模板构造出两个实参类型列表，按此前描述的那样替换其模板参数：(<code>A1</code>)和(<code>A2*</code>)(<code>A1</code>和<code>A2</code>是不同的构造出的类型)。显然，第一个模板对于第二个实参类型列表可以成功推导（将<code>A2*</code>替换<code>T</code>）。然而，对于第二个模板来说，没有办法让<code>T*</code>匹配第一个实参类型列表中的非指针类型<code>A1</code>。因此，我们得出第二个模板比第一个模板更加特化。</li>
+</ul>
+<p>让我们来看一个更加错综复杂的例子，它涉及了多个函数参数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">t</span><span class="hljs-params">(T*, T <span class="hljs-type">const</span>* = <span class="hljs-literal">nullptr</span>, ...)</span></span>;<br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">t</span><span class="hljs-params">(T <span class="hljs-type">const</span>*, T*, T* = <span class="hljs-literal">nullptr</span>)</span></span>;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">example</span><span class="hljs-params">(<span class="hljs-type">int</span>* p)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-built_in">t</span>(p, p);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>首先，由于真实的调用没有使用第一个模板的省略号参数和第二个模板的最后一个参数（由默认实参填充），故这些参数会在排序中被忽略。此外，注意到第一个模板的默认实参没有被用到，因此参与到排序中的是其对应的参数（即与之匹配的调用实参）。</p>
+<p>合成的两份实参列表分别是(<code>A1*, A1 const*</code>)和(<code>A2 const*, A2*</code>)。对于第二个模板来说，实参列表(<code>A1*, A1 const*</code>)可以成功推导（<code>A1 const</code>替换<code>T</code>），但是得到的结果并不能严格匹配，因为当用(<code>A1*, A1 const*</code>)类型的实参来调用<code>t&lt;A1 const&gt;(A1 const*, A1 const*, A1 const* = 0)</code>的时候，需要进行限定符的调整(即<code>const</code>)。类似地，第一个模板对于实参类型列表(<code>A2 const*, A2*</code>)也不能获得精确的匹配。因此，这两个模板之间并没有顺序关系，同时该调用存在歧义。</p>
+<p>这种正式的排序规则通常都能产生符合直观的函数模板选择。然而，该原则偶尔也会产生不符合直觉选择的例子。因此，将来可能会修改某些规则，从而适用于所有例子。</p>
+<h4 id="16-2-4-模板和非模板"><a href="#16-2-4-模板和非模板" class="headerlink" title="16.2.4 模板和非模板"></a>16.2.4 模板和非模板</h4><p>函数模板可以被非模板函数所重载。在选择实际调用的函数时，非模板函数将更为优先，除此之外没有什么其他区别。下面的例子说明了这一事实：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// details/nontmpl1.cpp</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function">std::string <span class="hljs-title">f</span><span class="hljs-params">(T)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Template&quot;</span>;<br>&#125;<br><br><span class="hljs-function">std::string <span class="hljs-title">f</span><span class="hljs-params">(<span class="hljs-type">int</span>&amp;)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Nontemplate&quot;</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-type">int</span> x = <span class="hljs-number">7</span>;<br>  std::cout &lt;&lt; <span class="hljs-built_in">f</span>(x) &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;    <span class="hljs-comment">// prints: Nontemplate</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>程序会输出<code>Nontemplate</code>。</p>
+<p>然而，当<code>const</code>和引用限定符不同时，重载解析的优先级会有所变更。例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// details/nontmpl2.cpp</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function">std::string <span class="hljs-title">f</span><span class="hljs-params">(T&amp;)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Template&quot;</span>;<br>&#125;<br><br><span class="hljs-function">std::string <span class="hljs-title">f</span><span class="hljs-params">(<span class="hljs-type">int</span> <span class="hljs-type">const</span>&amp;)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Nontemplate&quot;</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-type">int</span> x = <span class="hljs-number">7</span>;<br>  std::cout &lt;&lt; <span class="hljs-built_in">f</span>(x) &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;    <span class="hljs-comment">// prints: Template</span><br>  <span class="hljs-type">int</span> <span class="hljs-type">const</span> c = <span class="hljs-number">7</span>;<br>  std::cout &lt;&lt; <span class="hljs-built_in">f</span>(c) &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;    <span class="hljs-comment">// prints: Nontemplate</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>程序会输出：</p>
+<p><code>Template</code><br><code>Nontemplate</code></p>
+<p>现在，当我们传递非常量<code>int</code>参数时，函数模板<code>f&lt;&gt;(T&amp;)</code>是一个更合适的选择。原因在于对于<code>int</code>来说，<code>f&lt;&gt;(int&amp;)</code>实例化体要比<code>f(int const&amp;)</code>更合适。因此，这一差异不仅仅在于以下事实：一个函数是模板，而另一个函数不是模板。在这种情况下，实际应用到的是通用的重载解析规则（参考P682节C.2）。只有当使用<code>int const</code>调用<code>f()</code>时，两个函数的签名才会有相同的类型——<code>int const&amp;</code>，而此时才会优先选择非模板函数。</p>
+<p>出于这一原因，按下面的方式声明成员函数模板是个不错的主意：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function">std::string <span class="hljs-title">f</span><span class="hljs-params">(T <span class="hljs-type">const</span>&amp;)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Template&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>只不过，当定义成员函数接受与拷贝或移动构造函数相同的实参时，这种效果很容易发生意外并引起令人惊讶的行为。例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// details/tmplconstr.cpp</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">C</span>() = <span class="hljs-keyword">default</span>;<br>    <br>    <span class="hljs-built_in">C</span>(C <span class="hljs-type">const</span>&amp;) &#123;<br>      std::cout &lt;&lt; <span class="hljs-string">&quot;copy constructor\n&quot;</span>;<br>    &#125;<br>    <br>    <span class="hljs-built_in">C</span>(C&amp;&amp;) &#123;<br>      std::cout &lt;&lt; <span class="hljs-string">&quot;move constructor\n&quot;</span>;<br>    &#125;<br>    <br>    <span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function">    <span class="hljs-title">C</span><span class="hljs-params">(T&amp;&amp;)</span> </span>&#123;<br>      std::cout &lt;&lt; <span class="hljs-string">&quot;template constructor\n&quot;</span>;<br>    &#125;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  C x;<br>  C x2&#123;x&#125;;                <span class="hljs-comment">// prints: template constructor</span><br>  C x3&#123;std::<span class="hljs-built_in">move</span>(x)&#125;;    <span class="hljs-comment">// prints: move constructor</span><br>  C <span class="hljs-type">const</span> c;<br>  C x4&#123;c&#125;;                <span class="hljs-comment">// prints: copy constructor</span><br>  C x5&#123;std::<span class="hljs-built_in">move</span>(c)&#125;;    <span class="hljs-comment">// prints: template constructor</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>程序输出如下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs text">template constructor<br>move constructor<br>copy constructor<br>template constructor<br></code></pre></td></tr></table></figure>
+
+<p>因此，成员函数模板要比<code>C</code>的拷贝构造函数更合适。而对于<code>std::move(c)</code>来说，它会产生<code>C const&amp;&amp;</code>类型（这是一种可行的类型，但是在语法上通常没有什么意义），成员函数模板此时也比移动构造函数更合适。</p>
+<p>因此，通常当这些成员函数模板可能隐藏拷贝或移动构造函数时，必须部分禁用它们。这在P99节6.4中解释过。</p>
+<h4 id="16-2-5-可变函数模板"><a href="#16-2-5-可变函数模板" class="headerlink" title="16.2.5 可变函数模板"></a>16.2.5 可变函数模板</h4><p>可变函数模板（参考P200节12.4）在进行排序时需要被特殊对待，这是因为对参数包的推导（见P275节15.5）过程是将多个实参匹配到单一参数。这一行为对函数模板排序来说引入了各种有趣的场景，我们通过下例来展示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// details/variadicoverload.cpp</span><br><span class="hljs-meta">#inclue <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">(T*)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span>… Ts&gt;</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">(Ts…)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">2</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span>… Ts&gt;</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">(Ts*…)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">3</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  std::cout &lt;&lt; <span class="hljs-built_in">f</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0.0</span>);                            <span class="hljs-comment">// calls f&lt;&gt;(Ts...)</span><br>  std::cout &lt;&lt; <span class="hljs-built_in">f</span>((<span class="hljs-type">int</span>*)<span class="hljs-literal">nullptr</span>, (<span class="hljs-type">double</span>*)<span class="hljs-literal">nullptr</span>);    <span class="hljs-comment">// calls f&lt;&gt;(Ts*...)</span><br>  std::cout &lt;&lt; <span class="hljs-built_in">f</span>((<span class="hljs-type">int</span>*)<span class="hljs-literal">nullptr</span>);                    <span class="hljs-comment">// calls f&lt;&gt;(T*)</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>上例输出的结果是<code>231</code>，我们随后会进行讨论。</p>
+<p>对第一个调用<code>f(0, 0.0)</code>来说，每个名称为<code>f</code>的函数模板都会被考虑：第一个函数模板<code>f(T*)</code>推导会失败，这一方面是因为模板参数<code>T</code>无法被成功推导，另一方面是因为实参的个数多于该非可变模板参数的个数；第二个函数模板<code>f(Ts...)</code>是可变模板，推导过程会针对两个实参的类型(分别是<code>int</code>和<code>double</code>)与函数参数包<code>(Ts)</code>的样式进行比较，将<code>Ts</code>推导为序列(<code>int</code>, <code>double</code>)；对于第三个函数模板——<code>f(Ts*...)</code>，推导过程会将每个实参类型与函数参数包<code>Ts*</code>的样式进行比较，该推导会失败（<code>Ts</code>无法被推导出来）。因此，最终只有第二个函数模板是可行的，也就不需要函数模板的顺序。</p>
+<p>第二个调用——<code>f((int*)nullptr, (double*)nullptr)</code>更加有趣：对第一个函数模板的推导会失败，因为实参个数多于模板参数个数；对第二个和第三个模板来说推导都会成功，我们显式地写出推导结果如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-built_in">f</span>&lt;<span class="hljs-type">int</span>*,<span class="hljs-type">double</span>*&gt;((<span class="hljs-type">int</span>*)<span class="hljs-literal">nullptr</span>, (<span class="hljs-type">double</span>*)<span class="hljs-literal">nullptr</span>)        <span class="hljs-comment">// for second template</span><br><br><span class="hljs-built_in">f</span>&lt;<span class="hljs-type">int</span>,<span class="hljs-type">double</span>&gt;((<span class="hljs-type">int</span>*)<span class="hljs-literal">nullptr</span>, (<span class="hljs-type">double</span>*)<span class="hljs-literal">nullptr</span>)            <span class="hljs-comment">// for third template</span><br></code></pre></td></tr></table></figure>
+
+<p>排序规则会考虑第二个和第三个模板，它们都是这样的可变模板：当对可变模板应用P331节16.2.3中描述的正式的排序规则时，每个模板参数包都会由一个单一构造的类型、类模板或是指来替代。举例来说，第二个和第三个函数模板所合成的实参类型分别为<code>A1</code>和<code>A2*</code>，其中<code>A1</code>和<code>A2</code>都是唯一的构造出的类型。第二个模板对于第三个模板的实参类型列表可以推导成功（通过替换参数包<code>Ts</code>为单一元素序列(<code>A2*</code>)）。然而，无论如何构造<code>Ts*</code>的样式，第三个模板参数包始终无法匹配非指针类型<code>A1</code>，因此第三个函数模板(接受指针类型实参)要比第二个函数模板(接受任意实参)更加特化。</p>
+<p>第三个调用——<code>f((int*)nullptr)</code>，又激起了一层涟漪：三个函数模板的推导都是成功的，因此就需要给非可变参数模板和可变参数模板排排顺序。为了说明，我们比较第一个和第三个函数模板。这里，合成的实参类型分别是<code>A1*</code>和<code>A2*</code>，其中<code>A1*</code>和<code>A2*</code>都是唯一的构造出的类型。第一个模板对于第三个合成的实参列表可以推导成功（通过替换<code>T</code>为<code>A2</code>）。反过来，第三个模板对于第一个合成的实参列表也可以推导成功（通过替换参数包<code>Ts</code>为单一元素序列(<code>A1</code>)）。第一个和第三个模板之间的顺序可能会产生有歧义的结果。然而，有这样一条特殊的规则：它禁止了那些源于函数参数包（例如，第三个模板参数包<code>Ts*...</code>）的实参去匹配一个非参数包（第一个模板参数<code>T*</code>）的参数。因此，第一个模板使用第三个合成的实参列表时推导会失败，于是我们认为第一个模板相比第三个模板更加特化。这一特殊的规则让非可变模板（拥有固定数量的参数）比可变模板（拥有可变数量的参数）更加特化。</p>
+<p>前面描述的规则对发生在函数签名的类型中的包展开时有着同等用法。例如，在前面的示例中，我们可以将函数模板的每一个参数和实参包裹成一个可变类模板<code>Tuple</code>，来实现一个类似的示例而不用引入函数参数包：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// details/tupleoverload.cpp</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span>... Ts&gt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">Tuple</span><br>&#123;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">(Tuple&lt;T*&gt;)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span>... Ts&gt;</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">(Tuple&lt;Ts...&gt;)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">2</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span>... Ts&gt;</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">(Tuple&lt;Ts*...&gt;)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">3</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  std::cout &lt;&lt; <span class="hljs-built_in">f</span>(<span class="hljs-built_in">Tuple</span>&lt;<span class="hljs-type">int</span>, <span class="hljs-type">double</span>&gt;());        <span class="hljs-comment">// calls f&lt;&gt;(Tuple&lt;Ts...&gt;)</span><br>  std::cout &lt;&lt; <span class="hljs-built_in">f</span>(<span class="hljs-built_in">Tuple</span>&lt;<span class="hljs-type">int</span>*, <span class="hljs-type">double</span>*&gt;());    <span class="hljs-comment">// calls f&lt;&gt;(Tuple&lt;Ts*...&gt;)</span><br>  std::cout &lt;&lt; <span class="hljs-built_in">f</span>(<span class="hljs-built_in">Tuple</span>&lt;<span class="hljs-type">int</span>*&gt;());            <span class="hljs-comment">// calls f&lt;&gt;(Tuple&lt;T*&gt;)</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>函数模板排序时，对模板实参到<code>Tuple</code>的包展开与我们前面示例中函数包展开有着类似的考虑，其结果输出为：<code>231</code>。</p>
+<h3 id="16-3-显式特化"><a href="#16-3-显式特化" class="headerlink" title="16.3 显式特化"></a>16.3 显式特化</h3><p>重载函数模板并根据偏序规则来选择“最”匹配的函数模板这一能力，使得我们可以透明地对泛型实现增加特化模板来调整代码以获得更高的效率。然而，类模板和变量模板无法被重载。取而代之的是，类模板的透明客制化采用了另一种机制：显式特化。标准术语”显式特化“是指一种我们称之为“全特化”的语言特性。它使用完全替代后的模板参数来提供一个模板实现体：没有保留任何模板参数。类模板、函数模板和变量模板都可以进行全特化。</p>
+<p>类模板的成员可以被定义在类定义体的外部（即，成员函数，嵌套类，静态数据成员和成员枚举类型）。</p>
+<p>在后面的一节中，我们会描述“偏特化”。它与全特化相似，只不过并没有完全替换模板参数而是在模板的替代实现中保留了一些参数化。全特化和偏特化在我们的代码中都是同等“显式的”，这也是为什么我们在讨论中避开用术语”显式特化“的原因。全特化和偏特化都没有引入一个全新的模板或是模板实例。相反，这些结构为泛型模板中已经隐式声明的实例提供了替代的定义。这是一个相对重要的概念，它是与重载模板的主要区别。</p>
+<h4 id="16-3-1-类模板全特化"><a href="#16-3-1-类模板全特化" class="headerlink" title="16.3.1 类模板全特化"></a>16.3.1 类模板全特化</h4><p>全特化由连续的<code>template</code>，<code>&lt;</code>和<code>&gt;</code>语法块引导，且类名称的后面跟随着特化所声明的模板实参。下面的例子对此进行了说明：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">S</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">info</span><span class="hljs-params">()</span> </span>&#123;<br>      std::cout &lt;&lt; <span class="hljs-string">&quot;generic (S&lt;T&gt;::info())\n&quot;</span>;<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">S</span>&lt;<span class="hljs-type">void</span>&gt; &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">msg</span><span class="hljs-params">()</span> </span>&#123;<br>      std::cout &lt;&lt; <span class="hljs-string">&quot;fully specialized (S&lt;void&gt;::msg())\n&quot;</span>;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>请注意，完全特化的实现无需以任何方式与泛型定义相关联：这意味着我们可以使用不同名称的成员函数（<code>info</code>对<code>msg</code>）。二者的关联仅由类模板的名称所决定。</p>
+<p>特化模板实参列表必须与模板参数列表一致。举例来说，为模板类型参数指定一个非类型值是不合法的。然而，对于有着默认模板实参的模板参数来说，对应的模板实参也是可选的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">Types</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">using</span> I = <span class="hljs-type">int</span>;<br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T, <span class="hljs-keyword">typename</span> U = <span class="hljs-keyword">typename</span> Types&lt;T&gt;::I&gt;<br><span class="hljs-keyword">class</span> S;            <span class="hljs-comment">// #1</span><br><br><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">S</span>&lt;<span class="hljs-type">void</span>&gt; &#123;        <span class="hljs-comment">// #2</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span></span>;<br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;&gt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">S</span>&lt;<span class="hljs-type">char</span>, <span class="hljs-type">char</span>&gt;;    <span class="hljs-comment">// #3</span><br><br><span class="hljs-keyword">template</span>&lt;&gt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">S</span>&lt;<span class="hljs-type">char</span>, <span class="hljs-number">0</span>&gt;;    <span class="hljs-comment">// ERROR: 0 cannot substitute U</span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  S&lt;<span class="hljs-type">int</span>&gt;*     pi;        <span class="hljs-comment">// OK: uses #1, no definition needed</span><br>  S&lt;<span class="hljs-type">int</span>&gt;    e1;        <span class="hljs-comment">// ERROR: uses #1, but no definition available</span><br>  S&lt;<span class="hljs-type">void</span>&gt;*    pv;        <span class="hljs-comment">// OK: uses #2</span><br>  S&lt;<span class="hljs-type">void</span>, <span class="hljs-type">int</span>&gt; sv;    <span class="hljs-comment">// OK: uses #2, definition available</span><br>  S&lt;<span class="hljs-type">void</span>, <span class="hljs-type">char</span>&gt; e2;    <span class="hljs-comment">// ERROR: uses #1, but no definition available</span><br>  S&lt;<span class="hljs-type">char</span>, <span class="hljs-type">char</span>&gt; e3;    <span class="hljs-comment">// ERROR: uses #3, but no definition available</span><br>&#125;<br><br><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">S</span>&lt;<span class="hljs-type">char</span>, <span class="hljs-type">char</span>&gt; &#123;    <span class="hljs-comment">// definition for #3</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>如上例所展示，全特化的声明可以无需定义体。然而，当声明了全特化时，泛型定义就永远不会使用这一组既定的模板实参来实例化。因此，如果程序需要某个定义但是却找不到对应的实现体时就会出错。对类模板特化来说，有时“前置声明”类型会很有用，因为这样就可以构造相互依赖的类型。全特化声明与普通的类声明在这一方面是等同的（记住它不是模板声明）。唯一的区别在于语法以及特化声明必须匹配前面的模板声明。因为这不是模板声明，全特化类模板的成员可以使用普通的类外成员定义语法来定义（换句话说，不能指定模板<code>template&lt;&gt;</code>前缀）：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">S</span>;<br><br><span class="hljs-keyword">template</span>&lt;&gt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">S</span>&lt;<span class="hljs-type">char</span>**&gt; &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;<br>&#125;;<br><br><span class="hljs-comment">// the following definition cannot be preceded by template&lt;&gt;</span><br><span class="hljs-type">void</span> S&lt;<span class="hljs-type">char</span>**&gt;::<span class="hljs-built_in">print</span>() <span class="hljs-type">const</span> <br>&#123;<br>  std::cout &lt;&lt; <span class="hljs-string">&quot;pointer to pointer to char\n&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>一个更复杂的例子来加强理解这一概念：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Outside</span> &#123;<br><span class="hljs-keyword">public</span>:<br>  <span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> U&gt;<br>  <span class="hljs-keyword">class</span> <span class="hljs-title class_">Inside</span>&#123;<br>  &#125;;<br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Outside</span>&lt;<span class="hljs-type">void</span>&gt; &#123;<br>  <span class="hljs-comment">// there is no special connection between the following nested class</span><br>  <span class="hljs-comment">// and the one defined in the generic template</span><br>  <span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> U&gt;<br>  <span class="hljs-keyword">class</span> <span class="hljs-title class_">Inside</span> &#123;<br>    <span class="hljs-keyword">private</span>:<br>      <span class="hljs-type">static</span> <span class="hljs-type">int</span> count;<br>  &#125;;<br>&#125;;<br><span class="hljs-comment">// the following definition cannot be preceded by template&lt;&gt;</span><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> U&gt;<br><span class="hljs-type">int</span> Outside&lt;<span class="hljs-type">void</span>&gt;::Inside&lt;U&gt;::count = <span class="hljs-number">1</span>;<br></code></pre></td></tr></table></figure>
+
+<p>全特化是泛型模板的特定实例化体的替代体，并且在同一个程序中无法同时存在显式全特化体和模板生成的实例化体这两个版本。试图在同一个文件中使用两者通常会被编译器所捕获：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Invalid</span> &#123;<br>&#125;;<br><br>Invalid&lt;<span class="hljs-type">double</span>&gt; x1;        <span class="hljs-comment">// causes the instantiation of Invalid&lt;double&gt;</span><br><br><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Invalid</span>&lt;<span class="hljs-type">double</span>&gt;;    <span class="hljs-comment">// ERROR: Invalid&lt;double&gt; already instantiated</span><br></code></pre></td></tr></table></figure>
+
+<p>不幸的是，如果在不同的编译单元中使用，问题可能不会被轻易捕获。下面的C++代码由两个文件组成，在多个平台上编译和链接这个例子都表示它是非法的，甚至是危险的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// Translation unit 1:</span><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Danger</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">enum</span> &#123; max = <span class="hljs-number">10</span> &#125;;<br>&#125;;<br><br><span class="hljs-type">char</span> buffer[Danger&lt;<span class="hljs-type">void</span>&gt; ::max];    <span class="hljs-comment">// uses generic value</span><br><br><span class="hljs-function"><span class="hljs-keyword">extern</span> <span class="hljs-type">void</span> <span class="hljs-title">clear</span><span class="hljs-params">(<span class="hljs-type">char</span>*)</span></span>;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-built_in">clear</span>(buffer);<br>&#125;<br><br><span class="hljs-comment">// Translation unit 2:</span><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Danger</span>;<br><br><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Danger</span>&lt;<span class="hljs-type">void</span>&gt; &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">enum</span> &#123; max = <span class="hljs-number">100</span> &#125;;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">clear</span><span class="hljs-params">(<span class="hljs-type">char</span>* buf)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-comment">// mismatch in array bound:</span><br>  <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> k = <span class="hljs-number">0</span>; k&lt;Danger&lt;<span class="hljs-type">void</span>&gt; ::max; ++k) &#123;<br>    buf[k] = <span class="hljs-string">&#x27;\0&#x27;</span>;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>显然，为了使该示例简短我们做了裁剪，但是它说明了：在使用特化时，必须非常小心地确认特化的声明对泛型模板的所有用户都是可见的。实际应用中，这意味着：在模板声明所在的头文件中，特化的声明通常应该在模板的声明之后。然而，泛型实现也可能来自外部源码（诸如不能被修改的头文件），尽管实际中很少采用这种方式，但还是值得我们去创建一个包含泛型模板的头文件，并让特化声明位于泛型模板之后，以避免这种“难以排查”的错误。此外，通常来说，最好避免从外部源码引入特化模板，除非明确表示设计的目的就是如此。</p>
+<h4 id="16-3-2-函数模板全特化"><a href="#16-3-2-函数模板全特化" class="headerlink" title="16.3.2 函数模板全特化"></a>16.3.2 函数模板全特化</h4><p>函数模板全特化背后的语法和原则与类模板全特化大体相同，只是加入了重载和实参推导。</p>
+<p>如果可以借助实参推导（用实参类型来推导声明中给出的参数类型）和偏序来确定模板的特化版本，那么全局特化就可以不声明显式的模板实参。举个例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">(T)</span>        <span class="hljs-comment">// #1</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">(T*)</span>        <span class="hljs-comment">// #2</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">2</span>;<br>&#125;<br><br><span class="hljs-keyword">template</span>&lt;&gt; <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">(<span class="hljs-type">int</span>)</span>    <span class="hljs-comment">// OK: specialization of #1</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">3</span>;<br>&#125;<br><br><span class="hljs-keyword">template</span>&lt;&gt; <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">(<span class="hljs-type">int</span>*)</span>    <span class="hljs-comment">// OK: specialization of #2</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">4</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>函数模板全特化不能包含默认实参值。然而，对于被特化的模板所指定的任何默认实参，显式特化版本都可以应用这些默认实参值。例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">(T, T x = <span class="hljs-number">42</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> x;<br>&#125;<br><span class="hljs-keyword">template</span>&lt;&gt; <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">(<span class="hljs-type">int</span>, <span class="hljs-type">int</span> = <span class="hljs-number">35</span>)</span> <span class="hljs-comment">// ERROR</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>（这是因为全特化提供的是一个替换的定义，而不是一个替换的声明。在调用函数模板的时点，该调用已经完全基于函数模板而完成解析了。）</p>
+<p>全特化声明和普通声明（或者是一个普通的再次声明）在很多方面都很类似。特别地，它不会声明一个模板，因此对于非内联全特化函数模板特化来说，在程序中它只能有一个定义。然而，我们必须确保：函数模板的全特化声明是跟随在模板定义之后，以避免试图使用一个由模板生成的函数。因此，模板<code>g()</code>的声明和全特化声明应该被组织成两个文件，如下所示：</p>
+<ul>
+<li>接口文件包含了主模板的定义和偏特化的定义，但是仅包含全特化的声明：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> TEMPLATE_G_HPP</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TEMPLATE_G_HPP</span><br><br><span class="hljs-comment">// template definition should appear in header file:</span><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">g</span><span class="hljs-params">(T, T x = <span class="hljs-number">42</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> x;<br>&#125;<br><br><span class="hljs-comment">// specialization declaration inhibits instantiations of</span><br>the <span class="hljs-keyword">template</span>;<br><span class="hljs-comment">// definition should not appear here to avoid multiple</span><br>definition errors<br><br><span class="hljs-keyword">template</span>&lt;&gt; <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">g</span><span class="hljs-params">(<span class="hljs-type">int</span>, <span class="hljs-type">int</span> y)</span></span>;<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">// TEMPLATE_G_HPP</span></span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>相应的，实现文件包含了全特化的定义：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;template_g.hpp&quot;</span></span><br><span class="hljs-keyword">template</span>&lt;&gt; <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">g</span><span class="hljs-params">(<span class="hljs-type">int</span>, <span class="hljs-type">int</span> y)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> y/<span class="hljs-number">2</span>;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>或者全特化也可以做成内联，此时它的定义就可以放在一个头文件中。</p>
+<h4 id="16-3-3-变量模板全特化"><a href="#16-3-3-变量模板全特化" class="headerlink" title="16.3.3 变量模板全特化"></a>16.3.3 变量模板全特化</h4><p>变量模板也可以被全特化。现如今，语法非常直观：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">constexpr</span> std::<span class="hljs-type">size_t</span> SZ = <span class="hljs-built_in">sizeof</span>(T);<br><span class="hljs-keyword">template</span>&lt;&gt; <span class="hljs-keyword">constexpr</span> std::<span class="hljs-type">size_t</span> SZ&lt;<span class="hljs-type">void</span>&gt; = <span class="hljs-number">0</span>;<br></code></pre></td></tr></table></figure>
+
+<p>显然，特化可以提供一个不同于模板产生结果的初始化器。有趣的是，变量模板特化不需要与模板的类型匹配：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">typename</span> T::iterator null_iterator;<br><span class="hljs-keyword">template</span>&lt;&gt; BitIterator null_iterator&lt;std::bitset&lt;100&gt;&gt;;<br>        <span class="hljs-comment">// BitIterator doesn&#x27;t match T::iterator, an that is fine</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="16-3-4-成员全特化"><a href="#16-3-4-成员全特化" class="headerlink" title="16.3.4 成员全特化"></a>16.3.4 成员全特化</h4><p>类模板的成员模板、普通静态数据成员、普通成员函数都可以进行全特化。每个类模板作用域都需要一个<code>template&lt;&gt;</code>前缀。如果要对一个成员模板进行特化，则必须加上另一个<code>template&lt;&gt;</code>前缀，来说明该声明表示的是一个特化。为了说明这些含义，我们给出下列声明：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Outer</span> &#123;                                 <span class="hljs-comment">// #1</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> U&gt;<br>    <span class="hljs-keyword">class</span> <span class="hljs-title class_">Inner</span> &#123;                             <span class="hljs-comment">// #2</span><br>      <span class="hljs-keyword">private</span>:<br>        <span class="hljs-type">static</span> <span class="hljs-type">int</span> count;                     <span class="hljs-comment">// #3</span><br>    &#125;;<br>    <span class="hljs-type">static</span> <span class="hljs-type">int</span> code;                         <span class="hljs-comment">// #4</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123;                     <span class="hljs-comment">// #5</span><br>      std::cout &lt;&lt; <span class="hljs-string">&quot;generic&quot;</span>;<br>    &#125;<br>&#125;;<br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-type">int</span> Outer&lt;T&gt;::code = <span class="hljs-number">6</span>;                     <span class="hljs-comment">// #6</span><br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> U&gt;<br><span class="hljs-type">int</span> Outer&lt;T&gt;::Inner&lt;U&gt;::count = <span class="hljs-number">7</span>;             <span class="hljs-comment">// #7</span><br><br><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Outer</span>&lt;<span class="hljs-type">bool</span>&gt; &#123;                         <span class="hljs-comment">// #8</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> U&gt;<br>    <span class="hljs-keyword">class</span> <span class="hljs-title class_">Inner</span> &#123;                             <span class="hljs-comment">// #9</span><br>      <span class="hljs-keyword">private</span>:<br>        <span class="hljs-type">static</span> <span class="hljs-type">int</span> count;                     <span class="hljs-comment">//#10</span><br>    &#125;;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123;                     <span class="hljs-comment">//#11</span><br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>泛型模板<code>Outer</code>(#1)的普通成员<code>code</code>(#4)和<code>print()</code>(#5)具有单一的类模板作用域，因此全特化时需要一个<code>template&lt;&gt;</code>前缀以及一组模板实参：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-type">int</span> Outer&lt;<span class="hljs-type">void</span>&gt;::code = <span class="hljs-number">12</span>;<br><br><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-type">void</span> Outer&lt;<span class="hljs-type">void</span>&gt;::<span class="hljs-built_in">print</span>() <span class="hljs-type">const</span><br>&#123;<br>  std::cout &lt;&lt; <span class="hljs-string">&quot;Outer&lt;void&gt;&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这些定义将会用于替代类<code>Outer&lt;void&gt;</code>（在#4和#5处替代泛型定义），但是<code>Outer&lt;void&gt;</code>的其他成员仍然会通过#1处的模板来生成。请注意，在进行了这些声明之后，将不能再次提供<code>Outer&lt;void&gt;</code>的显式特化。</p>
+<p>正如函数模板全特化那般，我们也需要一种方式来声明类模板普通成员的特化而不用去定义它（防止出现多个定义体）。尽管对于普通类的成员函数和静态数据成员而言，非定义的类外声明在C++中不被允许，但如果是针对类模板的特化成员，该声明则是合法的。也就是说，前面的定义可以具有如下声明：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-type">int</span> Outer&lt;<span class="hljs-type">void</span>&gt;::code;<br><br><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-type">void</span> Outer&lt;<span class="hljs-type">void</span>&gt;::<span class="hljs-built_in">print</span>() <span class="hljs-type">const</span>;<br></code></pre></td></tr></table></figure>
+
+<p>细心的读者可能会发现<code>Outer&lt;void&gt;::code</code>的全特化非定义声明看上去就是一个使用默认构造器的初始化定义。实际上也确实如此，只不过这样的声明永远会被解析成非定义申明。因此，如果静态数据成员的类型是一个只能使用默认构造函数进行初始化的类型，我们就必须采用初始化列表语法。如下示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DefaultInitOnly</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">DefaultInitOnly</span>() = <span class="hljs-keyword">default</span>;<br>    <span class="hljs-built_in">DefaultInitOnly</span>(DefaultInitOnly <span class="hljs-type">const</span>&amp;) = <span class="hljs-keyword">delete</span>;<br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Statics</span> &#123;<br>  <span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">static</span> T sm;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>下面的语句是一个声明：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;&gt;<br>DefaultInitOnly Statics&lt;DefaultInitOnly&gt;::sm;<br></code></pre></td></tr></table></figure>
+
+<p>如果想要一个定义并调用默认构造器：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;&gt;<br>DefaultInitOnly Statics&lt;DefaultInitOnly&gt;::sm&#123;&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>在C++11之前，这无法办到。对于这种特化也无法实现默认初始化。以前的经典办法是使用拷贝初始化：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;&gt;<br>DefaultInitOnly Statics&lt;DefaultInitOnly&gt;::sm =<br><span class="hljs-built_in">DefaultInitOnly</span>();<br></code></pre></td></tr></table></figure>
+
+<p>遗憾的是，对我们的例子来说这是行不通的，因为拷贝构造器被删除了。然而，C++17引入了强制复制省略(mandatory copy-elision)法则，这一法则使得该实现合法化，因为这里实际上不会真正调用拷贝构造器。</p>
+<p>成员模板<code>Outer&lt;T&gt;::Inner</code>也可以使用特定的模板实参进行特化，对于该特化所在的外围<code>Outer&lt;T&gt;</code>而言，它不会影响<code>Outer&lt;T&gt;</code>相应实例化体的其他成员。同样地，由于存在一个外围模板，所以我们需要添加一个<code>template&lt;&gt;</code>前缀。代码应该写成下面这样：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> X&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Outer</span>&lt;<span class="hljs-type">wchar_t</span>&gt;::Inner &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-type">static</span> <span class="hljs-type">long</span> count; <span class="hljs-comment">// member type changed</span><br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> X&gt;<br><span class="hljs-type">long</span> Outer&lt;<span class="hljs-type">wchar_t</span>&gt;::Inner&lt;X&gt;::count;<br></code></pre></td></tr></table></figure>
+
+<p>模板<code>Outer&lt;T&gt;::Inner</code>也可以被全特化，但只能针对某个给定的<code>Outer&lt;T&gt;</code>实例。我们现在需要两个<code>template&lt;&gt;</code>前缀：第一个是因为外围类的存在，第二个是因为我们全特化了内层模板：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Outer</span>&lt;<span class="hljs-type">char</span>&gt;::Inner&lt;<span class="hljs-type">wchar_t</span>&gt; &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">enum</span> &#123; count = <span class="hljs-number">1</span> &#125;;<br>&#125;;<br><br><span class="hljs-comment">// the following is not valid C++;</span><br><span class="hljs-comment">// template&lt;&gt; cannot follow a template parameter list</span><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> X&gt;<br><span class="hljs-keyword">template</span>&lt;&gt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">Outer</span>&lt;X&gt;::Inner&lt;<span class="hljs-type">void</span>&gt;;    <span class="hljs-comment">// ERROR</span><br></code></pre></td></tr></table></figure>
+
+<p>我们可以将此与<code>Outer&lt;bool&gt;</code>的成员模板特化进行比较。由于后者已经进行过全特化了，也就没有外部模板了，此时我们只需要一个<code>template&lt;&gt;</code>前缀：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Outer</span>&lt;<span class="hljs-type">bool</span>&gt;::Inner&lt;<span class="hljs-type">wchar_t</span>&gt; &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">enum</span> &#123; count = <span class="hljs-number">2</span> &#125;;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h3 id="16-4-类模板偏特化"><a href="#16-4-类模板偏特化" class="headerlink" title="16.4 类模板偏特化"></a>16.4 类模板偏特化</h3><p>模板全特化通常很有用，但有些时候我们更希望对类模板或变量模板对”一整个家族的模板实参“进行特化，而不是针对“一个具体实参列表”进行全特化。例如，假设下面是一个类模板实现的链表：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">List</span> &#123;                <span class="hljs-comment">// #1</span><br><span class="hljs-keyword">public</span>:<br>    ...<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">append</span><span class="hljs-params">(T <span class="hljs-type">const</span>&amp;)</span></span>;<br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> std::<span class="hljs-type">size_t</span> <span class="hljs-title">length</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;<br>    ...<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>使用该类模板的大型项目会为多种类型实例化出它的成员。对于非内联展开的成员函数来说（即<code>List&lt;T&gt;::append()</code>），这回导致对象代码的显著膨胀。然而，如果我们从一个底层视角来看，<code>List&lt;int*&gt;::append()</code>和<code>List&lt;void*&gt;::append()</code>是等同的。换句话说，我们可以指定所有的指针型<code>List</code>共享同一个实现体。尽管这无法在C++中直接表达，但我们可以指定所有的指针型<code>List</code>都从不同的模板定义中实例化，从而达成近似的目标：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">List</span>&lt;T*&gt; &#123;        <span class="hljs-comment">// #2</span><br>  <span class="hljs-keyword">private</span>:<br>    List&lt;<span class="hljs-type">void</span>*&gt; impl;<br>    ...<br><span class="hljs-keyword">public</span>:<br>    ...<br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">append</span><span class="hljs-params">(T* p)</span> </span>&#123;<br>      impl.<span class="hljs-built_in">append</span>(p);<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> std::<span class="hljs-type">size_t</span> <span class="hljs-title">length</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123;<br>      <span class="hljs-keyword">return</span> impl.<span class="hljs-built_in">length</span>();<br>    &#125;<br>    ...<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>在该上下文中，#1处的原始模板被称作主模板，后面的定义被称为偏特化（因为模板定义所使用的模板实参只指定了一部分）。模板参数列表声明（<code>template&lt;...&gt;</code>），再加上显式指定的模板实参集合（在类模板名称后，本例中是<code>&lt;T*&gt;</code>），两者组合在一起就是偏特化语法的表征。</p>
+<p>我们的代码中有一个问题，<code>List&lt;void*&gt;</code>会递归地包含相同的<code>List&lt;void*&gt;</code>类型。为了打破这一循环，我们可以在该偏特化之前先提供一个全特化：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">List</span>&lt;<span class="hljs-type">void</span>*&gt; &#123;        <span class="hljs-comment">// #3</span><br>  ...<br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">append</span><span class="hljs-params">(<span class="hljs-type">void</span>* p)</span></span>;<br>  <span class="hljs-function"><span class="hljs-keyword">inline</span> std::<span class="hljs-type">size_t</span> <span class="hljs-title">length</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;<br>  ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这样之所以行得通，是因为全特化的优先级高于偏特化。因此，指针型<code>List</code>的所有的成员函数都会通过内联函数转发到<code>List&lt;void*&gt;</code>的实现体。这是一种对抗代码膨胀（C++模板经常会遇到）的有效方法。</p>
+<p>偏特化声明的参数和实参列表存在着一些约束。下面是这些约束的一部分内容：</p>
+<ol>
+<li>偏特化的实参必须与主模板对应的参数相匹配。</li>
+<li>偏特化的参数列表不能具有默认实参；作为替代，主类模板的默认实参会被使用。</li>
+<li>偏特化的非类型实参要么是一个非依赖型值，要么是一个普通的非类型模板参数。它们不能是更加复杂的表达式，诸如<code>2*N</code>（<code>N</code>是一个模板参数）。</li>
+<li>偏特化的模板实参列表不应该与主模板的参数列表完全相同（忽略重命名）。</li>
+<li>如果模板实参的某一个是包展开，那么它必须位于模板实参列表的最后。</li>
+</ol>
+<p>用一个例子来说明这些约束：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T, <span class="hljs-type">int</span> I = <span class="hljs-number">3</span>&gt;<br><span class="hljs-keyword">class</span> S;                <span class="hljs-comment">// primary template</span><br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">S</span>&lt;<span class="hljs-type">int</span>, T&gt;;        <span class="hljs-comment">// ERROR: parameter kind mismatch</span><br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T = <span class="hljs-type">int</span>&gt;<br><span class="hljs-keyword">class</span> S&lt;T, <span class="hljs-number">10</span>&gt;;            <span class="hljs-comment">// ERROR: no default arguments</span><br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-type">int</span> I&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">S</span>&lt;<span class="hljs-type">int</span>, I*<span class="hljs-number">2</span>&gt;;        <span class="hljs-comment">// ERROR: no nontype expressions</span><br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> U, <span class="hljs-type">int</span> K&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">S</span>&lt;U, K&gt;;            <span class="hljs-comment">// ERROR: no significant difference from primary template</span><br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span>... Ts&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Tuple</span>;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> Tail, <span class="hljs-keyword">typename</span>... Ts&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Tuple</span>&lt;Ts..., Tail&gt;;        <span class="hljs-comment">// ERROR: pack expansion not at the end</span><br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> Tail, <span class="hljs-keyword">typename</span>... Ts&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Tuple</span>&lt;Tuple&lt;Ts...&gt;, Tail&gt;;    <span class="hljs-comment">// OK: pack expansion is at the end of a nested template argument list</span><br></code></pre></td></tr></table></figure>
+
+<p>每个偏特化和每个全特化一样，都和主模板相关联。模板被使用时，编译器总是会对主模板进行查找，但接下来还会匹配调用实参和相关联特化的实参（使用模板实参推导，如15章所描述），然后确定应该选择哪一个模板实现体。与函数模板实参推导一样，SFINAE原则会在这里应用：如果在试图匹配一个偏特化时产生了无效的结构，那么特化就会被默默丢弃，然后继续对下一个候选进行试验（如果可行的话）。如果找不到匹配的特化，主模板就会被选择；如果能够找到多个匹配的特化，那么就会选择“最特殊”的特化（与重载函数模板所定义的规则一样），而这其中如果无法确定“最特殊”的那一个（即存在几个特殊程度相同的特化），那么程序就会抛出有歧义错误。</p>
+<p>最后，我们要指出：类模板偏特化的参数个数是可以和主模板不一样的，它既可以多于主模板，也可以少于主模板。让我们再次考虑泛型模板<code>List</code>（在#1处声明）。我们已经讨论了如何优化指针型<code>List</code>的情景，但我们希望可以针对特定的成员指针类型实现这种优化。下面的代码就是针对指向成员指针的指针，来实现这种优化：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// partial specialization for any pointer-to-void* member</span><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> C&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">List</span>&lt;<span class="hljs-type">void</span>* C::*&gt; &#123;    <span class="hljs-comment">// #4</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">using</span> ElementType = <span class="hljs-type">void</span>* C::*:<br>    ...<br>    <span class="hljs-type">void</span> <span class="hljs-built_in">append</span>(ElementType pm);<br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> std::<span class="hljs-type">size_t</span> <span class="hljs-title">length</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;<br>    ...<br>&#125;;<br><br><span class="hljs-comment">// partial specialization for any pointer-to-member-pointer type except</span><br><span class="hljs-comment">// pointer-to-void* member, which is handled earlier</span><br><span class="hljs-comment">// (note that this partial specialization has two template parameters,</span><br><span class="hljs-comment">// whereas the primary template only has one parameter)</span><br><span class="hljs-comment">// this specialization makes use of the prior one to achieve the </span><br><span class="hljs-comment">// desired optimization</span><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T, <span class="hljs-keyword">typename</span> C&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">List</span>&lt;T* C::*&gt; &#123;    <span class="hljs-comment">// #5</span><br>  <span class="hljs-keyword">private</span>:<br>    List&lt;<span class="hljs-type">void</span>* C::*&gt; impl;<br>    ...<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">using</span> ElementType = T* C::*;<br>    ...<br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">append</span><span class="hljs-params">(ElementType pm)</span> </span>&#123;<br>      impl.<span class="hljs-built_in">append</span>((<span class="hljs-type">void</span>* C::*)pm);<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> std::<span class="hljs-type">size_t</span> <span class="hljs-title">length</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123;<br>      <span class="hljs-keyword">return</span> impl.<span class="hljs-built_in">length</span>();<br>    &#125;<br>    ...<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>除了模板参数数量不同之外，我们看到在#4处定义的公共实现本身也是一个偏特化（对于简单的指针例子，这里应该是一个全特化），而所有其他的偏特化(#5处的声明)都是把实现委托给这个公共实现。显然，在#4处的公共实现要比#5处的实现更加特化，因此也就不会造成歧义。</p>
+<p>此外，显式书写的模板实参数量与主模板的模板参数数量甚至也可能不同。这会在拥有默认模板实参以及拥有可变模板时发生：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span>... Elements&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Tuple</span>;    <span class="hljs-comment">// primary template</span><br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T1&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Tuple</span>&lt;T&gt;;    <span class="hljs-comment">// one-element tuple</span><br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T1, <span class="hljs-keyword">typename</span> T2, <span class="hljs-keyword">typename</span>... Rest&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Tuple</span>&lt;T1, T2, Rest...&gt;;    <span class="hljs-comment">// tuple with two or more elements</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="16-5-变量模板偏特化"><a href="#16-5-变量模板偏特化" class="headerlink" title="16.5 变量模板偏特化"></a>16.5 变量模板偏特化</h3><p>变量模板在C++11标准的草稿中引入时，其许多方面的规范都被忽视了，其中的一些问题依然没有给出官方定论。然而，实际当中，各种编译器在实现时通常对这些问题的处理都颇为一致。</p>
+<p>这些问题中可能最令人惊讶的是：标准会更倾向于偏特化变量模板，但是却并没有描述它们要如何声明或者它们意味着什么。因此，下面的内容基于实践中的C++实现（确实允许这种偏特化），而不是基于C ++标准。</p>
+<p>如你所愿，语法与变量模板全特化是类似的，除了<code>template&lt;&gt;</code>要被替换成实际的模板声明头，并且变量模板名称后跟随着模板实参列表必须依赖于模板参数。例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">constexpr</span> std::<span class="hljs-type">size_t</span> SZ = <span class="hljs-built_in">sizeof</span>(T);<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">constexpr</span> std::<span class="hljs-type">size_t</span> SZ&lt;T&amp;&gt; = <span class="hljs-built_in">sizeof</span>(<span class="hljs-type">void</span>*);<br></code></pre></td></tr></table></figure>
+
+<p>与变量模板全特化一样，偏特化的类型也不需要匹配主模板的类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">typename</span> T::iterator null_iterator;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T, std::<span class="hljs-type">size_t</span> N&gt; T* null_iterator&lt;T[N]&gt; = null_ptr;<br>        <span class="hljs-comment">// T* doesn&#x27;t match T::iterator, and that is fine</span><br></code></pre></td></tr></table></figure>
+
+<p>变量模板偏特化可以指定的模板参数种类这一规则与类模板偏特化是相同的。类似地，为给定的具体模板实参列表选择某一个特化的规则也是相同的。</p>
+<h3 id="16-6-后记"><a href="#16-6-后记" class="headerlink" title="16.6 后记"></a>16.6 后记</h3><p>模板全特化是C++模板机制中一开始就有的一部分。然而，函数模板重载和类模板偏特化则出现得晚一些。第一个实现了函数模板重载的是HP的C++编译器，而第一个实现了类模板偏特化的是EDG的C++前端(C++ front end)编译器。本章中描述的偏序规则最早由Steve Adamczyk和John Spicer发明（这两位都是EDG的成员）。</p>
+<p>模板特化可以终止模板定义的无限递归（诸如P348节16.4中出现的<code>List&lt;T*&gt;</code>）这一项能力长久以来可谓广为人知。然而，Erwin Unruh可能是提出模板元编程（使用模板实例化机制在编译器执行非琐碎的计算。我们会在第23章中致力于这一话题）这一有趣概念的第一人。</p>
+<p>你可能想知道为什么只有类模板和变量模板可以被偏特化。实际上大都是历史成因。为函数模板定义这一相同的机制是可行的（参考第17章）。在某些方面，函数模板的重载效果与之相似，但是也存在一些细微的差异。这些差异主要与以下事实有关：在用到的时候仅需要查找主模板，随后才考虑特化，以确定哪一个实现体会被使用。相反，在进行查找时，所有的重载函数模板都必须放入一个重载集合中，它们可能源于不同的命名空间或是类。这增加了模板名称被无意中重载的可能性。</p>
+<p>相反，也可以想象允许某种形式的类模板和变量模板重载。这里有一个例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// invalid overloading of class templates</span><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T1, <span class="hljs-keyword">typename</span> T2&gt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">Pair</span>;<br><span class="hljs-keyword">template</span>&lt;<span class="hljs-type">int</span> N1, <span class="hljs-type">int</span> N2&gt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">Pair</span>;<br></code></pre></td></tr></table></figure>
+
+<p>然而，似乎并没有迫切需要这一机制。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/05/31/cpp-template-ch/cpp-template-ch16/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>QiDianMaker</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月30日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"6xahBDKE9bVdQzuufG4r0SrN-gzGzoHsz","appKey":"aS53wAMJ32RwAJRsefQAsX9P","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div style="font-size: 0.85rem"> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
