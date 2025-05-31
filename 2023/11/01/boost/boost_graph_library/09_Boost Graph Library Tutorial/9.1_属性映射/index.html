@@ -1,0 +1,898 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/about/favicon.png">
+  <link rel="icon" href="/images/about/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="QiDianMaker">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="图的抽象数学性质和要解决的具体问题之间主要是靠附加在图的顶点和边上的属性联系起来的，例如距离、容量、权重、颜色等。在数据结构实现方面，有很多方法可以将属性附加到图上，但图算法不必处理属性的实现细节。属性映射概念部分中定义的属性映射接口提供了从图访问属性的通用方法。这是 BGL 算法中用于访问属性的接口。 属性映射接口属性映射接口指定使用单独的属性映射对象来访问每个属性。在下面的示例中，我们展示了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="9.1 属性映射">
+<meta property="og:url" content="http://example.com/2023/11/01/boost/boost_graph_library/09_Boost%20Graph%20Library%20Tutorial/9.1_%E5%B1%9E%E6%80%A7%E6%98%A0%E5%B0%84/index.html">
+<meta property="og:site_name" content="奇点创客">
+<meta property="og:description" content="图的抽象数学性质和要解决的具体问题之间主要是靠附加在图的顶点和边上的属性联系起来的，例如距离、容量、权重、颜色等。在数据结构实现方面，有很多方法可以将属性附加到图上，但图算法不必处理属性的实现细节。属性映射概念部分中定义的属性映射接口提供了从图访问属性的通用方法。这是 BGL 算法中用于访问属性的接口。 属性映射接口属性映射接口指定使用单独的属性映射对象来访问每个属性。在下面的示例中，我们展示了">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/boost/graph-theory.jpg">
+<meta property="article:published_time" content="2023-10-31T22:16:26.000Z">
+<meta property="article:modified_time" content="2025-05-31T04:00:46.618Z">
+<meta property="article:author" content="QiDianMaker">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Boost">
+<meta property="article:tag" content="第三方库">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/boost/graph-theory.jpg">
+  
+  
+  
+  <title>9.1 属性映射 - 奇点创客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"cpp"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"6xahBDKE9bVdQzuufG4r0SrN-gzGzoHsz","app_key":"aS53wAMJ32RwAJRsefQAsX9P","server_url":"https://6xahbdke.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>奇点创客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>文库</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    <span>归档</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    <span>分类</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    <span>标签</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-th-large"></i>
+                <span>精神家园</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/books/">
+                    <i class="iconfont icon-book"></i>
+                    <span>读书</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/music/">
+                    <i class="iconfont icon-music"></i>
+                    <span>音乐</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/movies/">
+                    <i class="iconfont icon-youtube-fill"></i>
+                    <span>电影</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/travel/">
+                    <i class="iconfont icon-instagram-fill"></i>
+                    <span>旅行</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/boost/graph-theory.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="9.1 属性映射"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        QiDianMaker
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-10-31 14:16" pubdate>
+          2023年10月31日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          62 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">9.1 属性映射</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>图的抽象数学性质和要解决的具体问题之间主要是靠附加在图的顶点和边上的属性联系起来的，例如距离、容量、权重、颜色等。在数据结构实现方面，有很多方法可以将属性附加到图上，但图算法不必处理属性的实现细节。<a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/property_map/doc/property_map.html">属性映射概念</a>部分中定义的属性映射接口提供了从图访问属性的通用方法。这是 BGL 算法中用于访问属性的接口。</p>
+<h2 id="属性映射接口"><a href="#属性映射接口" class="headerlink" title="属性映射接口"></a>属性映射接口</h2><p>属性映射接口指定使用单独的属性映射对象来访问每个属性。在下面的示例中，我们展示了 Dijkstra 最短路径算法中使用的 <code>relax()</code> 函数的实现。在此函数中，我们需要访问边的权重属性和顶点的距离属性。我们将 <code>relax()</code> 编写为模板函数，以便它可以在许多不同的情况下使用。该函数的两个参数（权重和距离）是属性映射对象。一般来说，BGL 算法显式传递函数所需的每个属性的属性映射对象。属性映射接口定义了几个函数，我们在这里使用其中两个函数：<code>get()</code> 和 <code>put()</code>。<code>get()</code> 函数接受属性映射对象，例如距离和键对象。对于距离属性，我们使用顶点对象 <code>u</code> 和 <code>v</code> 作为键。然后 <code>get()</code> 函数返回顶点的属性值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">Edge</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Graph</span>,<br>          <span class="hljs-keyword">class</span> <span class="hljs-title class_">WeightPropertyMap</span>,<br>          <span class="hljs-keyword">class</span> <span class="hljs-title class_">DistancePropertyMap</span>&gt;<br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">relax</span><span class="hljs-params">(Edge e, <span class="hljs-type">const</span> Graph&amp; g,</span></span><br><span class="hljs-params"><span class="hljs-function">           WeightPropertyMap weight,</span></span><br><span class="hljs-params"><span class="hljs-function">           DistancePropertyMap distance)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">typedef</span> <span class="hljs-keyword">typename</span> graph_traits&lt;Graph&gt;::vertex_descriptor Vertex;<br>    Vertex u = <span class="hljs-built_in">source</span>(e,g), v = <span class="hljs-built_in">target</span>(e,g);<br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">get</span>(distance, u) + <span class="hljs-built_in">get</span>(weight, e) &lt; <span class="hljs-built_in">get</span>(distance, v)) &#123;<br>        <span class="hljs-built_in">put</span>(distance, v, <span class="hljs-built_in">get</span>(distance, u) + <span class="hljs-built_in">get</span>(weight, e));<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125; <span class="hljs-keyword">else</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>函数 <code>get()</code> 返回属性值的副本。属性映射接口中有第三个函数 <code>at()</code>，它返回对属性值的引用（如果映射不可变的，将返回常量引用）。</p>
+<p>与 STL 的 <code>iterator_traits</code> 类类似，有一个 <code>property_traits</code> 类可用于推导与属性映射类型关联的类型：键类型和值类型，以及属性映射类别（用于判断映射是否可读、可写或两者兼而有之）。在 <code>relax()</code> 函数中，我们可以使用 <code>property_traits</code> 来声明距离属性类型的局部变量。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c++">&#123;<br>    <span class="hljs-keyword">typedef</span> <span class="hljs-keyword">typename</span> graph_traits&lt;Graph&gt;::vertex_descriptor Vertex;<br>    Vertex u = <span class="hljs-built_in">source</span>(e,g), v = <span class="hljs-built_in">target</span>(e,g);<br>    <span class="hljs-keyword">typename</span> property_traits&lt;DistancePropertyMap&gt;::value_type<br>        du, dv; <span class="hljs-comment">// 距离属性类型的局部变量</span><br>    du = <span class="hljs-built_in">get</span>(distance, u);<br>    dv = <span class="hljs-built_in">get</span>(distance, v);<br>    <span class="hljs-keyword">if</span> (du + <span class="hljs-built_in">get</span>(weight, e) &lt; dv) &#123;<br>        <span class="hljs-built_in">put</span>(distance, v, du + <span class="hljs-built_in">get</span>(weight, e));<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125; <span class="hljs-keyword">else</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="内部属性"><a href="#内部属性" class="headerlink" title="内部属性"></a>内部属性</h3><p>以某种方式存储在图对象“内部”，属性值对象的生命周期与图对象的生命周期相同。</p>
+<h3 id="外部属性"><a href="#外部属性" class="headerlink" title="外部属性"></a>外部属性</h3><p>存储在图对象的“外部”，属性值对象的生命周期与图无关。这对于暂时需要的属性很有用，可能是在特定算法的持续时间内需要的，例如在 <code>breadth_first_search()</code> 中使用的颜色属性。当将外部属性与 BGL 算法一起使用时，外部属性的属性映射对象必须作为参数传递给算法。</p>
+<h2 id="内部属性-1"><a href="#内部属性-1" class="headerlink" title="内部属性"></a>内部属性</h2><p>支持内部属性存储的图类型（例如 <code>adjacency_list</code>）通过 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/PropertyGraph.html">PropertyGraph</a> 中定义的接口提供对其属性映射对象的访问。有一个函数 <code>get(Property, g)</code> 从图中获取属性映射对象。第一个参数是属性类型，用于指定要访问的属性，第二个参数是图形对象。图形类型必须记录它提供对哪些属性（以及标签）的访问。属性映射的类型取决于图的类型和所映射的属性。定义了一个特征类，它提供了推断属性映射类型的通用方法：<code>property_map</code>。以下代码显示了如何获取某种图类型的距离和权重属性的属性映射图。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++">property_map&lt;Graph, <span class="hljs-type">vertex_distance_t</span>&gt;::type d = <span class="hljs-built_in">get</span>(vertex_distance, g);<br><br>property_map&lt;Graph, <span class="hljs-type">edge_weight_t</span>&gt;::type w = <span class="hljs-built_in">get</span>(edge_weight, g);<br></code></pre></td></tr></table></figure>
+
+<p>一般来说，BGL 算法要求将算法所需的所有属性映射显式传递给算法。例如，BGL Dijkstra 的最短路径算法需要四个属性图：距离、权重、颜色和顶点 ID。</p>
+<p>通常，部分或全部属性将位于图的内部，因此可以通过以下方式调用 Dijkstra 算法（给定一些图 <code>g</code> 和源顶点 <code>src</code>）。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-built_in">dijkstra_shortest_paths</span>(g, src,<br>    <span class="hljs-built_in">distance_map</span>(<span class="hljs-built_in">get</span>(vertex_distance, g)).<br>    <span class="hljs-built_in">weight_map</span>(<span class="hljs-built_in">get</span>(edge_weight, g)).<br>    <span class="hljs-built_in">color_map</span>(<span class="hljs-built_in">get</span>(vertex_color, g)).<br>    <span class="hljs-built_in">vertex_index_map</span>(<span class="hljs-built_in">get</span>(vertex_index, g)));<br></code></pre></td></tr></table></figure>
+
+<p>由于指定所有属性映射有点麻烦，BGL 提供了默认值，假设某些属性是内部的，并且可以通过图中的 <code>get(Property, g)</code> 访问，或者如果属性映射仅在内部使用，则 该算法将从数组中为自身创建一个属性映射，并使用图的顶点索引映射作为数组的偏移量。下面我们展示了使用命名参数的所有默认值对 <code>dijkstra_shortest_paths</code> 算法的调用。此调用相当于之前对 Dijkstra 算法的调用。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-built_in">dijkstra_shortest_paths</span>(g, src);<br></code></pre></td></tr></table></figure>
+
+<p>下一个问题是：内部属性首先如何附加到图对象？这取决于您正在使用的图形类。BGL 的 <code>adjacency_list</code> 图类使用属性机制（请参阅<a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/using_adjacency_list.html#sec:adjacency-list-properties">内部属性</a>部分）来允许在图的边和顶点上存储任意数量的属性。</p>
+<h2 id="外部属性-1"><a href="#外部属性-1" class="headerlink" title="外部属性"></a>外部属性</h2><p>在本节中，我们将描述两种构建外部属性图的方法，但是可以通过无限多种方式为图创建外部属性。第一种方法使用适配器类 iterator_property_map。此类包装了一个随机访问迭代器，并从中创建了一个属性映射。随机访问迭代器必须指向属性值范围的开头，并且该范围的长度必须是图中的顶点或边的数量（取决于它是顶点还是边属性图）。适配器还必须提供 ID 属性映射，该映射将用于将顶点或边描述符映射到属性值的偏移量（与随机访问迭代器的偏移量）。ID 属性映射通常是图的内部属性映射。以下示例显示如何使用 iterator_property_map 为存储在数组中的容量和流量属性创建外部属性映射。数组按边 ID 进行索引。使用属性将边 ID 添加到图中，并且在将每条边添加到图中时给出 ID 的值。此示例的完整源代码位于 example&#x2F;exterior_edge_properties.cpp 中。 print_network() 函数打印出带有流量和容量值的图表。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">typedef</span> adjacency_list&lt;vecS, vecS, bidirectionalS,<br>    no_property, property&lt;<span class="hljs-type">edge_index_t</span>, std::<span class="hljs-type">size_t</span>&gt; &gt; Graph;<br><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> num_vertices = <span class="hljs-number">9</span>;<br><span class="hljs-function">Graph <span class="hljs-title">G</span><span class="hljs-params">(num_vertices)</span></span>;<br><br><span class="hljs-type">int</span> capacity_array[] = &#123; <span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">20</span>, <span class="hljs-number">20</span>, <span class="hljs-number">40</span>, <span class="hljs-number">40</span>, <span class="hljs-number">20</span>, <span class="hljs-number">20</span>, <span class="hljs-number">20</span>, <span class="hljs-number">10</span> &#125;;<br><span class="hljs-type">int</span> flow_array[] = &#123; <span class="hljs-number">8</span>, <span class="hljs-number">12</span>, <span class="hljs-number">12</span>, <span class="hljs-number">12</span>, <span class="hljs-number">12</span>, <span class="hljs-number">12</span>, <span class="hljs-number">16</span>, <span class="hljs-number">16</span>, <span class="hljs-number">16</span>, <span class="hljs-number">8</span> &#125;;<br><br><span class="hljs-comment">// Add edges to the graph, and assign each edge an ID number.</span><br><span class="hljs-built_in">add_edge</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, G);<br><span class="hljs-comment">// ...</span><br><br><span class="hljs-keyword">typedef</span> graph_traits&lt;Graph&gt;::edge_descriptor Edge;<br><span class="hljs-keyword">typedef</span> property_map&lt;Graph, <span class="hljs-type">edge_index_t</span>&gt;::type EdgeID_Map;<br><br>EdgeID_Map edge_id = <span class="hljs-built_in">get</span>(edge_index, G);<br><span class="hljs-function">iterator_property_map&lt;<span class="hljs-type">int</span>*, <span class="hljs-type">int</span>, <span class="hljs-type">int</span>&amp;, EdgeID_Map&gt;</span><br><span class="hljs-function">    <span class="hljs-title">capacity</span><span class="hljs-params">(capacity_array, edge_id)</span>,</span><br><span class="hljs-function">    <span class="hljs-title">flow</span><span class="hljs-params">(flow_array, edge_id)</span></span>;<br><br><span class="hljs-built_in">print_network</span>(G, capacity, flow);<br></code></pre></td></tr></table></figure>
+
+<p>第二种方法使用指针类型（指向属性值数组的指针）作为属性映射。 这要求键类型为整数，以便可以用作指针的偏移量。 具有模板参数 VertexList&#x3D;vecS 的 adjacency_list 类使用整数作为顶点描述符（从零索引到图中的顶点数），因此它们适合作为指针属性映射的键类型。 当 VertexList 不是 vecS 时，则顶点描述符不是整数，并且不能与指针属性映射一起使用。 相反，必须使用上述使用带有 ID 属性的 iterator_property_map 的方法。 Edge_list 类还可以使用整数类型作为顶点描述符，具体取决于如何定义适应的边缘迭代器。示例如下：</p>
+<p>指针可以用作属性映射的原因是头boost中有几个重载函数和property_traits的特化：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">namespace</span> boost &#123;<br>    <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span>&gt;<br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">property_traits</span>&lt;T*&gt; &#123;<br>        <span class="hljs-keyword">typedef</span> T value_type;<br>        <span class="hljs-keyword">typedef</span> <span class="hljs-type">ptrdiff_t</span> key_type;<br>        <span class="hljs-keyword">typedef</span> lvalue_property_map_tag category;<br>    &#125;;<br><br>    <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span>&gt;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">put</span><span class="hljs-params">(T* pa, std::<span class="hljs-type">ptrdiff_t</span> key, <span class="hljs-type">const</span> T&amp; value)</span> </span>&#123; pa[key] = value; &#125;<br><br>    <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span>&gt;<br>    <span class="hljs-function"><span class="hljs-type">const</span> T&amp; <span class="hljs-title">get</span><span class="hljs-params">(<span class="hljs-type">const</span> T* pa, std::<span class="hljs-type">ptrdiff_t</span> key)</span> </span>&#123; <span class="hljs-keyword">return</span> pa[key]; &#125;<br><br>    <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span>&gt;<br>    <span class="hljs-function"><span class="hljs-type">const</span> T&amp; <span class="hljs-title">at</span><span class="hljs-params">(<span class="hljs-type">const</span> T* pa, std::<span class="hljs-type">ptrdiff_t</span> key)</span> </span>&#123; <span class="hljs-keyword">return</span> pa[key]; &#125;<br><br>    <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span>&gt;<br>    <span class="hljs-function">T&amp; <span class="hljs-title">at</span><span class="hljs-params">(T* pa, std::<span class="hljs-type">ptrdiff_t</span> key)</span> </span>&#123; <span class="hljs-keyword">return</span> pa[key]; &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在下面的示例中，我们使用一个数组来存储图中每个顶点的城市名称，并使用一个std::vector来存储调用breadth_first_search()时需要的顶点颜色 。由于std::vector的迭代器 （通过调用begin()获得）是一个指针，因此指针属性映射方法也适用于 std::vector::iterator。此示例的完整源代码位于example&#x2F;city_visitor.cpp中。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// Definition of city_visitor omitted...</span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span>,<span class="hljs-type">char</span>*[])</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">enum</span> &#123; SanJose, SanFran, LA, SanDiego, Fresno, LosVegas, Reno,<br>           Sacramento, SaltLake, Pheonix, N &#125;;<br><br>    <span class="hljs-comment">// An array of vertex name properties</span><br>    std::string names[] = &#123; <span class="hljs-string">&quot;San Jose&quot;</span>, <span class="hljs-string">&quot;San Francisco&quot;</span>,  <span class="hljs-string">&quot;San Jose&quot;</span>,<br>                            <span class="hljs-string">&quot;San Francisco&quot;</span>, <span class="hljs-string">&quot;Los Angeles&quot;</span>, <span class="hljs-string">&quot;San Diego&quot;</span>,<br>                            <span class="hljs-string">&quot;Fresno&quot;</span>, <span class="hljs-string">&quot;Los Vegas&quot;</span>, <span class="hljs-string">&quot;Reno&quot;</span>, <span class="hljs-string">&quot;Sacramento&quot;</span>,<br>                            <span class="hljs-string">&quot;Salt Lake City&quot;</span>, <span class="hljs-string">&quot;Pheonix&quot;</span> &#125;;<br><br>    <span class="hljs-comment">// Specify all the connecting roads between cities.</span><br>    <span class="hljs-keyword">typedef</span> std::pair&lt;<span class="hljs-type">int</span>,<span class="hljs-type">int</span>&gt; E;<br>    E edge_array[] = &#123; <span class="hljs-built_in">E</span>(Sacramento, Reno), ... &#125;;<br><br>    <span class="hljs-comment">// Specify the graph type.</span><br>    <span class="hljs-keyword">typedef</span> adjacency_list&lt;vecS, vecS, undirectedS&gt; Graph;<br>    <span class="hljs-comment">// Create the graph object, based on the edges in edge_array.</span><br>    <span class="hljs-function">Graph <span class="hljs-title">G</span><span class="hljs-params">(N, edge_array, edge_array + <span class="hljs-keyword">sizeof</span>(edge_array)/<span class="hljs-keyword">sizeof</span>(E))</span></span>;<br><br>    <span class="hljs-comment">// DFS and BFS need to &quot;color&quot; the vertices.</span><br>    <span class="hljs-comment">// Here we use std::vector as exterior property storage.</span><br>    <span class="hljs-function">std::vector&lt;default_color_type&gt; <span class="hljs-title">colors</span><span class="hljs-params">(N)</span></span>;<br><br>    cout &lt;&lt; <span class="hljs-string">&quot;*** Depth First ***&quot;</span> &lt;&lt; endl;<br>    <span class="hljs-built_in">depth_first_search</span>(G, <span class="hljs-built_in">city_visitor</span>(names), colors.<span class="hljs-built_in">begin</span>());<br>    cout &lt;&lt; endl;<br><br>    <span class="hljs-comment">// Get the source vertex</span><br>    boost::graph_traits&lt;Graph&gt;::vertex_descriptor<br>        s = <span class="hljs-built_in">vertex</span>(SanJose, G);<br><br>    cout &lt;&lt; <span class="hljs-string">&quot;*** Breadth First ***&quot;</span> &lt;&lt; endl;<br>    <span class="hljs-built_in">breadth_first_search</span>(G, s, <span class="hljs-built_in">city_visitor</span>(names), colors.<span class="hljs-built_in">begin</span>());<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="构造外部属性映射表"><a href="#构造外部属性映射表" class="headerlink" title="构造外部属性映射表"></a>构造外部属性映射表</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">Iterator</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">IDMap</span>&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">iterator_map</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">typedef</span> <span class="hljs-keyword">typename</span> boost::property_traits&lt;IDMap&gt;::key_type key_type;<br>    <span class="hljs-keyword">typedef</span> <span class="hljs-keyword">typename</span> std::iterator_traits&lt;Iterator&gt;::value_type value_type;<br>    <span class="hljs-keyword">typedef</span> boost::lvalue_property_map_tag category;<br><br>    <span class="hljs-built_in">iterator_map</span>(Iterator i = <span class="hljs-built_in">Iterator</span>(), <span class="hljs-type">const</span> IDMap&amp; id = <span class="hljs-built_in">IDMap</span>())<br>        : <span class="hljs-built_in">m_iter</span>(i), <span class="hljs-built_in">m_id</span>(id) &#123; &#125;<br>    Iterator m_iter;<br>    IDMap m_id;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">Iter</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">ID</span>&gt;<br><span class="hljs-keyword">typename</span> std::iterator_traits&lt;Iter&gt;::<span class="hljs-function">value_type</span><br><span class="hljs-function"><span class="hljs-title">get</span><span class="hljs-params">(<span class="hljs-type">const</span> iterator_map&lt;Iter,ID&gt;&amp; i,</span></span><br><span class="hljs-params"><span class="hljs-function">    <span class="hljs-keyword">typename</span> boost::property_traits&lt;ID&gt;::key_type key)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> i.m_iter[i.m_id[key]];<br>&#125;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">Iter</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">ID</span>&gt;<br><span class="hljs-function"><span class="hljs-type">void</span></span><br><span class="hljs-function"><span class="hljs-title">put</span><span class="hljs-params">(<span class="hljs-type">const</span> iterator_map&lt;Iter,ID&gt;&amp; i,</span></span><br><span class="hljs-params"><span class="hljs-function">    <span class="hljs-keyword">typename</span> boost::property_traits&lt;ID&gt;::key_type key,</span></span><br><span class="hljs-params"><span class="hljs-function">    <span class="hljs-type">const</span> <span class="hljs-keyword">typename</span> std::iterator_traits&lt;Iter&gt;::value_type&amp; value)</span></span><br><span class="hljs-function"></span>&#123;<br>  i.m_iter[i.m_id[key]] = value;<br>&#125;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">Iter</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">ID</span>&gt;<br><span class="hljs-keyword">typename</span> std::iterator_traits&lt;Iter&gt;::<span class="hljs-function">reference</span><br><span class="hljs-function"><span class="hljs-title">at</span><span class="hljs-params">(<span class="hljs-type">const</span> iterator_map&lt;Iter,ID&gt;&amp; i,</span></span><br><span class="hljs-params"><span class="hljs-function">    <span class="hljs-keyword">typename</span> boost::property_traits&lt;ID&gt;::key_type key)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> i.m_iter[i.m_id[key]];<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这就对了。 iterator_map 类是完整的，可以像上一节中的 iterator_property_map 一样使用。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF/C/" class="category-chain-item">C++</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF/C/%E7%BF%BB%E8%AF%91/" class="category-chain-item">翻译</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/" class="print-no-link">#C++</a>
+      
+        <a href="/tags/Boost/" class="print-no-link">#Boost</a>
+      
+        <a href="/tags/%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93/" class="print-no-link">#第三方库</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>9.1 属性映射</div>
+      <div>http://example.com/2023/11/01/boost/boost_graph_library/09_Boost Graph Library Tutorial/9.1_属性映射/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>QiDianMaker</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年10月31日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2025年5月30日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"6xahBDKE9bVdQzuufG4r0SrN-gzGzoHsz","appKey":"aS53wAMJ32RwAJRsefQAsX9P","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div style="font-size: 0.85rem"> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

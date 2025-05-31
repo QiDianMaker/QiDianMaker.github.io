@@ -1,0 +1,945 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/about/favicon.png">
+  <link rel="icon" href="/images/about/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="QiDianMaker">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="图数据结构和算法在某些方面比容器更加复杂。STL 使用的抽象迭代器接口不够丰富，无法包含图算法遍历图的多种方式。相反，我们制定了一个用于图的抽象接口，与迭代器用于基本容器的目的相同（尽管迭代器仍然扮演着重要角色）。图 1 描述了 STL 和 BGL 之间的相似之处。  图抽象由一组顶点（或节点）和一组连接顶点的边（或弧）组成。图 2 描述了一个有向图，它有 5 个顶点（标记为 0 到 4）和 11">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Boost 图类库快速入门">
+<meta property="og:url" content="http://example.com/2023/10/28/boost/boost_graph_library/07_A%20Quick%20Tour%20of%20the%20Boost%20Graph%20Library/Boost%20%E5%9B%BE%E7%B1%BB%E5%BA%93%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="奇点创客">
+<meta property="og:description" content="图数据结构和算法在某些方面比容器更加复杂。STL 使用的抽象迭代器接口不够丰富，无法包含图算法遍历图的多种方式。相反，我们制定了一个用于图的抽象接口，与迭代器用于基本容器的目的相同（尽管迭代器仍然扮演着重要角色）。图 1 描述了 STL 和 BGL 之间的相似之处。  图抽象由一组顶点（或节点）和一组连接顶点的边（或弧）组成。图 2 描述了一个有向图，它有 5 个顶点（标记为 0 到 4）和 11">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/boost/graph-theory.jpg">
+<meta property="article:published_time" content="2023-10-27T22:16:26.000Z">
+<meta property="article:modified_time" content="2025-05-31T04:00:32.076Z">
+<meta property="article:author" content="QiDianMaker">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Boost">
+<meta property="article:tag" content="第三方库">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/boost/graph-theory.jpg">
+  
+  
+  
+  <title>Boost 图类库快速入门 - 奇点创客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"cpp"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"6xahBDKE9bVdQzuufG4r0SrN-gzGzoHsz","app_key":"aS53wAMJ32RwAJRsefQAsX9P","server_url":"https://6xahbdke.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>奇点创客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>文库</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    <span>归档</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    <span>分类</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    <span>标签</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-th-large"></i>
+                <span>精神家园</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/books/">
+                    <i class="iconfont icon-book"></i>
+                    <span>读书</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/music/">
+                    <i class="iconfont icon-music"></i>
+                    <span>音乐</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/movies/">
+                    <i class="iconfont icon-youtube-fill"></i>
+                    <span>电影</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/travel/">
+                    <i class="iconfont icon-instagram-fill"></i>
+                    <span>旅行</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/boost/graph-theory.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Boost 图类库快速入门"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        QiDianMaker
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-10-27 14:16" pubdate>
+          2023年10月27日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          12k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          98 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Boost 图类库快速入门</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>图数据结构和算法在某些方面比容器更加复杂。STL 使用的抽象迭代器接口不够丰富，无法包含图算法遍历图的多种方式。相反，我们制定了一个用于图的抽象接口，与迭代器用于基本容器的目的相同（尽管迭代器仍然扮演着重要角色）。图 1 描述了 STL 和 BGL 之间的相似之处。</p>
+<p><img src="/images/boost/analogy.gif" srcset="/img/loading.gif" lazyload alt="图 1：STL 和 BGL 之间的类比"></p>
+<p>图抽象由一组顶点（或节点）和一组连接顶点的边（或弧）组成。图 2 描述了一个有向图，它有 5 个顶点（标记为 0 到 4）和 11 条边。离开顶点的边称为顶点的出边。边 <code>&#123;(0,1)，(0,2)，(0,3)，(0,4)&#125;</code> 都是顶点 0 的出边。进入顶点的边称为顶点的入边。边 <code>&#123;(0,4)，(2,4)，(3,4)&#125;</code> 都是顶点 4 的入边。</p>
+<p><img src="/images/boost/quick_start.gif" srcset="/img/loading.gif" lazyload alt="图 2：一个有向图的例子"></p>
+<p>在接下来的部分中，我们将使用 BGL 来构造这个示例图，并以各种方式操作它。这个示例的完整源代码可以在 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/example/quick_tour.cpp">examples&#x2F;quick_tour.cpp</a> 中找到。下面的每一节讨论这个示例文件的一个“片段”。还将列出示例程序输出的摘录。</p>
+<h2 id="构造一个图"><a href="#构造一个图" class="headerlink" title="构造一个图"></a>构造一个图</h2><p>在这个例子中，我们将使用 BGL <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/adjacency_list.html">adjacency_list</a> 类来演示 BGL 接口的主要思想。<code>adjacency_list</code> 类提供了经典“邻接链表”数据结构的一般化版本。<code>adjacency_list</code> 是一个模板类，有六个模板参数，不过这里我们只填写前三个参数，其余三个使用默认值。前两个模板参数（<code>vecS</code>, <code>vecS</code>）决定了用于表示图中每个顶点的外边的数据结构，以及用于表示图的顶点集的数据结构（请参阅 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/using_adjacency_list.html#sec:choosing-graph-type">选择Edgelist 和 VertexList</a>部分，了解不同数据结构的权衡）。第三个参数 <code>bidirectionalS</code> 选择一个有向图，该有向图提供对出入边的访问。第三个参数的其他选项 <code>directedS</code> 选择一个只有出边的有向图，<code>undirectedS</code> 选择无向图。</p>
+<p>一旦我们选择了图类型，我们就可以通过声明一个图对象并使用 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/MutableGraph.html">MutableGraph</a> 接口的 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/MutableGraph.html#sec:add-edge">add_edge()</a> 函数（由 <code>adjacency_list</code> 实现）填充边来创建如图 2 所示的图。我们使用 <code>edge_array</code> 对数组只是为了方便地显式创建本例中的边。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span>  <span class="hljs-comment">// for std::cout</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;utility&gt;</span>   <span class="hljs-comment">// for std::pair</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span> <span class="hljs-comment">// for std::for_each</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;boost/graph/graph_traits.hpp&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;boost/graph/adjacency_list.hpp&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;boost/graph/dijkstra_shortest_paths.hpp&gt;</span></span><br><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> boost;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span>, <span class="hljs-type">char</span>*[])</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">// 用 typedef 的方式创建一个 Graph 类型</span><br>    <span class="hljs-keyword">typedef</span> adjacency_list&lt;vecS, vecS, bidirectionalS&gt; Graph;<br><br>    <span class="hljs-comment">// 为顶点制作方便的标签</span><br>    <span class="hljs-keyword">enum</span> &#123; A, B, C, D, E, N &#125;;<br>    <span class="hljs-type">const</span> <span class="hljs-type">int</span> num_vertices = N;<br>    <span class="hljs-type">const</span> <span class="hljs-type">char</span>* name = <span class="hljs-string">&quot;ABCDE&quot;</span>;<br><br>    <span class="hljs-comment">// 写入到图中的边</span><br>    <span class="hljs-keyword">typedef</span> std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt; Edge;<br>    Edge edge_array[] = &#123; <span class="hljs-built_in">Edge</span>(A,B), <span class="hljs-built_in">Edge</span>(A,D), <span class="hljs-built_in">Edge</span>(C,A), <span class="hljs-built_in">Edge</span>(D,C),<br>                          <span class="hljs-built_in">Edge</span>(C,E), <span class="hljs-built_in">Edge</span>(B,D), <span class="hljs-built_in">Edge</span>(D,E) &#125;;<br>    <span class="hljs-type">const</span> <span class="hljs-type">int</span> num_edges = <span class="hljs-built_in">sizeof</span>(edge_array)/<span class="hljs-built_in">sizeof</span>(edge_array[<span class="hljs-number">0</span>]);<br><br>    <span class="hljs-comment">// 定义一个图对象</span><br>    <span class="hljs-function">Graph <span class="hljs-title">g</span><span class="hljs-params">(num_vertices)</span></span>;<br><br>    <span class="hljs-comment">// 将边添加到图对象中</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; num_edges; ++i)<br>        <span class="hljs-built_in">add_edge</span>(edge_array[i].first, edge_array[i].second, g);<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们可以使用图的<a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/adjacency_list.html#sec:iterator-constructor">边迭代器构造函数</a>，而不是为每条边调用 <code>add_edge()</code> 函数。这通常比使用 <code>add_edge()</code> 更有效。指向 <code>edge_array</code> 的指针可以看作是迭代器，因此可以通过传递指向数组开头和结尾的指针来调用迭代器构造函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">Graph <span class="hljs-title">g</span><span class="hljs-params">(edge_array, edge_array + <span class="hljs-keyword">sizeof</span>(edge_array) / <span class="hljs-keyword">sizeof</span>(Edge), num_vertices)</span></span>;<br></code></pre></td></tr></table></figure>
+
+<p>除了从一定数量的顶点开始创建图之外，还可以使用 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/MutableGraph.html#sec:add-vertex">add_vertex()</a> 和 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/MutableGraph.html#sec:remove-vertex">remove_vertex()</a> 函数添加和删除顶点，这也是<a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/MutableGraph.html">MutableGraph</a> 接口。</p>
+<h2 id="访问顶点集"><a href="#访问顶点集" class="headerlink" title="访问顶点集"></a>访问顶点集</h2><p>现在我们已经创建了一个图，我们可以使用图接口以不同的方式访问图数据。首先，我们可以使用 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/VertexListGraph.html">VertexListGraph</a> 接口的 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/VertexListGraph.html#sec:vertices">vertices()</a> 函数访问图中的所有顶点。这个函数返回一对顶点迭代器（第一个迭代器指向顶点的“开始”，第二个迭代器指向“结束后”）。解引用顶点迭代器会得到顶点对象。顶点迭代器的类型由 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/graph_traits.html">graph_traits</a> 类给出。注意，不同的图类可以有不同的关联顶点迭代器类型，这就是我们需要 <code>graph_traits</code>类的原因。给定某种图类型，<code>graph_traits</code> 类将提供对 <code>vertex_iterator</code> 类型的访问。</p>
+<p>下面的示例打印出图中每个顶点的索引。所有顶点和边的属性，包括索引，都可以通过属性映射对象来访问。<code>property_map</code> 类用于获取特定属性（由 <code>vertex_index_t</code> 指定，这是 BGL 预定义的属性之一）的属性映射类型，函数调用 <code>get(vertex_index, g)</code> 返回实际的属性映射对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// ...</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span>, <span class="hljs-type">char</span>*[])</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-keyword">typedef</span> graph_traits&lt;Graph&gt;::vertex_descriptor Vertex;<br>  <br>    <span class="hljs-comment">// 获取顶点索引的属性映射表</span><br>    <span class="hljs-keyword">typedef</span> property_map&lt;Graph, <span class="hljs-type">vertex_index_t</span>&gt;::type IndexMap;<br>    IndexMap index = <span class="hljs-built_in">get</span>(vertex_index, g);<br>    <br>    std::cout &lt;&lt; <span class="hljs-string">&quot;vertices(g) = &quot;</span>;<br>    <span class="hljs-keyword">typedef</span> graph_traits&lt;Graph&gt;::vertex_iterator vertex_iter;<br>    std::pair&lt;vertex_iter, vertex_iter&gt; vp;<br>    <span class="hljs-keyword">for</span> (vp = <span class="hljs-built_in">vertices</span>(g); vp.first != vp.second; ++vp.first) &#123;<br>        Vertex v = *vp.first;<br>        std::cout &lt;&lt; index[v] &lt;&lt;  <span class="hljs-string">&quot; &quot;</span>;<br>    &#125;<br>    std::cout &lt;&lt; std::endl;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs txt">vertices(g) = 0 1 2 3 4<br></code></pre></td></tr></table></figure>
+
+<h2 id="访问边集"><a href="#访问边集" class="headerlink" title="访问边集"></a>访问边集</h2><p>可以使用 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/EdgeListGraph.html#sec:edges">EdgeListGraph</a> 接口的 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/EdgeListGraph.html">edges()</a> 函数访问图的边集。与 <code>vertex()</code> 函数类似，该函数返回一对迭代器，但在本例中，迭代器是<em>边迭代器</em>。对边迭代器解引用会得到一个边对象。<code>source()</code> 和 <code>target()</code> 函数返回由边连接的两个顶点。这次我们将使用 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/tuple/doc/tuple_users_guide.html#tiers">boost::tie()</a> 辅助函数，而不是显式地为迭代器创建 <code>std::pair</code>。这个便捷函数可以用来将 <code>std::pair</code> 的部分赋值给两个独立的变量，在本例中是 <code>ei</code> 和 <code>ei_end</code>。这通常比创建 <code>std::pair</code> 更方便，也是我们为 BGL 选择的方法。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// ...</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span>, <span class="hljs-type">char</span>*[])</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">// ...</span><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;edges(g) = &quot;</span>;<br>    graph_traits&lt;Graph&gt;::edge_iterator ei, ei_end;<br>    <span class="hljs-keyword">for</span> (boost::<span class="hljs-built_in">tie</span>(ei, ei_end) = <span class="hljs-built_in">edges</span>(g); ei != ei_end; ++ei)<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;(&quot;</span> &lt;&lt; index[<span class="hljs-built_in">source</span>(*ei, g)]<br>                  &lt;&lt; <span class="hljs-string">&quot;,&quot;</span> &lt;&lt; index[<span class="hljs-built_in">target</span>(*ei, g)] &lt;&lt; <span class="hljs-string">&quot;) &quot;</span>;<br>    std::cout &lt;&lt; std::endl;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs txt">edges(g) = (0,1) (0,3) (2,0) (3,2) (2,4) (1,3) (3,4)<br></code></pre></td></tr></table></figure>
+
+<h2 id="临接结构"><a href="#临接结构" class="headerlink" title="临接结构"></a>临接结构</h2><p>在接下来的几个例子中，我们将从特定顶点的角度探索图的邻接结构。我们将查看顶点的入边、出边及其相邻顶点。我们将其封装在 “exercise vertex” 函数中，并将其应用于图中的每个顶点。为了演示 BGL 的 STL 互操作性，我们将使用 STL <code>for_each()</code> 函数来迭代顶点并应用该函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">//...</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span>,<span class="hljs-type">char</span>*[])</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">//...</span><br>    std::for_each(<span class="hljs-built_in">vertices</span>(g).first, <span class="hljs-built_in">vertices</span>(g).second,<br>                  <span class="hljs-built_in">exercise_vertex</span>&lt;Graph&gt;(g));<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>对于 <code>exercise_vertex</code>，我们使用了一个函子而不是一个函数，因为当我们访问每个顶点的信息时，需要用到图对象；使用函子可以在 <code>std::for_each()</code> 执行期间保留对图对象的引用。此外，我们还在图类型上模板了函数函数，以便它可以在不同的图类中重用。下面是<code>exercise_vertex</code> 函子的开头：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">Graph</span>&gt; <br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">exercise_vertex</span> &#123;<br>    <span class="hljs-built_in">exercise_vertex</span>(Graph&amp; g_) : <span class="hljs-built_in">g</span>(g_) &#123;&#125;<br>    <span class="hljs-comment">//...</span><br>    Graph&amp; g;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h3 id="顶点描述子"><a href="#顶点描述子" class="headerlink" title="顶点描述子"></a>顶点描述子</h3><p>为了编写函子的 <code>operator()</code> 方法，我们首先需要知道图的顶点对象的类型。顶点的类型将作为 <code>operator()</code> 方法的参数。确切地说，我们不处理实际的顶点对象，而是处理<em>顶点描述子</em>。许多图表示（如邻接链表）不存储实际的顶点对象，而是其他（如指针链表图）。这种差异隐藏在顶点描述子对象的“黑盒”下面。顶点描述子是由每种图类型提供的，可用于通过 <code>out_edges()</code>，<code>in_edges()</code>， <code>adjacent_vertices()</code> 和属性映射函数访问有关图的信息，这些函数将在下面的部分中介绍。顶点描述子的类型是通过 <code>graph_traits</code> 类获得的。下例中使用的 <code>typename</code> 关键字是必要的，因为 <code>::</code> 操作符左侧的类型（<code>graph_traits&lt;Graph&gt;</code> 类型）依赖于模板参数（<code>Graph</code> 类型）。下面演示我们如何定义函子的调用操作符：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">Graph</span>&gt;<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">exercise_vertex</span> &#123;<br>    <span class="hljs-comment">//...</span><br>    <span class="hljs-keyword">typedef</span> <span class="hljs-keyword">typename</span> graph_traits&lt;Graph&gt;::vertex_descriptor Vertex;<br><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-type">const</span> Vertex&amp; v)</span> <span class="hljs-type">const</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-comment">//...</span><br>    &#125;<br>    <span class="hljs-comment">//...</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h3 id="出边、入边以及边描述子"><a href="#出边、入边以及边描述子" class="headerlink" title="出边、入边以及边描述子"></a>出边、入边以及边描述子</h3><p>使用 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/IncidenceGraph.html">IncidenceGraph</a> 接口的 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/IncidenceGraph.html#sec:out-edges">out_edges()</a> 函数，可以访问顶点的所有出边。<code>out_edges()</code> 函数接受两个参数：第一个参数是顶点，第二个参数是图对象。该函数返回一对迭代器，用于访问一个顶点的所有出边（类似于 <code>vertices()</code> 函数返回的迭代器对儿）。这个迭代器被称为<em>出边迭代器</em>，对其解引用就能得到一个<em>边描述子</em>对象。边描述子扮演者与顶点描述子相同的角色，它是图类提供的一个“黑盒”。如下代码片段以来源-目标的形式打印出了顶点 <code>v</code> 的每一条出边：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">Graph</span>&gt;<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">exercise_vertex</span> &#123;<br>    <span class="hljs-comment">//...</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-type">const</span> Vertex&amp; v)</span> <span class="hljs-type">const</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">typedef</span> graph_traits&lt;Graph&gt; GraphTraits;<br>        <span class="hljs-keyword">typename</span> property_map&lt;Graph, <span class="hljs-type">vertex_index_t</span>&gt;::type<br>            index = <span class="hljs-built_in">get</span>(vertex_index, g);<br><br>        std::cout &lt;&lt; <span class="hljs-string">&quot;out-edges: &quot;</span>;<br>        <span class="hljs-keyword">typename</span> GraphTraits::out_edge_iterator out_i, out_end;<br>        <span class="hljs-keyword">typename</span> GraphTraits::edge_descriptor e;<br>        <span class="hljs-keyword">for</span> (boost::<span class="hljs-built_in">tie</span>(out_i, out_end) = <span class="hljs-built_in">out_edges</span>(v, g);<br>             out_i != out_end; ++out_i) &#123;<br>            e = *out_i;<br>            Vertex src = <span class="hljs-built_in">source</span>(e, g), targ = <span class="hljs-built_in">target</span>(e, g);<br>            std::cout &lt;&lt; <span class="hljs-string">&quot;(&quot;</span> &lt;&lt; index[src] &lt;&lt; <span class="hljs-string">&quot;,&quot;</span><br>                      &lt;&lt; index[targ] &lt;&lt; <span class="hljs-string">&quot;) &quot;</span>;<br>        &#125;<br>        std::cout &lt;&lt; std::endl;<br>        <span class="hljs-comment">//...</span><br>    &#125;<br>    <span class="hljs-comment">//...</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>针对顶点 0 产生的输出：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs txt">out-edges: (0,1) (0,2) (0,3) (0,4)<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/BidirectionalGraph.html">BidirectionalGraph</a> 接口的 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/BidirectionalGraph.html#sec:in-edges">in_edges</a> 函数通过<em>入边迭代器</em>为一个顶点的所有入边提供了访问。如果为<code>Directed</code> 模板参数提供了 <code>bidirectionalS</code>，则 <code>in_edges()</code> 函数仅对 <code>adjacency_list</code> 可用。当指定 <code>bidirectionalS</code> 而不是 <code>directedS</code> 时会有额外的开销。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">Graph</span>&gt;<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">exercise_vertex</span> &#123;<br>    <span class="hljs-comment">//...</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-type">const</span> Vertex&amp; v)</span> <span class="hljs-type">const</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-comment">//...</span><br>        std::cout &lt;&lt; <span class="hljs-string">&quot;in-edges: &quot;</span>;<br>        <span class="hljs-keyword">typedef</span> <span class="hljs-keyword">typename</span> graph_traits&lt;Graph&gt; GraphTraits;<br>        <span class="hljs-keyword">typename</span> GraphTraits::in_edge_iterator in_i, in_end;<br>        <span class="hljs-keyword">for</span> (boost::<span class="hljs-built_in">tie</span>(in_i, in_end) = <span class="hljs-built_in">in_edges</span>(v,g);<br>             in_i != in_end; ++in_i) &#123;<br>            e = *in_i;<br>            Vertex src = <span class="hljs-built_in">source</span>(e, g), targ = <span class="hljs-built_in">target</span>(e, g);<br>            std::cout &lt;&lt; <span class="hljs-string">&quot;(&quot;</span> &lt;&lt; index[src] &lt;&lt; <span class="hljs-string">&quot;,&quot;</span> &lt;&lt; index[targ] &lt;&lt; <span class="hljs-string">&quot;) &quot;</span>;<br>        &#125;<br>        std::cout &lt;&lt; std::endl;<br>        <span class="hljs-comment">//...</span><br>    &#125;<br>    <span class="hljs-comment">//...</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>针对顶点 0 产生的输出：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs txt">in-edges: (2,0) (3,0) (4,0)<br></code></pre></td></tr></table></figure>
+
+<h3 id="相邻顶点"><a href="#相邻顶点" class="headerlink" title="相邻顶点"></a>相邻顶点</h3><p>给定顶点的出边，这些出边的目标顶点与源顶点相邻。有时算法不需要看图的边，只关心顶点。因此，图接口还包括 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/AdjacencyGraph.html">AdjacencyGraph</a> 接口的 <a href="">adjacent_vertices()</a> 函数，它提供对相邻顶点的直接访问。这个函数返回一对<em>邻接迭代器</em>。解引用一个邻接迭代器会得到一个相邻顶点的顶点描述子。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">Graph</span>&gt;<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">exercise_vertex</span> &#123;<br>    <span class="hljs-comment">//...</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(Vertex v)</span> <span class="hljs-type">const</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-comment">//...</span><br>        std::cout &lt;&lt; <span class="hljs-string">&quot;adjacent vertices: &quot;</span>;<br>        <span class="hljs-keyword">typename</span> graph_traits&lt;Graph&gt;::adjacency_iterator ai;<br>        <span class="hljs-keyword">typename</span> graph_traits&lt;Graph&gt;::adjacency_iterator ai_end;<br>        <span class="hljs-keyword">for</span> (boost::<span class="hljs-built_in">tie</span>(ai, ai_end) = <span class="hljs-built_in">adjacent_vertices</span>(v, g);<br>             ai != ai_end; ++ai)<br>            std::cout &lt;&lt; index[*ai] &lt;&lt;  <span class="hljs-string">&quot; &quot;</span>;<br>        std::cout &lt;&lt; std::endl;<br>    &#125;<br>    <span class="hljs-comment">//...</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>针对顶点 4 产生的输出：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs txt">adjacent vertices: 0 1<br></code></pre></td></tr></table></figure>
+
+<h2 id="为你的图添加颜色"><a href="#为你的图添加颜色" class="headerlink" title="为你的图添加颜色"></a>为你的图添加颜色</h2><p>BGL 试图在使属性附加到图的方面做到尽可能地灵活。例如，像边权重这样的属性可能需要在图对象的整个生命周期中使用，因此让图对象也管理的属性存储会很方便。另一方面，像顶点颜色这样的属性可能只需要在单个算法的持续时间内使用，因此并且最好将该属性与图对象分开存储。第一类属性称为<em>内部存储属性</em>，而第二类属性称为<em>外部存储属性</em>。BGL 使用一种统一的机制来访问图算法中的这两种属性，称为<em>属性映射</em>接口（在<a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/property_map.html">属性映射概念</a>一节中描述）。此外，<a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/PropertyGraph.html">PropertyGraph</a> 概念定义了用于获取内部存储属性的属性映射对象的接口。</p>
+<p>BGL 的 <code>adjacency_list</code> 类允许用户通过图类的插件模板参数指定内部存储的属性。如何做到这一点将在<a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/using_adjacency_list.html#sec:adjacency-list-properties">内部属性</a>部分详细讨论。外部存储的属性可以通过多种不同的方式创建，尽管它们最终作为单独的参数传递给图算法。存储属性的一种直接方法是创建一个按顶点或边索引来索引的数组。在为<code>VertexList</code> 模板参数指定 <code>vecS</code> 的 <code>adjacency_list</code> 中，顶点被自动分配索引，可以通过<code>vertex_index_t</code> 的属性映射访问。边不会自动分配索引。然而，属性机制可用于将索引附加到可用于索引到其他外部存储属性的边。</p>
+<p>在下面的示例中，我们构造一个图并应用 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/dijkstra_shortest_paths.html">dijkstra_shortest_paths()</a>。该实例的完整源代码详见 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/example/dijkstra-example.cpp">examples&#x2F;dijkstra-example.cpp</a>。Dijkstra 算法用于计算从起始顶点到图中每个其他顶点的最短距离。</p>
+<p>Dijkstra 算法要求每个边都有一个权重属性，每个顶点都有一个距离属性。这里我们用一个内部属性表示权重，用一个外部属性表示距离。对于权重属性，我们使用属性类并指定 <code>int</code> 作为表示权重值的类型，并指定<code>edge_weight_t</code> 作为属性标记（这是 BGL 预定义的属性标记之一）。然后将 <code>weight</code> 属性用作<code>adjacency_list</code> 的模板参数。</p>
+<p><code>listS</code> 和 <code>vecS</code> 类型是决定在邻接列表中使用的数据结构的选择器（参见<a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/using_adjacency_list.html#sec:choosing-graph-type">选择 Edgelist 和 VertexList</a> 部分）。<code>directedS</code> 类型指定图应该是有向的（而不是无向的）。下面的代码显示了图类型具现以及是图的初始化。边和权值以迭代器的形式传递给图的构造函数（指针符合<a target="_blank" rel="noopener" href="https://www.boost.org/sgi/stl/RandomAccessIterator.html">RandomAccessIterator</a> 的要求）。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">typedef</span> adjacency_list&lt;listS, vecS, directedS, no_property,<br>                       property&lt;<span class="hljs-type">edge_weight_t</span>, <span class="hljs-type">int</span>&gt;&gt; Graph;<br><span class="hljs-keyword">typedef</span> graph_traits&lt;Graph&gt;::vertex_descriptor Vertex;<br><span class="hljs-keyword">typedef</span> std::pair&lt;<span class="hljs-type">int</span>,<span class="hljs-type">int</span>&gt; E;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> num_nodes = <span class="hljs-number">5</span>;<br>E edges[] = &#123; <span class="hljs-built_in">E</span>(<span class="hljs-number">0</span>,<span class="hljs-number">2</span>),<br>              <span class="hljs-built_in">E</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>), <span class="hljs-built_in">E</span>(<span class="hljs-number">1</span>,<span class="hljs-number">3</span>), <span class="hljs-built_in">E</span>(<span class="hljs-number">1</span>,<span class="hljs-number">4</span>),<br>              <span class="hljs-built_in">E</span>(<span class="hljs-number">2</span>,<span class="hljs-number">1</span>), <span class="hljs-built_in">E</span>(<span class="hljs-number">2</span>,<span class="hljs-number">3</span>),<br>              <span class="hljs-built_in">E</span>(<span class="hljs-number">3</span>,<span class="hljs-number">4</span>),<br>              <span class="hljs-built_in">E</span>(<span class="hljs-number">4</span>,<span class="hljs-number">0</span>), <span class="hljs-built_in">E</span>(<span class="hljs-number">4</span>,<span class="hljs-number">1</span>) &#125;;<br><span class="hljs-type">int</span> weights[] = &#123; <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span> &#125;;<br><span class="hljs-function">Graph <span class="hljs-title">G</span><span class="hljs-params">(edges, edges + <span class="hljs-keyword">sizeof</span>(edges) / <span class="hljs-keyword">sizeof</span>(E), weights, num_nodes)</span></span>;<br></code></pre></td></tr></table></figure>
+
+<p>我们使用一个 <code>std::vector</code> 来存储外部距离属性。BGL 算法将随机访问迭代器视为属性映射，因此我们可以将距离向量的起始迭代器传递给 Dijkstra 算法。继续上面的示例，下面的代码显示了距离向量的创建、对 Dijkstra 算法的调用（隐式地使用内部边权重属性），然后是结果的输出。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 用 vector 存储距离属性</span><br><span class="hljs-function">std::vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">d</span><span class="hljs-params">(num_vertices(G))</span></span>;<br><span class="hljs-comment">// 获取第一个顶点</span><br>Vertex s = *(<span class="hljs-built_in">vertices</span>(G).first);<br><span class="hljs-comment">// 调用 Dijkstra 算法的变体 2</span><br><span class="hljs-built_in">dijkstra_shortest_paths</span>(G, s, <span class="hljs-built_in">distance_map</span>(&amp;d[<span class="hljs-number">0</span>]));<br>std::cout &lt;&lt; <span class="hljs-string">&quot;distances from start vertex:&quot;</span> &lt;&lt; std::endl;<br>graph_traits&lt;Graph&gt;::vertex_iterator vi;<br><span class="hljs-keyword">for</span>(vi = <span class="hljs-built_in">vertices</span>(G).first; vi != <span class="hljs-built_in">vertices</span>(G).second; ++vi)<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;distance(&quot;</span> &lt;&lt; <span class="hljs-built_in">index</span>(*vi) &lt;&lt; <span class="hljs-string">&quot;) = &quot;</span><br>              &lt;&lt; d[*vi] &lt;&lt; std::endl;<br>std::cout &lt;&lt; std::endl;<br></code></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs txt">distances from start vertex:<br>distance(0) = 0<br>distance(1) = 6<br>distance(2) = 1<br>distance(3) = 4<br>distance(4) = 5<br></code></pre></td></tr></table></figure>
+
+<h2 id="使用访问子拓展算法"><a href="#使用访问子拓展算法" class="headerlink" title="使用访问子拓展算法"></a>使用访问子拓展算法</h2><p>通常情况下，库中的算法几乎可以满足您的需要，但并不完全满足。例如，在上一节中，我们使用 Dijkstra 算法来计算到每个顶点的最短距离，但也许我们还想记录最短路径树。一种方法是记录最短路径树中每个节点的前身（父节点）。</p>
+<p>如果我们能避免重写 Dijkstra 算法就好了，只需要添加一些额外的东西来记录前导[1]。在 STL 中，这种可扩展性是由函子提供的，它是每个算法的可选参数。在 BGL 中，这个角色由访问子来完成。</p>
+<p>访问子类似于函子，但它不是只有一个“调用”方法，而是有好几个。这些方法中的每一个都将在算法中特定定义的恰当调用点被调用。访问子的方法在<a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/visitor_concepts.html">访问子概念</a>的部分中有详细解释。BGL 为一些常见任务提供了一些访问子，包括一个前导记录访问子。鼓励用户编写自己的访问子，作为扩展 BGL 的一种方式。在这里，我们将快速查看前导记录器的实现和使用。因为我们将使用 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/dijkstra_shortest_paths.html">dijkstra_shortest_paths()</a> 算法，所以我们创建的访问子必须是 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/DijkstraVisitor.html">Dijkstra Visitor</a>。</p>
+<p><code>record_predecessor</code> 访问子的功能分为两部分。对于前导属性的存储和访问，我们将使用<a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/property_map/doc/property_map.html">属性映射</a>。前导访问子将只负责记录哪个父级。为了实现这一点，我们创建了一个 <code>record_predecessor</code> 类，并将其作为前导属性映射 <code>PredecessorMap</code> 的模板。由于此访问子将只填充访问子方法中的一个，因此我们将继承 <a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/dijkstra_visitor.html">dijkstra_visitor</a>，后者将为其余的访问子提供空方法。<code>predecessor_recorder</code> 的构造函数将获取属性映射对象并将其保存在一个数据成员中。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">PredecessorMap</span>&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">record_predecessors</span> : <span class="hljs-keyword">public</span> dijkstra_visitor&lt;&gt;<br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">record_predecessors</span>(PredecessorMap p)<br>        : <span class="hljs-built_in">m_predecessor</span>(p) &#123; &#125;<br>    <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">Edge</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Graph</span>&gt;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">edge_relaxed</span><span class="hljs-params">(Edge e, Graph&amp; g)</span> </span>&#123;<br>        <span class="hljs-comment">// 将 target(e) 父级设置为 source(e) </span><br>        <span class="hljs-built_in">put</span>(m_predecessor, <span class="hljs-built_in">target</span>(e, g), <span class="hljs-built_in">source</span>(e, g));<br>    &#125;<br><span class="hljs-keyword">protected</span>:<br>    PredecessorMap m_predecessor;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>记录前导的工作很简单。当 Dijkstra 算法放松一条边（可能将其添加到最短路径树中）时，我们将源顶点记录为目标顶点的前身。稍后，如果再次放松边，则前一个属性将被新的前导覆盖。这里，我们使用与属性映射相关联的<code>put()</code> 函数来记录前导。访问子的 <code>edge_filter</code> 告诉算法何时调用 <code>explore()</code> 方法。在这种情况下，我们只想得到关于最短路径树中的边的通知，所以我们指定了 <code>tree_edge_tag</code>。</p>
+<p>最后，我们创建了一个辅助函数，以便更方便地创建前导访问子。所有 BGL 访问子都有这样的辅助函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">PredecessorMap</span>&gt;<br><span class="hljs-function">record_predecessors&lt;PredecessorMap&gt;</span><br><span class="hljs-function"><span class="hljs-title">make_predecessor_recorder</span><span class="hljs-params">(PredecessorMap p)</span> </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">record_predecessors</span>&lt;PredecessorMap&gt;(p);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>现在我们准备在 Dijkstra 算法中使用 <code>record_predecessor</code>。幸运的是，BGL 的 Dijkstra 算法已经具备了处理访问子的能力，所以我们只需传递新访问子即可。在本例中，我们只需要使用一个访问子，但是 BGL 也可以在同一算法中处理多个访问子的使用（参见<a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/visitor_concepts.html">访问子概念</a>部分）。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">using</span> std::vector;<br><span class="hljs-keyword">using</span> std::cout;<br><span class="hljs-keyword">using</span> std::endl;<br><br><span class="hljs-function">vector&lt;Vertex&gt; <span class="hljs-title">p</span><span class="hljs-params">(num_vertices(G), graph_traits&lt;G&gt;::null_vertex())</span></span>; <span class="hljs-comment">// 前导数组</span><br><span class="hljs-built_in">dijkstra_shortest_paths</span>(G, s, <span class="hljs-built_in">distance_map</span>(&amp;d[<span class="hljs-number">0</span>]).<br>                        <span class="hljs-built_in">visitor</span>(<span class="hljs-built_in">make_predecessor_recorder</span>(&amp;p[<span class="hljs-number">0</span>])));<br><br>cout &lt;&lt; <span class="hljs-string">&quot;parents in the tree of shortest paths:&quot;</span> &lt;&lt; endl;<br><span class="hljs-keyword">for</span>(vi = <span class="hljs-built_in">vertices</span>(G).first; vi != <span class="hljs-built_in">vertices</span>(G).second; ++vi) &#123;<br>    cout &lt;&lt; <span class="hljs-string">&quot;parent(&quot;</span> &lt;&lt; *vi;<br>    <span class="hljs-keyword">if</span> (p[*vi] == graph_traits&lt;G&gt;::<span class="hljs-built_in">null_vertex</span>())<br>        cout &lt;&lt; <span class="hljs-string">&quot;) = no parent&quot;</span> &lt;&lt; endl;<br>    <span class="hljs-keyword">else</span><br>        cout &lt;&lt; <span class="hljs-string">&quot;) = &quot;</span> &lt;&lt; p[*vi] &lt;&lt; endl;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs txt">parents in the tree of shortest paths:<br>parent(0) = no parent<br>parent(1) = 4<br>parent(2) = 0<br>parent(3) = 2<br>parent(4) = 3<br></code></pre></td></tr></table></figure>
+
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>[1] Dijkstra 算法的新版本现在包含了一个用于记录前导的命名参数，因此不再需要前导访问子，尽管如此，这仍然是一个很好的示例。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF/C/" class="category-chain-item">C++</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF/C/%E7%BF%BB%E8%AF%91/" class="category-chain-item">翻译</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/C/" class="print-no-link">#C++</a>
+      
+        <a href="/tags/Boost/" class="print-no-link">#Boost</a>
+      
+        <a href="/tags/%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93/" class="print-no-link">#第三方库</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Boost 图类库快速入门</div>
+      <div>http://example.com/2023/10/28/boost/boost_graph_library/07_A Quick Tour of the Boost Graph Library/Boost 图类库快速入门/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>QiDianMaker</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年10月27日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2025年5月30日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"6xahBDKE9bVdQzuufG4r0SrN-gzGzoHsz","appKey":"aS53wAMJ32RwAJRsefQAsX9P","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div style="font-size: 0.85rem"> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
