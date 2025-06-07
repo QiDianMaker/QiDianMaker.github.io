@@ -4,6 +4,35 @@
   
   
   <entry>
+    <title>照相机标定</title>
+    <link href="/2025/06/08/camera-calibration/"/>
+    <url>/2025/06/08/camera-calibration/</url>
+    
+    <content type="html"><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>拍摄图像作为捕捉和记录这个世界的一个主要手段，在我们生活的三维世界中扮演着不可或缺的角色。图像是由照相机成像函数 $f$ 将真实世界的场景 $S$ 投影到二维平面上的视觉记录 $I$，为我们提供了观察和理解世界的一个窗口。然而真实的世界是三维的，而记录下来的图像是二维的，且图像的分辨率有限，因此这一转换过程不可避免地伴随着信息的损失。尽管如此，我们仍然希望能够通过图像重建出其中描述的场景。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>技术</category>
+      
+      <category>计算机视觉</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>计算机视觉</tag>
+      
+      <tag>相机</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>C++ 值类别探究</title>
     <link href="/2023/08/25/cpp-value-categories/"/>
     <url>/2023/08/25/cpp-value-categories/</url>
