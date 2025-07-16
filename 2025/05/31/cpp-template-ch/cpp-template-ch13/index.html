@@ -1,0 +1,1099 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/about/favicon.png">
+  <link rel="icon" href="/images/about/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="QiDianMaker">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="第 13 章 模板中的名称在大多数编程语言中，名称是一个基本的概念。借助名称，程序员可以引用前面已经构造完毕的实体。当C++编译器遇到一个名称时，它会查找该名称，来确认它所引用的是哪个实体。从实现者角度来看，就名称而言，C++在这方面相当棘手。譬如C++语句x * y;，如果x和y都是变量的名称，那么这一语句就是一个乘法表达式，但是如果x是类型的名称，该语句就是在声明一个y变量实体，其类型是x类型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="奇点创客">
+<meta property="og:url" content="http://example.com/2025/05/31/cpp-template-ch/cpp-template-ch13/index.html">
+<meta property="og:site_name" content="奇点创客">
+<meta property="og:description" content="第 13 章 模板中的名称在大多数编程语言中，名称是一个基本的概念。借助名称，程序员可以引用前面已经构造完毕的实体。当C++编译器遇到一个名称时，它会查找该名称，来确认它所引用的是哪个实体。从实现者角度来看，就名称而言，C++在这方面相当棘手。譬如C++语句x * y;，如果x和y都是变量的名称，那么这一语句就是一个乘法表达式，但是如果x是类型的名称，该语句就是在声明一个y变量实体，其类型是x类型">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/cpp-template/P13_01.png">
+<meta property="article:published_time" content="2025-05-31T03:57:27.504Z">
+<meta property="article:modified_time" content="2025-05-31T03:57:27.504Z">
+<meta property="article:author" content="QiDianMaker">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/cpp-template/P13_01.png">
+  
+  
+  
+  <title>奇点创客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"cpp"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"6xahBDKE9bVdQzuufG4r0SrN-gzGzoHsz","app_key":"aS53wAMJ32RwAJRsefQAsX9P","server_url":"https://6xahbdke.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>奇点创客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>文库</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    <span>归档</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    <span>分类</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    <span>标签</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-th-large"></i>
+                <span>精神家园</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/books/">
+                    <i class="iconfont icon-book"></i>
+                    <span>读书</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/music/">
+                    <i class="iconfont icon-music"></i>
+                    <span>音乐</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/movies/">
+                    <i class="iconfont icon-youtube-fill"></i>
+                    <span>电影</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/travel/">
+                    <i class="iconfont icon-instagram-fill"></i>
+                    <span>旅行</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/about/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        QiDianMaker
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-30 19:57" pubdate>
+          2025年5月30日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          27k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          223 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="第-13-章-模板中的名称"><a href="#第-13-章-模板中的名称" class="headerlink" title="第 13 章 模板中的名称"></a>第 13 章 模板中的名称</h2><p>在大多数编程语言中，名称是一个基本的概念。借助名称，程序员可以引用前面已经构造完毕的实体。当C++编译器遇到一个名称时，它会查找该名称，来确认它所引用的是哪个实体。从实现者角度来看，就名称而言，C++在这方面相当棘手。譬如C++语句<code>x * y;</code>，如果<code>x</code>和<code>y</code>都是变量的名称，那么这一语句就是一个乘法表达式，但是如果<code>x</code>是类型的名称，该语句就是在声明一个<code>y</code>变量实体，其类型是<code>x</code>类型实体的指针。</p>
+<p>这一小小的例子阐释了C++（类C）是一门上下文敏感型语言(context-sensitive language)：对于C++的一个结构，我们无法脱离上下文来理解它。而这又与模板有什么关联呢？事实上，模板也是一种结构，它也必须处理多种上下文相关信息：（1）模板出现的上下文；（2）模板实例化的上下文；（3）用于模板实例化的模板实参的上下文。因此，在C++中，“名称”需要被小心的处理这一事实就不足为奇了。</p>
+<h3 id="13-1-名称的分类"><a href="#13-1-名称的分类" class="headerlink" title="13.1 名称的分类"></a>13.1 名称的分类</h3><p>C++对名称的分类有多种多样的方式。为了理解名称的众多术语，我们提供了表13.1和表13.2，对这些分类进行了描述。幸运的是，熟悉下面两种主要的命名概念，就可以深入理解大多数的C++模板话题：</p>
+<ol>
+<li>如果名称的作用域由域操作符（<code>::</code>）或是成员访问操作符(<code>.</code>或<code>-&gt;</code>)显式指定，我们就称该名称为限定名称(qualified name)。例如，<code>this-&gt;count</code>是一个限定名称，但是<code>count</code>本身则不是（尽管字面上<code>count</code>实际上指代的也是一个类成员）。</li>
+<li>如果一个名称以某种方式依赖于模板参数，那么该名称就是一个依赖型名称(dependent name)。例如，当<code>T</code>是一个模板参数时，<code>std::vector&lt;T&gt;::iterator</code>是一个依赖型名称；但如果<code>T</code>是一个已知的类型别名时（比如<code>using T = int</code> ），那么<code>std::vector&lt;T&gt;::iterator</code>就不是一个依赖型名称。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>解释和说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>标识符(Identifier)</td>
+<td>仅由不间断的字母、下划线和数字组成的名称。不能以数字开头，并且某些标识符是被保留的：你不能在应用程序中引入它们（有个潜规则：请避免使用下划线和双下划线开头）。字母这一概念较为宽泛，它还包含了通用字符名称(Universal Character Name, UCN)，UCN通过非字符的编码格式存储信息。</td>
+</tr>
+<tr>
+<td>操作符函数id(Operator-function-id)</td>
+<td>关键字<code>operator</code>后紧跟的操作符符号。例如，<code>operator new</code>和<code>operator []</code>。</td>
+</tr>
+<tr>
+<td>类型转换函数id(Conversion-function-id)</td>
+<td>用于表示用户自定义的隐式转换运算符，例如<code>operator int &amp;</code>（也可以以<code>operator int bitand</code>的方式进行混淆）。</td>
+</tr>
+<tr>
+<td>字面操作符id(Literal-operator-id)</td>
+<td>用于表示一个用户定义的字面操作符——例如，<code>operator &quot;&quot;_km</code>，可以用来书写字面值<code>100_km</code>(C++11中引入)</td>
+</tr>
+<tr>
+<td>模板id(Template-id)</td>
+<td>由闭合的尖括号子句内的模板实参构成的模板名称。例如，<code>List&lt;T, int, 0&gt;</code>。模板实参所在的闭合尖括号前面的操作符函数id或一个字面操作符id也可以是一个模板id。例如，<code>operator+&lt;X&lt;int&gt;&gt;。</code></td>
+</tr>
+<tr>
+<td>非限定id(Unqualified-id)</td>
+<td>广义的标识符。可以是上述的任何一种（标识符、操作符函数id、类型转换函数id、字面操作符id或是模板id），也可以是一个“析构器名称”（例如，记如<code>~Data</code>或是<code>~List&lt;T, T, N&gt;</code>）。</td>
+</tr>
+<tr>
+<td>限定id(Qualified-id)</td>
+<td>对非限定id使用类、枚举、命名空间的名称做限定或是仅仅使用全局作用域操作符做限定，得到的就是一个限定id。显然这种名称本身也可以是多次限定的。例如<code>::X</code>，<code>S::x</code>，<code>Array&lt;T&gt;::y</code>和<code>::N::A&lt;T&gt;::z</code>。</td>
+</tr>
+<tr>
+<td>限定名称(Qualified-name)</td>
+<td>标准中并没有定义这一概念，但是我们一般用它来表示经过限定查找的名称。具体来说，它是一个限定id或是一个在前面显式使用了成员访问操作符（<code>.</code>或<code>-&gt;</code>）的非限定id。例如<code>S::x</code>,<code>this-&gt;f</code>和<code>p-&gt;A::m</code>。然而，上下文中隐式等价于<code>this-&gt;class_mem</code>的<code>class_mem</code>并不是一个限定名称：成员访问必须是显式的。</td>
+</tr>
+<tr>
+<td>非限定名称(Unqualified-name)</td>
+<td>除限定名称以外的非限定id。这并非标准中的概念，我们只是用它来表示调用非限定查找时引用的名称。</td>
+</tr>
+<tr>
+<td>名称(Name)</td>
+<td>一个限定或非限定名称</td>
+</tr>
+</tbody></table>
+<center>表13.1 名称分类（第一部分）</center>
+
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>解释和说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>依赖型名称(Dependent name)</td>
+<td>通过某种方式依赖于模板参数的名称。一般来说，显式包含模板参数的限定名称或非限定名称都是依赖型名称。此外，如果成员访问运算符（<code>.</code>或<code>-&gt;</code>）左侧的表达式与类型相关，则通常由其限定的限定名称也是一个依赖型名称，这一概念在P223节13.3.6中进行了讨论。特别地，<code>this-&gt;b</code>中的<code>b</code>当其出现在模板中时，通常是依赖型名称。最后，取决于参数依赖查找的名称，诸如函数调用<code>ident(x, y)</code>中的<code>ident</code>或是表达式<code>x+y</code>中的<code>+</code>，当且仅当参数表达式中任意一个是类型依赖的，那么其就是一个依赖型名称。</td>
+</tr>
+<tr>
+<td>非依赖型名称(Nondependent name)</td>
+<td>不满足上述描述中“依赖型名称”的名称即是一个非依赖型名称</td>
+</tr>
+</tbody></table>
+<center>表13.2 名称分类（第二部分）</center>
+
+<p>通读该表会更加熟悉C++模板话题中的这些概念，但是也没有必要去记住每个定义的精准含义。什么时候需要，就什么时候通过索引来查阅。</p>
+<h3 id="13-2-名称查找"><a href="#13-2-名称查找" class="headerlink" title="13.2 名称查找"></a>13.2 名称查找</h3><p>在C++中，名称查找有非常多的小细节，但是我们这里只关注一些主要概念。只有在下面两种情景中我们才有必要确认名称查找的细节：（1）按直觉处理会犯错的一般案例（2）C++标准给出的错误案例。</p>
+<p>限定名称在限定结构所隐含的作用域中进行查找。如果该作用域是一个类，则还可以向上搜索基类。然而，在查找限定名称时不会考虑封闭作用域(enclosing scopes)。下面的例子阐释了这一基本原则：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">int</span> x;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-type">int</span> i;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">D</span>: <span class="hljs-keyword">public</span> B &#123;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(D* pd)</span></span><br><span class="hljs-function"></span>&#123;<br>  pd-&gt;i = <span class="hljs-number">3</span>;    <span class="hljs-comment">// finds B::i</span><br>  D::x = <span class="hljs-number">2</span>;        <span class="hljs-comment">// ERROR: does not find ::x in the enclosing scope</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>非限定名称的查找则恰恰相反，它可以(由内到外)在所有外围类中逐层地进行查找（但在某个类内部定义的成员函数定义中，它会优先查找该类和基类的作用域，然后才查找外围类的作用域），这种查找方式被称为一般性查找(ordinary lookup)。下面是一个用于理解一般性查找的基本示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">extern</span> <span class="hljs-type">int</span> count;                <span class="hljs-comment">// #1</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">lookup_example</span><span class="hljs-params">(<span class="hljs-type">int</span> count)</span>    <span class="hljs-comment">// #2</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">if</span> (count &lt; <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-type">int</span> count = <span class="hljs-number">1</span>;            <span class="hljs-comment">// #3</span><br>        <span class="hljs-built_in">lookup_example</span>(count);    <span class="hljs-comment">// unqualified count refers to #3</span><br>    &#125;<br>    <span class="hljs-keyword">return</span> count + ::count;        <span class="hljs-comment">// the first (unqualified) count refers to #2;</span><br>                                <span class="hljs-comment">// the second (qualified) count refers to #1</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>对于非限定名称的查找，最近的一种变化是除了普通的查找之外，它们可能还会经历参数依赖查找(argument-dependent lookup, ADL)。在展开叙述ADL之前，我们先用前面的<code>max()</code>模板来说明这一机制的动机：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function">T <span class="hljs-title">max</span><span class="hljs-params">(T a, T b)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> b &lt; a ? a : b;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>假设我们现在需要让”在另一个命名空间所定义的某个类型“来使用这一模板：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">namespace</span> BigMath &#123;<br>  <span class="hljs-keyword">class</span> <span class="hljs-title class_">BigNumber</span> &#123;<br>    ...<br>  &#125;;<br>  <br>  <span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span> &lt; (BigNumber <span class="hljs-type">const</span> &amp;, BigNumber <span class="hljs-type">const</span> &amp;);<br>  ...<br>&#125;<br><br><span class="hljs-keyword">using</span> BigMath::BigNumber;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">g</span><span class="hljs-params">(BigNumber <span class="hljs-type">const</span>&amp; a, BigNumber <span class="hljs-type">const</span>&amp; b)</span></span><br><span class="hljs-function"></span>&#123;<br>  ...<br>  BigNumber x = ::<span class="hljs-built_in">max</span>(a,b);<br>  ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里的问题在于<code>max()</code>模板不认识<code>BigMath</code>命名空间，一般性查找无法找到类型<code>BigNumber</code>适用的<code>operator &lt;</code>。如果没有特殊规则的话，这种限制大大降低了C++命名空间中模板的应用性。而ADL正是这个“特殊规则”，也正是解决这种限制的关键之处。</p>
+<h4 id="13-2-1-ADL"><a href="#13-2-1-ADL" class="headerlink" title="13.2.1 ADL"></a>13.2.1 ADL</h4><p>ADL主要适用于在函数调用或运算符调用中看起来像非成员函数名称的非限定名称。如果一般性查找找到了以下信息，ADL就不会发生：</p>
+<ul>
+<li>成员函数名称</li>
+<li>变量名称</li>
+<li>类型名称</li>
+<li>块作用域函数声明名称</li>
+</ul>
+<p>如果把被调用函数的名称用圆括号括起来，ADL也会被禁用。</p>
+<p>否则，如果名称后的括号里面有实参表达式列表，则ADL将会查找这些实参“关联”的命名空间和类。对这些关联的命名空间(associated namespace)和关联类(associated class)的精准定义会在后文给出，但在直觉上它们可以被认为是与给定类型相关联的所有命名空间和类。例如，如果某一类型是一个<code>class X</code>的指针，那么关联的类和命名空间就包括<code>X</code>和<code>X</code>所属的任何命名空间或类。</p>
+<p>对给定类型，关联命名空间和关联类所组成的集合的精准定义，我们可以通过下列规则来确定：</p>
+<ul>
+<li>对内置类型，该集合为空集。</li>
+<li>对指针和数组类型，该集合就是其底层所引用类型的关联类和关联命名空间。</li>
+<li>对枚举类型，关联命名空间就是枚举声明所在的命名空间。</li>
+<li>对类成员，关联类就是其所在的类。</li>
+<li>对类类型（包括联合体类型），关联类集合包括其类型本身、它的外围类型、所有的直接或间接基类。关联命名空间集合是每个关联类所在的命名空间。如果类是一个类模板实例，那么类模板实参的类型以及声明模板的模板实参所在的类和命名空间也将包含在内。</li>
+<li>对函数类型，关联命名空间和类的集合包含每一个参数类型和返回值所关联的命名空间和类。</li>
+<li>对指向类<code>X</code>的成员指针类型，关联的命名空间和类包括<code>X</code>以及成员类型本身的关联。（如果是指向成员函数的类型，那么参数和返回类型也算数。）<br>至此，ADL会在所有的关联命名空间和关联类中依次地查找，就好像依次地直接使用这些命名空间进行限定一样。唯一的例外情况是：它会忽略<code>using</code>指示符(using-directives)。下面的例子说明了这一点：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// details/adl.cpp</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-keyword">namespace</span> X &#123;<br>  <span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(T)</span></span>;<br>&#125;<br><br><span class="hljs-keyword">namespace</span> N &#123;<br>  <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> X;<br>  <span class="hljs-keyword">enum</span> <span class="hljs-title class_">E</span> &#123; e1 &#125;;<br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(E)</span> </span>&#123;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;N::f(N::E) called\n&quot;</span>;<br>  &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(<span class="hljs-type">int</span>)</span></span><br><span class="hljs-function"></span>&#123;<br>  std::cout &lt;&lt; <span class="hljs-string">&quot;::f(int) called\n&quot;</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  ::<span class="hljs-built_in">f</span>(N::e1);    <span class="hljs-comment">// qualified function name: no ADL</span><br>  <span class="hljs-built_in">f</span>(N::e1);        <span class="hljs-comment">// ordinary lookup finds ::f() and ADL finds N::f(),</span><br>                  <span class="hljs-comment">// the latter is preferred</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们可以看出：在这个例子中，当执行ADL时，命名空间<code>N</code>中的<code>using-directive</code>被忽略了。因此，在这个<code>main()</code>函数内部的调用中，<code>X::f()</code>甚至永远都无法作为一个候选者。</p>
+<h4 id="13-2-2-友元声明的ADL"><a href="#13-2-2-友元声明的ADL" class="headerlink" title="13.2.2 友元声明的ADL"></a>13.2.2 友元声明的ADL</h4><p>在类中友元函数的声明可以是该友元函数的首次声明。在此场景中，对于包含这个友元函数的类，假设它所属的最近的命名空间作用域（可能是全局作用域）为作用域A，我们就可以认为该友元函数是在作用域A中声明的。然而，这样的友元声明在该作用域中并不是直接可见的。考虑下面的例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span> &#123;<br>  ...<br>  <span class="hljs-function"><span class="hljs-keyword">friend</span> <span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span></span>;<br>  <span class="hljs-function"><span class="hljs-keyword">friend</span> <span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(C&lt;T&gt; <span class="hljs-type">const</span>&amp;)</span></span>;<br>  ...<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">g</span><span class="hljs-params">(C&lt;<span class="hljs-type">int</span>&gt;* p)</span> </span>&#123;<br>  <span class="hljs-built_in">f</span>();        <span class="hljs-comment">// is f() visible here?</span><br>  <span class="hljs-built_in">f</span>(*p);    <span class="hljs-comment">// is f(C&lt;int&gt; const&amp;) visible here?</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如果友元声明在封闭命名空间中可见，那么实例化一个类模板可能会使一些普通函数的声明也变为可见的（比如f()）。这可能会产生一些令人惊讶的行为：函数调用<code>f()</code>会导致编译错误，除非类C的实例化在程序更早的地方进行过！</p>
+<p>另一方面，仅仅通过友元函数声明（并定义）一个函数非常有用（参考P497节21.2.1依赖于这种行为的某个技巧）。当友元函数所在的类属于ADL查找过程的关联类时，该友元函数就是可见的。</p>
+<p>再次考虑上面的例子，<code>f()</code>没有关联类或关联命名空间，因为它并没有任何参数：在这个例子中该调用是无效的。然而，<code>f(*p)</code>调用有着关联类<code>C&lt;int&gt;</code>（因为它是<code>*p</code>的类型），并且全局命名空间也是关联的（因为这是<code>*p</code>的类型声明所在的命名空间）。因此，只要我们在调用之前完全实例化<code>class C&lt;int&gt;</code>，就可以找到这一第二个友元函数。为了确保这一点，我们可以假设：对于涉及在关联类中友元查找的调用，实际上会导致该（关联）类被实例化（如果还没有实例化的话）。</p>
+<p>ADL查找友元声明和定义的能力有时候也被称为友元名称注入(friend name injection)。然而，这一术语有些误导性，因为它是一个前标准C++特性的名称，该特性会确实地把友元声明的名称“注入”到封闭作用域中，使得它们在一般性名称查找中可见。对上例来说，这就意味着两个调用都有效。本章的后续内容会详述友元名称注入的历史。</p>
+<h4 id="13-2-3-注入的类名称"><a href="#13-2-3-注入的类名称" class="headerlink" title="13.2.3 注入的类名称"></a>13.2.3 注入的类名称</h4><p>类的名称会被注入到类本身的作用域中，因此在该作用域中作为非限定名称可访问。（然而，它作为限定名称不可访问，因为这种符号表示用于表示构造函数。）例如下面的例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// details/inject.cpp</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-type">int</span> C;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span> &#123;<br>  <span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">int</span> i[<span class="hljs-number">2</span>];<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>&#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-built_in">sizeof</span>(C);<br>    &#125;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-built_in">sizeof</span>(C);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  std::cout &lt;&lt; <span class="hljs-string">&quot;C::f() = &quot;</span> &lt;&lt; C::<span class="hljs-built_in">f</span>() &lt;&lt; <span class="hljs-string">&#x27;,&#x27;</span><br>              &lt;&lt; <span class="hljs-string">&quot; ::f() = &quot;</span> &lt;&lt; ::<span class="hljs-built_in">f</span>() &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>成员函数<code>C::f()</code>返回了<code>class</code>类型<code>C</code>的尺寸，而<code>::f()</code>则返回了<code>int</code>变量<code>C</code>的尺寸。</p>
+<p>类模板也可以有注入的类名称。然而，相比较一般的注入的类名称来说，二者有些区别：它的后面可以紧跟模板实参（在此场景，它们也被称为注入的类模板名称）。但是，如果后面没有紧跟模板实参，那么它们代表的就是用参数来代表实参的类（例如，对于偏特化，还可以用特化实参代表对应的模板实参）。下述代码解释了这一情景：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span>&gt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">TT</span>&gt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">X</span> &#123;<br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span> &#123;<br>  C* a;            <span class="hljs-comment">// OK: same as &quot;C&lt;T&gt;* a;&quot;</span><br>  C&lt;<span class="hljs-type">void</span>&gt;&amp; b;    <span class="hljs-comment">// OK</span><br>  X&lt;C&gt; c;        <span class="hljs-comment">// OK: C without a template argument list denotes the template C</span><br>  X&lt;::C&gt; d;        <span class="hljs-comment">// OK: ::C is not the injected class name and therefore always</span><br>                  <span class="hljs-comment">//         denotes the template</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>注意看非限定名称是如何引用注入的名称的，并且，如果名称后没有跟随模板实参列表的话，它们不会被认作模板名称。为了补偿，我们可以在模板名称前强制使用<code>::</code>限定符。</p>
+<p>可变模板的注入的类名称还有一个额外的特点：如果注入的类名称是通过使用可变模板的模板参数直接组成的，那么注入的类名称也将包含尚未展开的模板参数包（参考P201节12.4.1了解包展开的细节）。因此，在为可变参数模板形成注入的类名时，与模板参数包对应的模板参数是一个模板参数包的展开，其模式就是那个模板参数包：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-type">int</span> I, <span class="hljs-keyword">typename</span>... T&gt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">V</span> &#123;<br>  V* a;            <span class="hljs-comment">// OK: same as &quot;V&lt;I, T...&gt;* a;&quot;</span><br>  V&lt;<span class="hljs-number">0</span>, <span class="hljs-type">void</span>&gt; b;    <span class="hljs-comment">// OK</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h4 id="13-2-4-当前实例"><a href="#13-2-4-当前实例" class="headerlink" title="13.2.4 当前实例"></a>13.2.4 当前实例</h4><p>类或类模板的注入的类名称实际上是类型定义的一个别名。对非模板类来说，这一特性是显然的，因为类本身就是其作用域内其名称的唯一类型。然而，在类模板或是类模板嵌套的类中，每个模板实例都会产生一个不同的类型。在这一上下文中，该特性就非常有趣了，因为这意味着注入的类名称指向类模板的相同实例而非类模板的其他实例（对类模板的嵌套类来说也一样）。</p>
+<p>在类模板中，类或类模板范围内的注入的类名称或是其他等价于注入的类名称的类型（包括类型别名的声明）都被称为一个当前实例(current instantiation)。依赖于模板参数但并不指代一个当前实例的类型被称为一个未知的特化(unknown specialization)，它可以从相同的类模板或某些全然不同的类模板实例化。下面的例子阐释了这一区别：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span> &#123;<br>  <span class="hljs-keyword">using</span> Type = T;    <br>  Node* next;            <span class="hljs-comment">// Node refers to a current instantiation</span><br>  Node&lt;Type&gt;* previous;    <span class="hljs-comment">// Node&lt;Type&gt; refers to a current instantiation</span><br>  Node&lt;T*&gt;* parent;        <span class="hljs-comment">// Node&lt;T*&gt; refers to an unknown specialization  </span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>在嵌套类和类模板中辨别某个类型是否指代一个当前实例往往扑朔迷离。类和类模板范围内的注入的类名称（或者等价于它们的类型）是一个当前实例，而其他嵌套的类或类模板中的名称则不是一个当前实例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span> &#123;<br>  <span class="hljs-keyword">using</span> Type = T;<br>  <br>  <span class="hljs-keyword">struct</span> <span class="hljs-title class_">I</span> &#123;<br>    C* c;            <span class="hljs-comment">// C refers to a current instantiation</span><br>    C&lt;Type&gt;* c2;    <span class="hljs-comment">// C&lt;Type&gt; refers to a current instantiation</span><br>    I* i;            <span class="hljs-comment">// I refers to a current instantiation</span><br>  &#125;;<br>  <br>  <span class="hljs-keyword">struct</span> <span class="hljs-title class_">J</span> &#123;<br>    C* c;            <span class="hljs-comment">// C refers to a current Instantiation</span><br>    C&lt;Type&gt;* c2;    <span class="hljs-comment">// C&lt;Type&gt; refers to a current instantiation</span><br>    I* i;            <span class="hljs-comment">// I refers to an unknown specialization,</span><br>                    <span class="hljs-comment">// because I does not enclose</span><br>    J* j;            <span class="hljs-comment">// J refers to a current instantiation</span><br>  &#125;;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>当类型指代的是一个当前实例时，实例化的类的内容可以保证是由当前定义的类模板或嵌套类所实例化的。当解析模板（下一节的主题）时这对名称查找有着意义，但与此同时它也引导了另一种方案，一种更像游戏的方式来决定类模板中的类型<code>X</code>的定义指代的是一个当前实例还是一个未知的特化：如果另一个程序员可以写出一个显式特化（在第16章描述细节）使得<code>X</code>指向该特化体，那么<code>X</code>就指代一个未知的特化。例如，考虑上例上下文中类型<code>C&lt;int&gt;::J</code>的实例：我们知道<code>C&lt;T&gt;::J</code>的定义用于实例化特定的具体类型（也就是我们所实例化的类型）。此外，由于显式特化无法在不同时特化范围内所有模板或成员的情况下，特化某一个模板或模板成员，<code>C&lt;int&gt;</code>会在类定义范围内被实例化。因此，<code>J</code>和<code>C&lt;int&gt;</code>的引用在J所在范围内均指代一个当前实例。而另一方面，我们可以写出一个<code>C&lt;int&gt;::I</code>的显式特化，如下文：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;&gt; <span class="hljs-keyword">struct</span> <span class="hljs-title class_">C</span>&lt;<span class="hljs-type">int</span>&gt;::I &#123;<br>  <span class="hljs-comment">// definition of the specialization</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>这里，<code>C&lt;int&gt;::I</code>的特化提供了一个与<code>C&lt;T&gt;::J</code>所可见的定义完全不同的定义，因此定义<code>C&lt;T&gt;::J</code>中定义的<code>I</code>指代的是一个未知的特化。</p>
+<h3 id="13-3-模板解析"><a href="#13-3-模板解析" class="headerlink" title="13.3 模板解析"></a>13.3 模板解析</h3><p>大多数程序设计语言的编译都包含两个最基本的步骤——token化（也称作扫描或词法解析）和（语法）解析。Token化过程会按字符顺序读取源代码，然后生成一个token序列。例如，当看到字符序列<code>int* p = 0;</code>时，扫描器会为关键字<code>int</code>、符号&#x2F;操作符<code>*</code>、标识符<code>p</code>、符号&#x2F;操作符<code>=</code>、整型字面量<code>0</code>和符号&#x2F;操作符<code>;</code>生成token。</p>
+<p>解析器会通过将token或先前发现的模式(pattern)递归地归约为更高级别的结构，从而在token序列中找到已知的模式。例如，token <code>0</code>是一个合法的表达式，<code>*</code>后跟随的标识符<code>p</code>是一个合法的声明器(declarator)，该声明器后接<code>=</code>再接表达式<code>0</code>是一个合法的初始化声明器(init-declarator)。最后，关键字<code>int</code>是一个已知的类型名称，并且当后面跟着初始化声明器<code>*p = 0</code>时，就归约为<code>p</code>的初始化声明。</p>
+<h4 id="13-3-1-非模板中的上下文相关性"><a href="#13-3-1-非模板中的上下文相关性" class="headerlink" title="13.3.1 非模板中的上下文相关性"></a>13.3.1 非模板中的上下文相关性</h4><p>如你所闻与所愿，token化过程比解析要简单得多。幸运的是，解析已经是一门理论发展得相当成熟的学科，使用这一理论对于理解大多数语言的解析都不算困难。然而，这一理论在上下文无关语言中表现最佳，而我们已经知道了C++是一门上下文敏感语言。为此，C++编译器会使用一张符号表来把标记器(tokenizer)和解析器(parser)结合起来：当解析到声明时，会把它灌入到符号表中。当标记器找到一个标识符时，它会进行查找，如果找到的是一个类型的话，就对生成的token进行注解。</p>
+<p>例如，如果C++编译器看到<code>x*</code>，标记器会查找<code>x</code>。如果找到了一个类型，解析器就会看到：</p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-built_in">identifier,</span> type, x<br><span class="hljs-built_in">symbol,</span> *<br></code></pre></td></tr></table></figure>
+
+<p>并得出一个结论：这是要开始声明了。然而，如果没有找到类型<code>x</code>，那么解析器会从标记器处接收这样的信息：</p>
+<p><code>identifier, nontype, x</code><br><code>symbol, *</code></p>
+<p>此时该结构按合法性只能被解析成一个乘法表达式。这些原则的细节要依赖于编译器的具体实现策略，但大同小异。</p>
+<p>另一个上下文敏感的案例在下面的表达式中阐释：</p>
+<p><code>X&lt;1&gt;(0)</code></p>
+<p>如果<code>X</code>是类模板的名称，那么前面的表达式就是将整型<code>0</code>强制类型转换到类型<code>X&lt;1&gt;</code>（由该模板产生的）。如果<code>X</code>不是一个模板，那么上面的表达式等价于</p>
+<p><code>(X&lt;1)&gt;0</code></p>
+<p>换句话说，<code>X</code>会和1比较，然后根据结果——<code>true</code>或<code>false</code>，隐式转换成<code>1</code>或<code>0</code>——再与0进行比较。尽管这样的代码非常罕见，但它也是一个合法的C++代码（也是合法的C代码）。C++解析器会查找<code>&lt;</code>前出现的名称，只有在该名称是一个模板名称时，才会把<code>&lt;</code>看成是左尖括号；否则，<code>&lt;</code>就被视为普通的小于操作符。</p>
+<p>令人遗憾的是，这类上下文敏感性都是由于选择尖括号来界定模板参数列表所造成的。下面是另一个案例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-type">bool</span> B&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Invert</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-type">static</span> <span class="hljs-type">bool</span> <span class="hljs-type">const</span> result = !B;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">g</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-type">bool</span> test = Invert&lt;(<span class="hljs-number">1</span>&gt;<span class="hljs-number">0</span>)&gt;::result;    <span class="hljs-comment">// parentheses required!</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如果<code>Invert&lt;(1&gt;0)&gt;</code>的小括号被省略，大于等于符号就会被误认为是模板参数列表的闭合尖括号。这会使得代码无效，因为编译器会把它读作<code>((Invert&lt;1&gt;))0&gt;::result</code>。</p>
+<p>尖括号带给标记器的问题还不止这些。例如，在语句：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp">List&lt;List&lt;<span class="hljs-type">int</span>&gt;&gt; a;<br>            <span class="hljs-comment">//^-- no space between right angle brackets</span><br></code></pre></td></tr></table></figure>
+
+<p>两个<code>&gt;</code>字符组合成了一个右移操作符<code>&gt;&gt;</code>，因此它们不再被视为两个独立的符号。这要归因于所谓的maximum munch tokenization原则：C++实现体必须让一个token能捕获尽可能多的连续字符。</p>
+<p>如P28节2.2所提及，在C++11之后，C++标准特别指出了这一情景——嵌套的模板id紧跟着右移符号<code>&gt;&gt;</code>——解析器会将模板id紧邻的右移符号视为两个独立的右尖括号<code>&gt;</code>。有趣的是，此变更项会默默地更改某些程序（公认的程序）的含义。考虑下面的例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// names/anglebrackethack.cpp</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-type">int</span> I&gt; <span class="hljs-keyword">struct</span> <span class="hljs-title class_">X</span> &#123;<br>  <span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-type">const</span> c = <span class="hljs-number">2</span>;<br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;&gt; <span class="hljs-keyword">struct</span> <span class="hljs-title class_">X</span>&lt;<span class="hljs-number">0</span>&gt; &#123;<br>  <span class="hljs-keyword">typedef</span> <span class="hljs-type">int</span> c;<br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">struct</span> <span class="hljs-title class_">Y</span> &#123;<br>  <span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-type">const</span> c = <span class="hljs-number">3</span>;<br>&#125;;<br><br><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-type">const</span> c = <span class="hljs-number">4</span>;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  std::cout &lt;&lt; (Y&lt;X&lt;<span class="hljs-number">1</span>&gt; &gt;::c &gt;::c&gt;::c) &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>;<br>  std::cout &lt;&lt; (Y&lt;X&lt; <span class="hljs-number">1</span>&gt;&gt;::c &gt;::c&gt;::c) &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这是一个合法的C++98程序，输出<code>0 3</code>。它也是合法的C++11程序，但是尖括号变革使得括号内的两个语句是等价的，最终输出<code>0 0</code>。</p>
+<p>由于<code>&lt;:</code>是字符<code>[</code>的两字符替代(某些传统键盘是不支持的)，还存在一个类似的问题，考虑下面的案例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-keyword">struct</span> <span class="hljs-title class_">G</span> &#123;&#125;;<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">S</span>;<br>G&lt;::S&gt; gs;        <span class="hljs-comment">// valid since C++11, but an error before that</span><br></code></pre></td></tr></table></figure>
+
+<p>C++11之前，最后一行代码等价于<code>G[:S&gt;gs;</code>，这显然是不合法的。另一个词法hack技术被引入来解决该问题：当编译器看到字符序列<code>&lt;::</code>没有紧跟着<code>:</code>或<code>&gt;</code>时，前导<code>&lt;:</code>字符对不再被视为<code>[</code>等价的两字符符号。这一两字符hack技术使得以前合法的程序变得不再合法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> F(X) X ## :</span><br><br><span class="hljs-type">int</span> a[] = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;, i = <span class="hljs-number">1</span>;<br><span class="hljs-type">int</span> n = a <span class="hljs-built_in">F</span>(&lt;::)i];        <span class="hljs-comment">// valid in C++98/C++03, but not in C++11</span><br></code></pre></td></tr></table></figure>
+
+<p>想要理解它，就要注意到两字符hack应用于预处理符号，对预处理器来说变成了截然不同的符号，它们在宏展开完成前被确定。因此，C++98&#x2F;C++03会无条件转换<code>&lt;:</code>到<code>[</code>，因而定义展开成<code>int n = a[ :: i];</code>，显然这是没问题的。而C++11则不会进行字符转换，因为在宏展开前，序列<code>&lt;::</code>没有跟随<code>:</code>或<code>&gt;</code>而是<code>)</code>时，两字符转译不会进行，因此连接操作符<code>##</code>会试图连接<code>::</code>和<code>:</code>成为一个新的预处理符号<code>:::</code>，但显然这是一个不合法的符号。这一标准会导致UB行为(undefined behavior)，也就意味着放任编译器自由处理。某些编译器会诊断出这一问题，但也有些不会：它们会保持两个预处理符号分离，然后导致语法错误，因为对<code>n</code>的定义最终展开成如下语句：</p>
+<p><code>int n = a &lt; :: : i];</code></p>
+<h4 id="13-3-2-类型的依赖型名称"><a href="#13-3-2-类型的依赖型名称" class="headerlink" title="13.3.2 类型的依赖型名称"></a>13.3.2 类型的依赖型名称</h4><p>模板中名称的问题在于它们无法始终被充分地分类。具体来讲，一个模板无法引用另一个模板的名称，因为其他模板的内容可能因显式特化而使原本的名称失效。下面的例子阐释了这一概念：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Trap</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">enum</span> &#123; x &#125;;    <span class="hljs-comment">// #1 x is not a type here</span><br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Victim</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-type">int</span> y;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">poof</span><span class="hljs-params">()</span> </span>&#123;<br>      Trap&lt;T&gt;::x * y;    <span class="hljs-comment">// #2 declaration or multiplication?</span><br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Trap</span>&lt;<span class="hljs-type">void</span>&gt; &#123;    <span class="hljs-comment">// evil specialization!</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">using</span> x = <span class="hljs-type">int</span>;    <span class="hljs-comment">// #3 x is a type here</span><br>&#125;;<br><br><span class="hljs-function">boid <span class="hljs-title">boom</span><span class="hljs-params">(Victim&lt;<span class="hljs-type">void</span>&gt;&amp; bomb)</span></span><br><span class="hljs-function"></span>&#123;<br>  bomb.<span class="hljs-built_in">poof</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>编译器解析行#2时，它必须确定这是一个声明语句还是一个乘法表达式。这一决定取决于依赖型限定名称<code>Trap&lt;T&gt;::x</code>是否是一个类型名称。编译器此时会尝试在模板<code>Trap</code>中查找，并且发现根据行#1，<code>Trap&lt;T&gt;::x</code>并不是一个类型，从而让我们相信行#2是一个乘法表达式。然而，在后面<code>T</code>取<code>void</code>的特化中，我们改写了（泛型的）<code>Trap&lt;T&gt;::X</code>，让它变成了一个类型，这完全违背了前面的源码。在特化场景中，<code>Trap&lt;T&gt;::x</code>实际上是一个<code>int</code>类型。</p>
+<p>本例中，类型<code>Trap&lt;T&gt;</code>是一个依赖型类型，因为类型取决于模板参数<code>T</code>。此外，<code>Trap&lt;T&gt;</code>指代的是一个未知的特化（在P223节13.2.4中描述），这意味着编译器无法安全的在模板中查找以判定名称<code>Trap&lt;T&gt;::x</code>是否是一个类型。当<code>::</code>前的类型指代的是一个当前实例时——例如，<code>Victim&lt;T&gt;::y</code>——编译器才可以在模板定义中查找，这是因为它已经确定不会有其他的特化来干预。因此，如果<code>::</code>前的类型指代的是一个当前实例，那么模板中限定名称的查找与非依赖类型的限定名称查找表现得非常相似。</p>
+<p>然而，如上例所阐释，未知特化中的名称查找始终是一个问题。C++语言通过下面的规定来解决这个问题：通常来说，一个依赖型限定名称并不代表一个类型，除非在名字的前面加上了一个关键字<code>typename</code>前缀。对于类型而言，如果不加上<code>typename</code>前缀，那么在替换模板实参后，就不会被看成是一个类型名称，从而导致程序是无效的，你的C++编译器还会抱怨在实例化过程中出现了错误。另一方面，我们应该知道<code>typename</code>的这种用法和前面用于表示模板类型参数的用法是不同的：在这里你不能使用关键字<code>class</code>来等价替换<code>typename</code>。</p>
+<p>总之，当类型名称具有以下性质时，就应该在名称前面添加<code>typename</code>前缀：</p>
+<ol>
+<li>名称是限定的，且本身没有后跟<code>::</code>组成一个更为限定的名称。</li>
+<li>名称不是详细类型说明符（elaborated-type-specifier）的一部分（例如，以<code>class</code>,<code>struct</code>,<code>union</code>,或<code>enum</code>起始的关键字）。</li>
+<li>名称不在指定基类继承的列表中，也不在引入构造函数的成员初始化列表中。</li>
+<li>名称依赖于模板参数。</li>
+<li>名称是某个未知特化的成员，这意味着由限定器命名的类型指代一个未知的特化。</li>
+</ol>
+<p>此外，除非至少满足前两个条件，才能使用<code>typename</code>前缀。下面的错误案例为此予以解释：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;                <span class="hljs-comment">// 1</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">S</span> : <span class="hljs-keyword">typename</span> X&lt;T&gt;::Base &#123;    <span class="hljs-comment">// 2</span><br>  <span class="hljs-built_in">S</span>() : <span class="hljs-keyword">typename</span> X&lt;T&gt;::<span class="hljs-built_in">Base</span>(<span class="hljs-keyword">typename</span> X&lt;T&gt;::<span class="hljs-built_in">Base</span>(<span class="hljs-number">0</span>)) &#123;    <span class="hljs-comment">// 3 4</span><br>  &#125;<br>  <br>  <span class="hljs-function"><span class="hljs-keyword">typename</span> X&lt;T&gt; <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>&#123;                <span class="hljs-comment">// 5</span><br>    <span class="hljs-keyword">typename</span> X&lt;T&gt;::C * p;            <span class="hljs-comment">// declaration of pointer p    // 6</span><br>    X&lt;T&gt;::D *q;<br>  &#125;<br>  <br>  <span class="hljs-keyword">typename</span> X&lt;<span class="hljs-type">int</span>&gt;::C *s;            <span class="hljs-comment">// 7</span><br>  <br>  <span class="hljs-keyword">using</span> Type = T;<br>  <span class="hljs-keyword">using</span> OtherType = <span class="hljs-keyword">typename</span> S&lt;T&gt;::Type;    <span class="hljs-comment">// 8</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>每个出现的<code>typename</code>，不管正确与否，都被标了号。第一个<code>typename</code>表示一个模板参数。前面的规则没有应用于此。第二个和第三个<code>typename</code>由于上述规则的第三条而被禁止。这两个上下文中，基类的名称不能用<code>typename</code>引导。然而，第四个<code>typename</code>是必不可少的，因为这里基类的名称既不是位于初始化列表，也不是位于派生类的继承列表，而是为了基于实参<code>0</code>构造一个临时<code>X&lt;T&gt;::Base</code>表达式（也可以是某种强制类型转换）。第5个<code>typename</code>同样不合法，因为它后面的名称<code>X&lt;T&gt;</code>并不是一个限定名称。对于第6个<code>typename</code>，如果期望声明一个指针，那么这个<code>typename</code>是必不可少的。下一行省略了关键字<code>typename</code>，因此也就被编译器解释为一个乘法表达式。第7个<code>typename</code>是可选（可有可无）的，因为它符合前面的两条规则，但不符合后面的两条规则。第8个<code>typename</code>也是可选的，因为它指代的是一个当前实例的成员（不满足最后一条规则）。</p>
+<p>最后一条判断<code>typename</code>前缀是否需要的规则有时候难以评估，因为它取决于判断类型所指代的是一个当前实例还是一个未知特化这一事实。在这种场景中，最简单安全的方法就是直接添加<code>typename</code>关键字来表明限定名称是一个类型。<code>typename</code>关键字，尽管它是可选的，也会提供一个意图上的说明。</p>
+<h4 id="13-3-3-模板的依赖型名称"><a href="#13-3-3-模板的依赖型名称" class="headerlink" title="13.3.3 模板的依赖型名称"></a>13.3.3 模板的依赖型名称</h4><p>当一个模板的名称是依赖型名称时，我们将会遇到类似上一小节的问题。通常而言，C++编译器会把模板名称后面的<code>&lt;</code>看作模板实参列表的开始，否则的话<code>&lt;</code>就会被视为小于操作符。与类型名称一样，除非程序员使用关键字<code>template</code>提供了额外的信息，编译器是不会把依赖性名称视作模板的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Shell</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">template</span>&lt;<span class="hljs-type">int</span> N&gt;<br>    <span class="hljs-keyword">class</span> <span class="hljs-title class_">In</span> &#123;<br>    <span class="hljs-keyword">public</span>:<br>        <span class="hljs-keyword">template</span>&lt;<span class="hljs-type">int</span> M&gt;<br>        <span class="hljs-keyword">class</span> <span class="hljs-title class_">Deep</span> &#123;<br>        <span class="hljs-keyword">public</span>:<br>            <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span></span>;<br>        &#125;;<br>    &#125;;<br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T, <span class="hljs-type">int</span> N&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Weird</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">case1</span> <span class="hljs-params">(<span class="hljs-keyword">typename</span> Shell&lt;T&gt;::<span class="hljs-keyword">template</span> In&lt;N&gt;::<span class="hljs-keyword">template</span> Deep&lt;N&gt;* p)</span> </span>&#123;<br>      p-&gt;<span class="hljs-keyword">template</span> Deep&lt;N&gt;::<span class="hljs-built_in">f</span>();        <span class="hljs-comment">// inhibit virtual call</span><br>    &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">case2</span> <span class="hljs-params">(<span class="hljs-keyword">typename</span> Shell&lt;T&gt;::<span class="hljs-keyword">template</span> In&lt;N&gt;::<span class="hljs-keyword">template</span> Deep&lt;N&gt;&amp; p)</span> </span>&#123;<br>      p.<span class="hljs-keyword">template</span> Deep&lt;N&gt;::<span class="hljs-built_in">f</span>();        <span class="hljs-comment">// inhibit virtual call</span><br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>这个多少有些复杂的例子展示了所有可以限定名称的操作符是如何需要在操作符前添加关键字<code>template</code>的。明确来讲，如果限定符号前面的名称或表达式的类型需要依赖于某个模板参数，并且紧跟在限定符后面的是一个模板id(template-id)（换句话说，就是指一个后面带有闭合尖括号实参列表的模板名称），那么就应该使用关键字<code>template</code>。例如，在下面的表达式中：</p>
+<p><code>p.template Deep&lt;N&gt;::f()</code></p>
+<p><code>p</code>的类型依赖于模板参数<code>T</code>。因此，C++编译器并不会查找<code>Deep</code>来判断它是否是一个模板，并且我们必须显式地通过插入<code>template</code>前缀来指定<code>Deep</code>是一个模板名称。如果没有该前缀，<code>p.Deep&lt;N&gt;::f()</code>就会被解析成<code>((p.Deep)&lt;N)&gt;f()</code>。还要注意在一个限定名称内部，可能需要多次使用关键字<code>template</code>，因为限定符本身可能还会受限于外部的依赖型名称（可以从上例的case1和case2的参数中看到）。</p>
+<p>如果例子中的关键字<code>template</code>被省略了，那么左尖括号和右尖括号会被解析为小于和大于操作符。由于使用了<code>typename</code>关键字，我们可以安全的添加<code>template</code>前缀来指明后面的名称是一个模板id(template-id)，即使<code>template</code>前缀并不是严格需要的。</p>
+<h4 id="13-3-4-Using声明中的依赖型名称"><a href="#13-3-4-Using声明中的依赖型名称" class="headerlink" title="13.3.4 Using声明中的依赖型名称"></a>13.3.4 Using声明中的依赖型名称</h4><p>Using声明会从两个地方引入名称：命名空间和类。命名空间这一部分与本文不相干，因为并没有诸如命名空间模板(namespace templates)这样的东西。而对于类来说，using声明只能把基类的名称引入到继承类。这样的using声明看起来像继承类访问基类的“符号链接”或是“快捷方式”，就好像是继承类自身声明的成员一样。千言万语不及一个小小示例，我们用一个非模板示例来阐述：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BX</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(<span class="hljs-type">int</span>)</span></span>;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(<span class="hljs-type">char</span> <span class="hljs-type">const</span>*)</span></span>;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">g</span><span class="hljs-params">()</span></span>;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">DX</span> : <span class="hljs-keyword">private</span> BX &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">using</span> BX::f;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>类<code>DX</code>使用using声明将名称<code>f</code>从基类<code>BX</code>中引入。本例中，该名称关联了两个不同的声明，但我们这里强调的是一种名称机制，而不是关注该名称是否是一个单一的声明。此外，using声明可以让以前不能访问的成员变成可访问的。从示例代码中可以看到，基类和它的成员对派生类<code>DX</code>是私有的（因为私有继承），只有函数<code>BX::f</code>是个例外，它因被using引入到了<code>DX</code>的公有接口而能够访问。</p>
+<p>现在，你可能已经发现了当使用using声明从依赖类中引入名称的问题所在。尽管我们知道该名称，我们还是不知道这个名称到底是一个类型，还是一个模板，或是其他什么东西：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">BXT</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">using</span> Mystery = T;<br>    <span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> U&gt;<br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">Magic</span>;<br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">DXTT</span> : <span class="hljs-keyword">private</span> BXT&lt;T&gt; &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">using</span> <span class="hljs-keyword">typename</span> BXT&lt;T&gt;::Mystery;<br>    Mystery* p;        <span class="hljs-comment">// would be a syntax error without the earlier typename</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>如果我们想要使用using声明引入依赖型名称来指定类型时，我们必须显式地插入<code>typename</code>关键字前缀。奇怪的是，在这样的名称是一个模板时，C++标准并没有提供一个类似的机制来标记。下面的代码片段揭示了这个问题：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">DXTM</span> : <span class="hljs-keyword">private</span> BXT&lt;T&gt; &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">using</span> BXT&lt;T&gt;::<span class="hljs-keyword">template</span> Magic;    <span class="hljs-comment">// ERROR: not standard</span><br>    Magic&lt;T&gt;* plink;                <span class="hljs-comment">// SYNTAX ERROR: Magic is not a known template</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>标准委员会至今没有考虑这个议题。然而，C++11别名模板提供了一个迂回解决方案：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">DXTM</span> : <span class="hljs-keyword">private</span> BXT&lt;T&gt; &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> U&gt;<br>      <span class="hljs-keyword">using</span> Magic = <span class="hljs-keyword">typename</span> BXT&lt;T&gt;::<span class="hljs-keyword">template</span> Magic&lt;T&gt;;    <span class="hljs-comment">// Alias template</span><br>      Magic&lt;T&gt;* plink;                                    <span class="hljs-comment">// OK</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>这可能看起来有点笨，但是对类模板的场景它满足了需求。不幸的是，函数模板的情景目前还没有解决（可以说非常少见）。</p>
+<h4 id="13-3-5-ADL与显式模板实参"><a href="#13-3-5-ADL与显式模板实参" class="headerlink" title="13.3.5 ADL与显式模板实参"></a>13.3.5 ADL与显式模板实参</h4><p>考虑下面的示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">namespace</span> N &#123;<br>  <span class="hljs-keyword">class</span> <span class="hljs-title class_">X</span> &#123;<br>    ...<br>  &#125;;<br>  <br>  <span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-type">int</span> I&gt; <span class="hljs-type">void</span> <span class="hljs-title">select</span><span class="hljs-params">(X*)</span></span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">g</span><span class="hljs-params">(N::X* xp)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-built_in">select</span>&lt;<span class="hljs-number">3</span>&gt;(xp);    <span class="hljs-comment">// ERROR: no ADL!</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们期望在调用<code>select&lt;3&gt;(xp)</code>中模板<code>select()</code>可以通过ADL来找到。然而事与愿违，这是因为编译器直到确定<code>&lt;3&gt;</code>是一个模板实参列表之前，它都无法确定<code>xp</code>是一个函数调用参数。更进一步，编译器直到确定<code>select()</code>是一个模板之前它都无法确定<code>&lt;3&gt;</code>是一个模板实参列表。由于这个先有鸡还是先有蛋的问题无法被解决，表达式就会被解析成一个毫无意义的表达式：<code>(select&lt;3)&gt;(xp)</code>。</p>
+<p>这个例子可能会给你一种ADL对模板id(template-id)没有发挥作用的假象，但事实并非如此。我们可以通过在调用前引入<code>select</code>的函数模板声明来解决这个问题：</p>
+<p><code>template&lt;typename T&gt; void select();</code></p>
+<p>尽管对于调用<code>select&lt;3&gt;(xp)</code>来说这没有任何意义，但这一函数模板的存在确保了<code>select&lt;3&gt;</code>会被解析成一个模板id(template-id)。ADL就可以顺势找到函数模板<code>N::select</code>，然后成功调用。</p>
+<h4 id="13-3-6-依赖型表达式"><a href="#13-3-6-依赖型表达式" class="headerlink" title="13.3.6 依赖型表达式"></a>13.3.6 依赖型表达式</h4><p>与名称相似，表达式本身也可以依赖于模板参数。依赖于模板参数的表达式彼此之间有着较大差异——例如，选择一个不同的重载函数或是产生一个不同的类型或常量。不依赖于模板参数的表达式，其所有的实例提供相同的行为。</p>
+<p>依赖于模板参数的表达式多种多样。最常见的是类型依赖表达式(type-dependent expression)，表达式的类型本身可以因实例的变化而不同——例如，函数参数类型为模板参数的表达式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-type">void</span> <span class="hljs-title">typeDependent1</span><span class="hljs-params">(T x)</span></span><br><span class="hljs-function"></span>&#123;<br>  x;    <span class="hljs-comment">// the expression type-dependent, because the type of x can vary</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>具有类型依赖子表达式的表达式，通常来说，其本身也是类型依赖的——例如，使用实参<code>x</code>调用函数<code>f()</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-type">void</span> <span class="hljs-title">typeDependent2</span><span class="hljs-params">(T x)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-built_in">f</span>(x);        <span class="hljs-comment">// the expression is type-dependent, because x is type-dependent</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里请注意<code>f(x)</code>的类型可能因实例的变化而有所不同，因为<code>f</code>本身依赖于参数类型，而该参数类型又依赖于模板，因此，两阶段查找（在P249节14.3.1讨论）会在不同的实例中找到完全不同的函数名<code>f</code>。</p>
+<p>并非所有涉及模板参数的表达式都是类型依赖的。例如，涉及模板参数的某个表达式可以在不同的实例中产生不同的常量<code>values</code>。这种表达式被称为值依赖表达式(value-dependent expression)，最简单的一种就是指向非依赖类型的非类型模板参数。例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-type">int</span> N&gt; <span class="hljs-type">void</span> <span class="hljs-title">valueDependent1</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  N;    <span class="hljs-comment">// the expression is value-dependent but not type-dependent;</span><br>          <span class="hljs-comment">// because N has a fixed type but a varying constant type</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>正如类型依赖表达式那样，如果一个表达式是由其他值依赖表达式所组成的，那么通常来说它也是一个值依赖表达式，因此<code>N + N</code>或是<code>f(N)</code>都是值依赖表达式。</p>
+<p>有趣的是，一些操作符，诸如<code>sizeof</code>，拥有一个已知的结果类型，因此它们可以把一个类型依赖操作数转换成一个值依赖表达式（也就不是类型依赖的）。例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-type">void</span> <span class="hljs-title">valueDependent2</span><span class="hljs-params">(T x)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-built_in">sizeof</span>(x);    <span class="hljs-comment">// the expression is value-dependent but not type-dependent</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>不论输入什么，<code>sizeof</code>操作符总是产生一个类型为<code>std::size_t</code>的值，因此<code>sizeof</code>表达式永远不会是类型依赖的，即使——在本例中——它的子表达式是类型依赖的。然而，计算得到的结果常量值会因不同的实例而有所变化，因此<code>sizeof(x)</code>是一个值依赖表达式。</p>
+<p>那么如果我们对一个值依赖表达式使用<code>sizeof</code>操作符会发生什么呢？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt; <span class="hljs-type">void</span> <span class="hljs-title">maybeDependent</span><span class="hljs-params">(T <span class="hljs-type">const</span>&amp; x)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-built_in">sizeof</span>(<span class="hljs-built_in">sizeof</span>(x))<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里，正如前文所述，内层的<code>sizeof</code>表达式是值依赖的。然而，外层的<code>sizeof</code>表达式永远会计算<code>std::size_t</code>的尺寸，因此它的类型和常量值对所有的模板实例来说都是一致的，尽管最内层的表达式(<code>x</code>)是类型依赖的。涉及模板参数的任何表达式都是一个实例依赖表达式(instantiation-dependent expression)，即使它的类型和常量值对所有有效的实例来说都是不变的。然而，实例依赖表达式可能在实例化过程中变得无效。例如，使用不完整类类型去实例化<code>maybeDependent()</code>会触发一个错误，因为<code>sizeof()</code>不能应用于这种类型。</p>
+<p>类型、值和实例依赖性可以被认为是一系列表达式更为广义的分类。任何类型依赖表达式也可以被认为是值依赖的，因为因不同实例而变化的表达式类型自然而然地会有不同的常量值。类似地，类型或值因不同实例而变化的表达式在某种意义上依赖于模板参数，因此类型依赖表达式和值依赖表达式都是实例依赖的。它们的关系如图13.1所示。</p>
+<p><img src="/images/cpp-template/P13_01.png" srcset="/img/loading.gif" lazyload></p>
+<center>图13.1 类型、值、实例依赖表达式的关系</center>
+
+<p>因为上下文都是由内（类型依赖表达式）向外推进，更多模板行为会在模板解析时确定，因而无法因不同实例而变化。例如，对于调用<code>f(x)</code>：如果<code>x</code>是类型依赖的，那么<code>f</code>就是依赖型名称，它会面临两阶段查找（P249节14.3.1）；而当<code>x</code>是值依赖而并非类型依赖时，<code>f</code>就不是一个依赖型名称，它的名称在模板被解析的那一刻就已经完全被确定了。</p>
+<h4 id="13-3-7-编译错误"><a href="#13-3-7-编译错误" class="headerlink" title="13.3.7 编译错误"></a>13.3.7 编译错误</h4><p>当所有的模板实例都将产生错误时，C++编译器被允许（但没被要求）在解析模板时可以忽略该错误。让我们扩展一下前文<code>f(x)</code>这一例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>&#123; &#125;<br><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-type">int</span> x&gt; <span class="hljs-type">void</span> <span class="hljs-title">nondependentCall</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-built_in">f</span>(x);        <span class="hljs-comment">// x is value-dependent, so f() is nondependent;</span><br>              <span class="hljs-comment">// this call will never succeed</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>函数调用<code>f()</code>在每个（模板）实例中都会产生一个错误，因为<code>f</code>是一个非依赖型名称，而唯一可见的<code>f</code>却接受零个参数，而非一个。C++编译器可以在解析该模板时或者等到模板进行第一个实例化时产生一个错误：常用的编译器对该案例的表现并不一致。你可以构造相似的例子：表达式是实例依赖的，但并不是值依赖的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-type">int</span> N&gt; <span class="hljs-type">void</span> <span class="hljs-title">instantiationDependentBound</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">constexpr</span> <span class="hljs-type">int</span> x = <span class="hljs-built_in">sizeof</span>(N);<br>  <span class="hljs-keyword">constexpr</span> <span class="hljs-type">int</span> y = <span class="hljs-built_in">sizeof</span>(N) + <span class="hljs-number">1</span>;<br>  <span class="hljs-type">int</span> array[x - y];        <span class="hljs-comment">// array will have a negative size in all instantiations</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="13-4-派生和类模板"><a href="#13-4-派生和类模板" class="headerlink" title="13.4 派生和类模板"></a>13.4 派生和类模板</h3><p>类模板可以继承或被继承。对多数情况来说，模板和非模板的继承没有显著区别。然而，当从一个依赖型名称基类派生一个类模板时，二者有着微妙而又重要的区别。让我们先来看一个非依赖型基类的例子。</p>
+<h4 id="13-4-1-非依赖型基类"><a href="#13-4-1-非依赖型基类" class="headerlink" title="13.4.1 非依赖型基类"></a>13.4.1 非依赖型基类</h4><p>在类模板中，非依赖型基类是指拥有一个完整类型而无需模板实参即可确定的基类。换句话说，这种基类使用的是非依赖型名称。例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> X&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-type">int</span> basefield;<br>    <span class="hljs-keyword">using</span> T = <span class="hljs-type">int</span>;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">D1</span> : <span class="hljs-keyword">public</span> Base&lt;Base&lt;<span class="hljs-type">void</span>&gt;&gt; &#123;    <span class="hljs-comment">// not a template case really</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>&#123; basefield = <span class="hljs-number">3</span>; &#125;            <span class="hljs-comment">// usual access to inherited member</span><br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">D2</span> : <span class="hljs-keyword">public</span> Base&lt;<span class="hljs-type">double</span>&gt; &#123;        <span class="hljs-comment">// nondependent base</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>&#123; basefield = <span class="hljs-number">7</span>; &#125;            <span class="hljs-comment">// usual access to inherited member</span><br>    T strange;                            <span class="hljs-comment">// T is Base&lt;double&gt;::T, not the template parameter!</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>非依赖型模板基类的表现和普通的非模板基类没什么差别，但是有一个细微的区别（可能有些惊奇）：当非限定名称在模板继承中被找到时，非依赖型基类中会优先考虑该名称而后才轮到模板参数列表。这意味着在上面的例子中，成员<code>strange</code>始终是对应<code>Base&lt;double&gt;::T</code>（也就是<code>int</code>）类型。因此，下面的函数就是非法的C++代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">g</span><span class="hljs-params">(D2&lt;<span class="hljs-type">int</span>*&gt;&amp; d2, <span class="hljs-type">int</span>* p)</span></span><br><span class="hljs-function"></span>&#123;<br>  d2.strange = p;        <span class="hljs-comment">// ERROR: type dismatch!</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这可能有点反直觉，它需要编写者意识到继承的非依赖型模板基类名称的存在——即使这种派生是间接的或者名称是私有的情况。事实上，在参数化实体的(如上面的<code>D2</code>)作用域中，可能往往倾向于先查找模板参数，只可惜事与愿违。</p>
+<h4 id="13-4-2-依赖型基类"><a href="#13-4-2-依赖型基类" class="headerlink" title="13.4.2 依赖型基类"></a>13.4.2 依赖型基类</h4><p>在前面的例子中，基类都是完全确定的，它并不依赖于模板参数。这意味着一旦模板定义是可见的，那么C++编译器就可以在那些基类中查找非依赖型名称。有一种替代品（一种不被C++标准所允许的）会延迟这类名称的查找，直到模板被实例化。这种替代品的缺陷在于：它同时也将诸如漏写了某个符号而导致的错误信息延迟到了模板实例化的时候才产生。因此，C++标准规定模板中出现的非依赖型名称，会在出现的第一时间进行查找。有了这一概念后，我们看看下面的例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">DD</span> : <span class="hljs-keyword">public</span> Base&lt;T&gt; &#123;        <span class="hljs-comment">// dependent base</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>&#123; basefield = <span class="hljs-number">0</span>; &#125;    <span class="hljs-comment">// #1 problem</span><br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;&gt;    <span class="hljs-comment">// explicit specialization</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span>&lt;<span class="hljs-type">bool</span>&gt;&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">enum</span> &#123; basefield = <span class="hljs-number">42</span> &#125;;    <span class="hljs-comment">// #2 tricky!</span><br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">g</span><span class="hljs-params">(DD&lt;<span class="hljs-type">bool</span>&gt;&amp; d)</span></span><br><span class="hljs-function"></span>&#123;<br>  d.<span class="hljs-built_in">f</span>();                        <span class="hljs-comment">// #3 oops?</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在<code>#1</code>处我们发现了一个非依赖型名称<code>basefield</code>：它必须即刻进行查找。假设我们在模板<code>Base</code>中找到了它，并且把它与该<code>int</code>型成员进行绑定。然而，紧随其后，我们在一个<code>Base</code>的显式特化中覆盖了这一泛型定义。于是，这一特化改变了刚刚确定好的<code>basefield</code>的意义！因此，当我们在<code>#3</code>处实例化<code>DD::f</code>的定义时，就会发现我们在<code>#1</code>处过早地绑定了非依赖型名称，然而，在<code>DD&lt;bool&gt;</code>中并没有可供修改的<code>basefield</code>（<code>#2</code>处特化的枚举值），因此这里本应该抛出一个错误信息才对。</p>
+<p>为了解决这个问题，C++标准声明：非依赖型名称不会在依赖型基类中进行查找（但仍然是在出现的第一时间查找）。因此，符合C++标准的编译器会在<code>#1</code>处给出一个诊断信息。为了修正这段代码，只需要将<code>basefield</code>这个名称变为依赖型名称即可，这是因为依赖型名称只在实例化的时候才被查找，而此时此刻基类的实例就已经确定了。比如说，在<code>#3</code>处，编译器就会知道<code>DD&lt;bool&gt;</code>的基类是<code>Base&lt;bool&gt;</code>，并且这个基类是程序员自己显式特化的一个实例。本例中，我们推荐的方式就是让名称转成依赖型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">DD1</span> : <span class="hljs-keyword">public</span> Base&lt;T&gt; &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">this</span>-&gt;basefield = <span class="hljs-number">0</span>; &#125;    <span class="hljs-comment">// lookup delayed</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>还可以使用限定名称来引入依赖性：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">DD2</span> : <span class="hljs-keyword">public</span> Base&lt;T&gt; &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>&#123; Base&lt;T&gt;::basefield = <span class="hljs-number">0</span>; &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>如果使用后一个解决方法，我们要格外小心，因为如果（原来的）非限定的非依赖型名称是被用于虚函数调用的话，那么这种引入依赖性的限定将会禁止虚函数调用，从而也会改变程序的含义。因此，当遇到第2种解决方案不适用的情况，我们可以使用方案1：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">enum</span> <span class="hljs-title class_">E</span> &#123; e1 = <span class="hljs-number">6</span>, e2 = <span class="hljs-number">28</span>, e3 = <span class="hljs-number">496</span> &#125;;<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">zero</span><span class="hljs-params">(E e = e1)</span></span>;<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">one</span><span class="hljs-params">(E&amp;)</span></span>;<br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">D</span> : <span class="hljs-keyword">public</span> B&lt;T&gt; &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>&#123;<br>      <span class="hljs-keyword">typename</span> D&lt;T&gt;::E e;    <span class="hljs-comment">// this-&gt;E would not be valid syntax</span><br>      <span class="hljs-keyword">this</span>-&gt;<span class="hljs-built_in">zero</span>();            <span class="hljs-comment">// D&lt;T&gt;::zero() would inhibit virtuality </span><br>      <span class="hljs-built_in">one</span>(e);                <span class="hljs-comment">// one is dependent because its argument is dependent</span><br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>注意看我们这里是如何用<code>D&lt;T&gt;::E</code>来取代<code>B&lt;T&gt;::E</code>的。对本例来说，二者皆可。然而在多重继承场景中，我们可能无法知道哪一个基类提供了这一想要的成员（在这种情况下，使用派生类进行资格审查），也有可能多个基类同时声明了相同的名称（在这种情况下，我们不得不使用特定的基类名称来消除歧义）。</p>
+<p>还要注意，调用<code>one(e)</code>中的名称<code>one</code>是依赖于模板参数的，这仅仅是因为它的显式调用实参是依赖型名称。然而，如果我们是把这种“依赖于模板参数的类型”隐式地用作缺省实参，那么就不符合上述情况，因为编译器要到决定查找的时候，才会确认缺省实参是否是依赖型的，这同样是一个先有鸡还是先有蛋的问题。为了避免细微的差池，我们更趋向于在允许使用<code>this-&gt;</code>前缀的地方都使用<code>this-&gt;</code>前缀，这同样适用于非模板代码。</p>
+<p>如果你觉着反复的限定会影响代码美观，你可以在派生类中只引入依赖型基类中的名称一次：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// Variation 3:</span><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">DD3</span> : <span class="hljs-keyword">public</span> Base&lt;T&gt; &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">using</span> Base&lt;T&gt;::basefield;        <span class="hljs-comment">// #1 dependent name now in scope</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>&#123; basefield = <span class="hljs-number">0</span>; &#125;        <span class="hljs-comment">// #2 fine</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>在<code>#2</code>处的查找是成功的，它会找到<code>#1</code>处的声明。然而，<code>using</code>声明直到实例化时才被确定，这也达成了我们的目的。这种机制也有些约束。例如，如果是多重继承，程序员必须严格地选择包含期望的成员的那一个基类。</p>
+<p>在当前实例中查找限定名称时，C++标准规定了首先要在当前实例中查找，然后才是所有的非依赖型基类，这与非限定名称的查找类似。如果找到了某个名称，限定名称就会指代当前实例的某个成员，因而也就不是一个依赖型名称。如果找不到这样的名称，并且类还有其他的依赖型基类，那么限定名称就会指代一个未知的特化实例的某个成员。例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">NonDep</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">using</span> Type = <span class="hljs-type">int</span>;<br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Dep</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">using</span> OtherType = T;<br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">DepBase</span> : <span class="hljs-keyword">public</span> NonDep, <span class="hljs-keyword">public</span> Dep&lt;T&gt; &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>&#123;<br>      <span class="hljs-keyword">typename</span> DepBase&lt;T&gt;::Type t;    <span class="hljs-comment">// finds NonDep::Type;</span><br>                                      <span class="hljs-comment">// typename keyword is optional</span><br>      <span class="hljs-keyword">typename</span> DepBase&lt;T&gt;::OtherType* ot;    <span class="hljs-comment">// finds nothing; DepBase&lt;T&gt;::OtherType</span><br>                                      <span class="hljs-comment">// is a member of an unknown specialization</span><br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h3 id="13-5-后记"><a href="#13-5-后记" class="headerlink" title="13.5 后记"></a>13.5 后记</h3><p>首个解析模板定义的编译器是由Taligent公司在20世纪90年代中期开发的。在这之前（即使在这之后的一段时间），大多数编译器都把模板看成是一系列要在（解析过程后面的）实例化时刻才被处理的标记。因此，除了处理诸如查找模板定义结束位置等少许操作以外，都不会进行其他的解析。在撰写本书的此刻，微软的Visual C++编译器仍然以这种方式工作。Edison Design Group’s(EDG’s)编译器前端使用了一种混合技术——在内部模板被视为一串注释的token，但是会执行“通用解析”来校验语法（EDG’s的产品模仿大多数其他编译器；特别的，它相当程度地模仿了微软编译器的行为）。</p>
+<p>Bill Gibbons是Taligent公司在C++委员会的代表，他极力主张让模板可以无二义性地进行解析。然而，直到惠普公司完成第一个完整的编译器之后，Taligent公司的努力才真正产品化，也才有了一个真正编译模板的C++编译器。和其他具有竞争性优点的产品一样，这个C++编译器很快就由于高质量的诊断信息而得到业界的认可。模板的诊断信息不会总是延迟到实例化时刻的事实也要归功于这个编译器。</p>
+<p>在模板的早期开发过程中，Tom Pennello（Metaware公司的一位著名解析专家）就意识到了尖括号所带来的一些问题。Stroustrup也对这个话题进行了讨论[StroustrupDnE]，而且认为人们更喜欢阅读尖括号，而不是圆括号。然而，除了尖括号和圆括号，还存在其他的一些可能性：Pennello在1991年的C++标准大会（在达拉斯举办）上特别地提议使用大括号，例如（<code>List&#123;::X&#125;</code>）。然而，在那时，问题的扩展程度是非常有限的，因为嵌入在其他模板内部的模板（也称为成员模板）还是不合法的，因此也就不会涉及到P230节13.3.3的问题。最后，委员会拒绝了这个取代尖括号的提议。</p>
+<p>在P237节13.4.2中描述的非依赖型名称和依赖型基类的名称查找规则是在1993年C++标准中引入的。早在1994年，Bjarne Stroustrup的[StroustrupDnE]首次公开描述了这一规则。然而直到1997年惠普才把这一规则引入其C++编译器，自那以后出现了大量的派生自依赖型基类的类模板代码。事实上，当惠普工程师开始测试该实现时，他们发现大部分以特殊方式使用模板的代码都无法再通过编译了。特别地，STL的所有实现都在成百上千个地方打破了这一规则。考虑到客户的转换成本，对于那些“假定非依赖型名称可以在依赖型基类中进行查找的”代码，惠普软化了相关的诊断信息。例如，对于位于类模板作用域的非依赖型名称，如果利用标准原则不能找到该名称，C++就会在依赖型基类中进行查找。如果仍然找不到，才会给出一个错误而编译失败。然而，如果在依赖型基类中找到了该名称，那么就会给出一个警告，对该名称进行标记并且看成是依赖型名称，然后在实例化的时候试图再次查找。</p>
+<p>在查找过程中，“非依赖型基类中的名称会隐藏相同名称的模板参数（P236节13.4.1）”这一规则显然是一个疏忽，但是修改这一规则的建议还没有被C++标准委员会所认可。最好的办法就是避免使用非依赖型基类中的名称作为模板参数名称。命名转换对这一类问题都是一个好的解决方式。</p>
+<p>友元注入一度被认为是有害的，因为它会使得程序的合法性与实例出现的顺序紧密相关。Bill Gibbons（此时他还在Taligent公司开发编译器）就是解决这一问题的最大支持者，因为消除实例顺序依赖性激活了一个新的、有趣的C++开发环境（传闻Taligent正在做）。然而，Barton-Nackman trick(P497节21.2.1)需要一种友元注入的形式，正是这种特殊的技术使它以基于ADL的当前（弱化）形式保留在语言中。</p>
+<p>Andrew Koenig首次为操作符函数提出了ADL查找（这就是为什么有时候ADL也被称为Koenig查找），动机主要是考虑美观性：“用外围命名空间显式地限定操作符名称”看起来很拖沓（例如，对于a+b，我们需要这样编写：<code>N::operator+(a,b)</code>），而为每个操作符都书写using声明又会让代码看起来非常笨重。因此，才决定操作符可以在参数关联的命名空间中查找。ADL随后被扩展到普通函数名称的查找，得以容纳有限种类的友元名称注入，并为模板及其实例支持两阶段查找模型（第14章）。泛化的ADL规则也被称作扩展的Koenig查找。</p>
+<p>尖括号hack的规格说明由David Vandevoorde通过其文献N1757在C++11中引入。他还通过解决核心议题1104的方式增添了有向图hack，以解决美国对C++ 11标准草案的审核要求。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/05/31/cpp-template-ch/cpp-template-ch13/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>QiDianMaker</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月30日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"6xahBDKE9bVdQzuufG4r0SrN-gzGzoHsz","appKey":"aS53wAMJ32RwAJRsefQAsX9P","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div style="font-size: 0.85rem"> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

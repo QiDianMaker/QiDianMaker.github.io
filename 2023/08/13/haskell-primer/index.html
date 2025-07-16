@@ -1,0 +1,1341 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/about/favicon.png">
+  <link rel="icon" href="/images/about/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="QiDianMaker">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这是一本讲解 Haskell 这门函数式编程语言的入门指南，语言通俗易懂，插图生动幽默，示例短小清晰，结构安排合理。书中从 Haskell 的基础知识讲起，涵盖了所有的基本概念和语法，内容设计基本语法、递归、类型和类型类、函子、applicative 函子、monad、zipper 及所有 Haskell 重要特性和强大功能。 本书适合对函数式编程及 Haskell 语言感兴趣的开发人员阅读。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Haskell 趣学指南">
+<meta property="og:url" content="http://example.com/2023/08/13/haskell-primer/index.html">
+<meta property="og:site_name" content="奇点创客">
+<meta property="og:description" content="这是一本讲解 Haskell 这门函数式编程语言的入门指南，语言通俗易懂，插图生动幽默，示例短小清晰，结构安排合理。书中从 Haskell 的基础知识讲起，涵盖了所有的基本概念和语法，内容设计基本语法、递归、类型和类型类、函子、applicative 函子、monad、zipper 及所有 Haskell 重要特性和强大功能。 本书适合对函数式编程及 Haskell 语言感兴趣的开发人员阅读。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/haskell-primer/index.png">
+<meta property="article:published_time" content="2023-08-12T23:10:29.000Z">
+<meta property="article:modified_time" content="2025-05-31T03:57:27.514Z">
+<meta property="article:author" content="QiDianMaker">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="Haskell">
+<meta property="article:tag" content="函数式编程">
+<meta property="article:tag" content="入门">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/haskell-primer/index.png">
+  
+  
+  
+  <title>Haskell 趣学指南 - 奇点创客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"cpp"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"6xahBDKE9bVdQzuufG4r0SrN-gzGzoHsz","app_key":"aS53wAMJ32RwAJRsefQAsX9P","server_url":"https://6xahbdke.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>奇点创客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>文库</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    <span>归档</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    <span>分类</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    <span>标签</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-th-large"></i>
+                <span>精神家园</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/books/">
+                    <i class="iconfont icon-book"></i>
+                    <span>读书</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/music/">
+                    <i class="iconfont icon-music"></i>
+                    <span>音乐</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/movies/">
+                    <i class="iconfont icon-youtube-fill"></i>
+                    <span>电影</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/travel/">
+                    <i class="iconfont icon-instagram-fill"></i>
+                    <span>旅行</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/haskell-primer/banner.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Haskell 趣学指南"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        QiDianMaker
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-08-12 15:10" pubdate>
+          2023年8月12日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          78 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="技术"
+        id="heading-a95dd3e179418be1ecd2a719a22db70e" role="tab" data-toggle="collapse" href="#collapse-a95dd3e179418be1ecd2a719a22db70e"
+        aria-expanded="true"
+      >
+        技术
+        <span class="list-group-count">(14)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-a95dd3e179418be1ecd2a719a22db70e"
+           role="tabpanel" aria-labelledby="heading-a95dd3e179418be1ecd2a719a22db70e">
+        
+        
+          
+          
+  <div class="category-post-list">
+    
+    
+  </div>
+
+          
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="C++"
+        id="heading-f6f87c9fdcf8b3c3f07f93f1ee8712c9" role="tab" data-toggle="collapse" href="#collapse-f6f87c9fdcf8b3c3f07f93f1ee8712c9"
+        aria-expanded="false"
+      >
+        C++
+        <span class="list-group-count">(12)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-f6f87c9fdcf8b3c3f07f93f1ee8712c9"
+           role="tabpanel" aria-labelledby="heading-f6f87c9fdcf8b3c3f07f93f1ee8712c9">
+        
+        
+          
+          
+  <div class="category-post-list">
+    
+    
+  </div>
+
+          
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="笔记"
+        id="heading-7051dc52c184c205e39aa54b4664ae9b" role="tab" data-toggle="collapse" href="#collapse-7051dc52c184c205e39aa54b4664ae9b"
+        aria-expanded="false"
+      >
+        笔记
+        <span class="list-group-count">(6)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-7051dc52c184c205e39aa54b4664ae9b"
+           role="tabpanel" aria-labelledby="heading-7051dc52c184c205e39aa54b4664ae9b">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2023/08/25/cpp-value-categories/" title="C++ 值类别探究"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">C++ 值类别探究</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/22/cpp-concepts-introduction/" title="C++ 概念简介"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">C++ 概念简介</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/05/effective-cpp/" title="Effective C++"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Effective C++</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/08/effective-modern-cpp/" title="Effective Modern C++"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Effective Modern C++</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/07/effective-stl/" title="Effective STL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Effective STL</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/06/more-effective-cpp/" title="More Effective C++"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">More Effective C++</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="翻译"
+        id="heading-8b3607d0f4181a3cb6ffdccf7185f09b" role="tab" data-toggle="collapse" href="#collapse-8b3607d0f4181a3cb6ffdccf7185f09b"
+        aria-expanded="false"
+      >
+        翻译
+        <span class="list-group-count">(6)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-8b3607d0f4181a3cb6ffdccf7185f09b"
+           role="tabpanel" aria-labelledby="heading-8b3607d0f4181a3cb6ffdccf7185f09b">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2023/08/18/boost-library-overview/" title="Boost 库概览"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Boost 库概览</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/04/cpp-lambda-story/" title="C++ Lambda 的故事"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">C++ Lambda 的故事</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/03/cpp-initialization-story/" title="C++ 初始化的故事"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">C++ 初始化的故事</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/09/cpp-template/" title="C++ 模板"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">C++ 模板</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/14/eigen-library-guide/" title="Eigen 库官方文档"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Eigen 库官方文档</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/15/range-library-guide/" title="Range-v3 库官方文档"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Range-v3 库官方文档</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Haskell"
+        id="heading-a59b783ba97fcd85891ddb2e62fbfebb" role="tab" data-toggle="collapse" href="#collapse-a59b783ba97fcd85891ddb2e62fbfebb"
+        aria-expanded="true"
+      >
+        Haskell
+        <span class="list-group-count">(1)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-a59b783ba97fcd85891ddb2e62fbfebb"
+           role="tabpanel" aria-labelledby="heading-a59b783ba97fcd85891ddb2e62fbfebb">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2023/08/13/haskell-primer/" title="Haskell 趣学指南"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">Haskell 趣学指南</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="图像处理"
+        id="heading-7808a68ee1b34dab43011429a12de19e" role="tab" data-toggle="collapse" href="#collapse-7808a68ee1b34dab43011429a12de19e"
+        aria-expanded="false"
+      >
+        图像处理
+        <span class="list-group-count">(1)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-7808a68ee1b34dab43011429a12de19e"
+           role="tabpanel" aria-labelledby="heading-7808a68ee1b34dab43011429a12de19e">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2023/08/10/digital-image-processing/" title="数字图像处理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">数字图像处理</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Haskell 趣学指南</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这是一本讲解 Haskell 这门函数式编程语言的入门指南，语言通俗易懂，插图生动幽默，示例短小清晰，结构安排合理。书中从 Haskell 的基础知识讲起，涵盖了所有的基本概念和语法，内容设计基本语法、递归、类型和类型类、函子、applicative 函子、monad、zipper 及所有 Haskell 重要特性和强大功能。</p>
+<p>本书适合对函数式编程及 Haskell 语言感兴趣的开发人员阅读。</p>
+<span id="more"></span>
+
+<p><a target="_blank" rel="noopener" href="https://www.haskell.org/">Haskell 官网</a></p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ul>
+<li>在 Windows 上安装 Haskell 环境</li>
+</ul>
+<p>在 PowerShell 会话中运行以下命令（作为非管理员用户）：</p>
+<p>配置国内镜像源</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs PowerShell">env:BOOTSTRAP_HASKELL_YAML = <span class="hljs-string">&#x27;https://mirrors.ustc.edu.cn/ghcup/ghcup-metadata/ghcup-0.0.6.yaml&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>安装</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs PowerShell"><span class="hljs-built_in">Set-ExecutionPolicy</span> Bypass <span class="hljs-literal">-Scope</span> <span class="hljs-keyword">Process</span> <span class="hljs-literal">-Force</span>;[<span class="hljs-type">System.Net.ServicePointManager</span>]::SecurityProtocol = [<span class="hljs-type">System.Net.ServicePointManager</span>]::SecurityProtocol <span class="hljs-operator">-bor</span> <span class="hljs-number">3072</span>;<span class="hljs-built_in">Invoke-Command</span> <span class="hljs-literal">-ScriptBlock</span> ([<span class="hljs-type">ScriptBlock</span>]::Create((<span class="hljs-built_in">Invoke-WebRequest</span> https://mirrors.ustc.edu.cn/ghcup/sh/bootstrap<span class="hljs-literal">-haskell</span>.ps1 <span class="hljs-literal">-UseBasicParsing</span>))) <span class="hljs-literal">-ArgumentList</span> <span class="hljs-variable">$true</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>为 VSCode 安装 Haskell 插件：<code>Haskell</code>、<code>Haskell Syntax Highlighting</code></li>
+</ul>
+<h2 id="第-1-章-各就各位，预备！"><a href="#第-1-章-各就各位，预备！" class="headerlink" title="第 1 章 各就各位，预备！"></a>第 1 章 各就各位，预备！</h2><p>安装成功 Haskell 开发环境后，打开终端，输入 ghci，看到如下欢迎信息：</p>
+<p><code>GHCi,version 8.10.7: https://www.haskell.org/ghc/  :? for help</code></p>
+<p>说明安装成功。</p>
+<div class="note note-info">
+            <p>GHCi 的默认命令提示符为 <code>Prelude&gt;</code>，配置其为 <code>ghci&gt;</code>:</p><ol><li>临时方法，输入<code>:set prompt &quot;ghci&gt;&quot;</code>，缺点：每次都要输入一遍</li><li>永久方法，在 home 目录下创建一个 <code>.ghci</code> 文件，内容为 <code>:set prompt &quot;ghci&gt;&quot;</code></li></ol>
+          </div>
+
+<p>简单使用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">-- 简单算术运算</span><br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">2 + 15</span><br>17<br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">49 * 100</span><br>4900<br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">1892 - 1472</span><br>420<br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">5 / 2</span><br>2.5<br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">(50 * 100) - 4999</span><br>1<br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">50 * 100 - 4999</span><br>1<br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">50 * (100 - 4999)</span><br>-244950<br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">-- 逻辑运算</span><br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">True &amp;&amp; False</span><br>False<br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">True &amp;&amp; True</span><br>True<br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">False || True</span><br>True<br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">not False</span><br>True<br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">not (True &amp;&amp; True)</span><br>False<br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">-- 判等</span><br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">5 == 5</span><br>True<br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">1 == 0</span><br>False<br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">5 /= 5</span><br>False<br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">5 /= 4</span><br>True<br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash"><span class="hljs-string">&quot;hello&quot;</span> == <span class="hljs-string">&quot;hello&quot;</span></span><br>True<br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">-- 同一个表达式中不能混用不同类型</span><br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">5 + <span class="hljs-string">&quot;llama&quot;</span></span><br><br>&lt;interactive&gt;:88:1: error:<br>    ? No instance for (Num [Char]) arising from a use of ‘+’<br>    ? In the expression: 5 + &quot;llama&quot;<br>      In an equation for ‘it’: it = 5 + &quot;llama&quot;<br></code></pre></td></tr></table></figure>
+
+<h3 id="1-1-调用函数"><a href="#1-1-调用函数" class="headerlink" title="1.1 调用函数"></a>1.1 调用函数</h3><p><code>*</code>是一个函数，它可以将两个数相乘。这种函数被称为<code>中缀函数</code>。<br>其他的大部分函数，属于<code>前缀函数</code>。在 Haskell 中调用前缀函数时，先是函数名和一个空格，后跟参数列表（也由空格分隔）。</p>
+<p>举例：<code>succ</code>函数可以取得参数的后继，前提是它要有明确的后继。<br><code>ghci&gt; succ 8</code><br><code>9</code></p>
+<p>min、max 函数：<br><code>ghci&gt; min 9 10</code><br><code>ghci&gt; min 3.4 3.2</code><br><code>ghci&gt; max 100 101</code></p>
+<p>将前缀形式转成中缀形式：用反引号（`）将函数括起来，就能以中缀形式调用。<br>例如：<code>div 92 10</code> 等效于 <code>92 `div` 10</code></p>
+<h3 id="1-2-小朋友的第一个函数"><a href="#1-2-小朋友的第一个函数" class="headerlink" title="1.2 小朋友的第一个函数"></a>1.2 小朋友的第一个函数</h3><p>函数的声明与它的调用形式大体相同，都是先函数名，后跟空格分隔的参数表。不过后面多了一个等号（&#x3D;），并且后面的代码定义了函数的行为。<br><code>doubleMe x = x + x</code></p>
+<p>将它保存为<code>baby.hs</code>或者任意名字，然后转至文件所在目录，打开 CHCi，执行<code>:l baby</code>装载它。随后就可以使用它了：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">:l baby</span><br>[1 of 1] Compiling Main             ( baby.hs,interpreted )<br>Ok,one module loaded.<br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">doubleMe 9</span><br>18   <br><span class="hljs-meta prompt_">ghci&gt;</span><span class="language-bash">doubleMe 8.3</span> <br>16.6 <br></code></pre></td></tr></table></figure>
+
+<p>定义几个不同的函数：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs haskell"><span class="hljs-comment">-- 两个参数的函数</span><br><span class="hljs-title">doubleUs</span> x y = x * <span class="hljs-number">2</span> + y * <span class="hljs-number">2</span><br><br><span class="hljs-comment">-- if 后必须跟 else</span><br><span class="hljs-title">doubleSmallNumber</span> x = <span class="hljs-keyword">if</span> x &gt; <span class="hljs-number">100</span> <span class="hljs-keyword">then</span> x <span class="hljs-keyword">else</span> x * <span class="hljs-number">2</span><br><br><span class="hljs-comment">-- 通常使用单引号来区分这是某函数的严格求值（与惰性求值相对）版本，</span><br><span class="hljs-comment">-- 或者是一个稍经修改但差别不大的函数。</span><br><span class="hljs-title">doubleSmallNumber&#x27;</span> x = (<span class="hljs-keyword">if</span> x &gt; <span class="hljs-number">100</span> <span class="hljs-keyword">then</span> x <span class="hljs-keyword">else</span> x * <span class="hljs-number">2</span>) + <span class="hljs-number">1</span><br><br><span class="hljs-comment">-- 无参函数，注意：函数不能以大写字母开头</span><br><span class="hljs-comment">-- 没有参数的函数通常被称作定义或者名字，在函数定义之后我们就再也不能修改它的内容。</span><br><span class="hljs-title">connanO&#x27;Brien</span> = <span class="hljs-string">&quot;It&#x27;s a-me,Connan O&#x27;Brien!&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="1-3-列表"><a href="#1-3-列表" class="headerlink" title="1.3 列表"></a>1.3 列表</h3><p>在 Haskell 中，列表是一种单类型的数据结构，可以用来存储多个类型相同的元素。</p>
+<p>用 let 关键字定义一个列表常量：<br><code>let lostNumbers = [4,8,15,16,23,42]</code></p>
+<h4 id="拼接列表"><a href="#拼接列表" class="headerlink" title="拼接列表"></a>拼接列表</h4><p>方式一：<code>++</code>运算符，两个操作数必须都为列表<br><code>[1,2,3,4] ++ [9,10,11,12] -&gt; [1,2,3,4,9,10,11,12]</code>、</p>
+<p>方式二：<code>:</code>运算符（被称为 Cons 运算符），仅将一个元素插入到列表的头部<br><code>&#39;A&#39;:&quot; SMALL CAT&quot; -&gt; &quot;A SMALL CAT&quot;</code></p>
+<h4 id="访问列表中的元素"><a href="#访问列表中的元素" class="headerlink" title="访问列表中的元素"></a>访问列表中的元素</h4><p>使用<code>!!</code>运算符，下标从 0 开始：<br><code>&quot;Steve Buscemi&quot; !! 6 -&gt; &#39;B&#39;</code><br><code>[9.4,33.2,96.2,11.2,23.25] !! 1 -&gt; 33.2</code></p>
+<h4 id="嵌套列表"><a href="#嵌套列表" class="headerlink" title="嵌套列表"></a>嵌套列表</h4><p><code>let b = [[1,2,3,4],[5,3,3,3],[1,2,2,3,4],[1,2,3]]</code><br><code>b ++ [[1,1,1,1]]</code><br><code>[6,6,6] : b</code><br><code>b !! 2</code></p>
+<p>列表中的列表可以是不同长度的，但类型必须相同。</p>
+<h4 id="比较列表"><a href="#比较列表" class="headerlink" title="比较列表"></a>比较列表</h4><p>两个列表的大小以第一个不相等的元素的大小为准。</p>
+<p><code>[3,2,1] &gt; [2,1,0] -&gt; True</code><br><code>[3,2,1] &gt; [2,10,100] -&gt; True</code><br><code>[3,4,2] &lt; [3,4,3] -&gt; True</code><br><code>[3,4,2] &gt; [2,4] -&gt; True</code></p>
+<h4 id="更多列表操作"><a href="#更多列表操作" class="headerlink" title="更多列表操作"></a>更多列表操作</h4><ul>
+<li><code>head</code>函数返回一个列表的头部：<br><code>head [5,4,3,2,1] -&gt; 5</code>  </li>
+<li><code>tail</code>函数返回一个列表的尾部，也就是列表除去头部之后的部分：<br><code>tail [5,4,3,2,1] -&gt; [4,3,2,1]</code>  </li>
+<li><code>last</code>函数返回一个列表的最后一个元素：<br><code>last [5,4,3,2,1] -&gt; 1</code>  </li>
+<li><code>init</code>函数返回一个列表除去最后一个元素的部分：<br><code>init [5,4,3,2,1] -&gt; [5,4,3,2]</code>  </li>
+<li><code>length</code>函数7返回一个列表的长度：<br><code>length [5,4,3,2,1] -&gt; 5</code>  </li>
+<li><code>null</code>函数检查一个列表是否为空：<br><code>null [1,2,3] -&gt; False; null [] -&gt; True</code>  </li>
+<li><code>reverse</code>函数将一个列表反转：<br><code>reverse [5,4,3,2,1] -&gt; [1,2,3,4,5]</code>  </li>
+<li><code>take</code>函数取一个数字和一个列表作为参数，返回列表中指定的前几个元素：<br><code>take 3 [5,4,3,2,1] -&gt; [5,4,3]</code><br><code>take 5 [1,2] -&gt; [1,2]</code><br><code>take 0 [6,6,6] -&gt; []</code>  </li>
+<li><code>drop</code>函数删除一个列表中指定的前几个元素：<br><code>drop 3 [8,4,2,1,5,6] -&gt; [1,5,6]</code><br><code>drop 0 [1,2,3,4] -&gt; [1,2,3,4]</code><br><code>drop 100 [1,2,3,4] -&gt; []</code>  </li>
+<li><code>maximum</code>函数返回一个列表的最大元素：<br><code>maximum [1,9,2,3,4] -&gt; 9</code></li>
+<li><code>minimum</code>函数返回一个列表的最小元素：<br><code>minimum [1,9,2,3,4] -&gt; 1</code></li>
+<li><code>sum</code>函数返回一个列表中所有元素的和：<br><code>sum [5,2,1,6,3,2,5,7] -&gt; 31</code></li>
+<li><code>product</code>函数返回一个列表中所有元素的积：<br><code>product [6,2,1,2] -&gt; 24</code></li>
+<li><code>elem</code>函数可以用来判断一个元素是否包含于一个列表，通常以中缀形式调用它：<br><code>4  `elem` [3,4,5,6] -&gt; True</code><br><code>10 `elem` [3,4,5,6] -&gt; False</code></li>
+</ul>
+<h3 id="1-4-得州区间"><a href="#1-4-得州区间" class="headerlink" title="1.4 得州区间"></a>1.4 得州区间</h3><p>区间是构造列表的方法之一，而且其值必须是可枚举的，或者说，是可以排序的。例如，要得到包含 1~20 中的所有自然数的列表，只要录入<code>[1..20]</code>即可，这与录入<code>[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]</code>完全等价。</p>
+<p><code>[&#39;a&#39;..&#39;z&#39;] -&gt; &quot;abcdefghijklmnopqrstuvwxyz&quot;</code><br><code>[&#39;K&#39;..&#39;Z&#39;] -&gt; &quot;KLMNOPQRSTUVWXYZ&quot;</code></p>
+<ul>
+<li>区间很聪明，允许你告诉它一个步长。例如：<br>要得到 1 到 20 之间的偶数：<code>[2,4..20]</code><br>要得到 1 到 20 之间 3 的倍数：<code>[3,6..20]</code><br>要得到 20 到 1 之间的列表：<code>[20,19..1]</code>  </li>
+<li>无限列表的使用：  <ul>
+<li>生成前 24 个 13 的倍数：<br><code>take 24 [13,26..]</code>  </li>
+<li><code>cycle</code>函数接收一个列表作为参数并返回一个无限列表：<br><code>take 10 (cycle [1,2,3]) -&gt; [1,2,3,1,2,3,1,2,3,1]</code><br><code>take 12 (cycle &quot;LOL&quot;) -&gt; &quot;LOL LOL LOL &quot;</code></li>
+<li><code>repeat</code>函数接收一个值作为参数，并返回一个仅包含该值的无限列表：<br><code>take 10 (repeat 5) -&gt; [5,5,5,5,5,5,5,5,5,5]</code></li>
+<li>用<code>replicate</code>函数直接得到包含相同元素的列表：<br><code>replicate 3 10 -&gt; [10,10,10]</code></li>
+</ul>
+</li>
+</ul>
+<p>在区间上使用浮点数要格外小心：<br><code>[0.1, 0.3 .. 1] -&gt; [0.1,0.3,0.5,0.7,0.8999999999999999,1.0999999999999999]</code></p>
+<h3 id="1-5-我是列表推导式"><a href="#1-5-我是列表推导式" class="headerlink" title="1.5 我是列表推导式"></a>1.5 我是列表推导式</h3><p><code>列表推导式（list comprehension）</code>是一种过滤、转换或者组合列表的方法。类似于数学中的<code>集合推导式（set comprehension）</code>，通过它可以从既有的集合中按照规则产生一个新的集合。因此，前 10 个偶数的集合可以写为 {$2·x\ |\ x \in N,\ x \leq 10$}。</p>
+<p>在 Haskell 中可以利用列表推导式实现上述表达式：<code>[x*2 | x &lt;- [1..10]]</code>。上述代码通过<code>[x &lt;- [1..10]]</code>取了<code>[1..10]</code>这个列表中的每一项元素，<code>x</code>即<code>[1..10]</code>中的每一项元素的值，也就是说，<code>x</code>即<code>[1..10]</code>中的每一项元素的<strong>绑定</strong>。竖线（|）前面的部分指列表推导式的输出，表示所取的值与计算结果的映射关系。</p>
+<p>一些其他例子：<br>取 1 的 10 中，乘以 2 后大于等于 12 的元素：<br><code>[x*2 | x &lt;- [1..10], x*2 &gt;= 12]</code></p>
+<p>取 50 到 100 中所有除以 7 的余数为 3 的元素：<br><code>[x | x &lt;- [50..100], x`mod`7 == 3]</code></p>
+<p>一个列表推导式，使列表中所有大于 10 的奇数变为 “BANG”，小于 10 的奇数变为 “BOOM”，其他则统统扔掉：<br><code>boomBangs xs = [ if x &lt; 10 then &quot;BOOM!&quot; else &quot;BANG!&quot; | x &lt;- xs, odd x ]</code><br><code>boomBangs [7..13] -&gt; [&quot;BOOM!&quot;,&quot;BOOM!&quot;,&quot;BANG!&quot;,&quot;BANG!&quot;]</code></p>
+<p>谓词可以有多项，如：取 10 ~ 20 之间所有不等于 13、15 或 19 的数：<br><code>[x | x &lt;- [10..20], x /= 13, x /= 15, x /= 19]</code></p>
+<p>从多个列表中去元素也是可以的：<br><code>[x+y | x &lt;- [1,2,3], y &lt;- [10,100,1000]] -&gt; [11,101,1001,12,102,1002,13,103,1003]</code><br><code>[x*y | x &lt;- [2,5,10], y &lt;- [8,10,11]] -&gt; [16,20,22,40,50,55,80,100,110]</code><br><code>[x*y | x &lt;- [2,5,10], y &lt;- [8,10,11], x*y &gt; 50] -&gt; [55,80,100,110]</code></p>
+<p>一个包含一组名词和形容词的列表推导式，也许写诗用得到：<br><code>let nouns = [&quot;hobo&quot;,&quot;frog&quot;,&quot;pope&quot;]</code><br><code>let adjectives = [&quot;lazy&quot;,&quot;grouchy&quot;,&quot;scheming&quot;]</code><br><code>[adjective ++ &quot; &quot; ++ noun | adjective &lt;- adjectives, noun &lt;- nouns]</code></p>
+<p>用列表推导式实现自己的<code>length</code>函数：<br><code>length&#39; xs = sum [1 | _ &lt;- xs]</code></p>
+<p>字符串也是列表，完全可以使用列表推导式来处理字符串：<br>一个去除字符串中所有非大写字母的函数：<br><code>removeNonUppercase st = [c | c &lt;- st, c `elem` [&#39;A&#39;..&#39;Z&#39;]]</code></p>
+<p>对于列表的列表可以通过嵌套的列表推导式处理：<br>假设有一个包含许多数值的列表的列表，在不拆开它的前提下除去其中的所有奇数：<br><code>let xxs = [[1,2,3],[4,5,6],[7,8,9]]</code><br><code>[[x | x &lt;- xs, even x] | xs &lt;- xxs]</code></p>
+<h3 id="1-6-元组"><a href="#1-6-元组" class="headerlink" title="1.6 元组"></a>1.6 元组</h3><p><strong>元组（tuple）</strong>允许我们将多个异构的值组合为一个单一的值。元组的长度固定，将元素存入元组的同时，必须明确元素的数目。<br>元组由括号括起，其中的项由逗号隔开。<br><code>(1, 3)</code><br><code>(3, &#39;a&#39;, &quot;hello&quot;)</code><br><code>(50, 50.4, &quot;hello&quot;, &#39;b&#39;)</code></p>
+<h4 id="1-6-1-使用元组"><a href="#1-6-1-使用元组" class="headerlink" title="1.6.1 使用元组"></a>1.6.1 使用元组</h4><p>只有两个元组的元素数量的类型完全一样，才是相同的类型。<br>长度为 2 的元组称为<code>pair</code>，也作序对；长度为 3 的元组称为<code>tripe</code>，也作三元组。</p>
+<h4 id="1-6-2-使用序对"><a href="#1-6-2-使用序对" class="headerlink" title="1.6.2 使用序对"></a>1.6.2 使用序对</h4><ul>
+<li><code>fst</code>函数取一个序对作为参数，返回其首项：<code>fst (8,11) -&gt; 8</code>。</li>
+<li><code>snd</code>函数取一个序对作为参数，返回其尾项：<code>snd (8,11) -&gt; 11</code>。</li>
+</ul>
+<p><code>zip</code>函数取两个列表作为参数，然后将它们交叉配对，形成一组序对。如：  </p>
+<p>  <code>zip [1,2,3,4,5] [5,5,5,5,5] -&gt; [(1,5),(2,5),(3,5),(4,5),(5,5)]</code>  </p>
+<p>  <code>zip [1..5] [&quot;one&quot;,&quot;two&quot;,&quot;three&quot;,&quot;four&quot;,&quot;five&quot;] -&gt;</code><br>  <code>[(1,&quot;one&quot;),(2,&quot;two&quot;),(3,&quot;three&quot;),(4,&quot;four&quot;),(5,&quot;five&quot;)]</code>  </p>
+<p>如果要组合的两个列表长度不相等，会在较短的列表结束为止。<br>由于 Haskell 是惰性的，可以使用<code>zip</code>组合有限和无限的列表：<br><code>zip [1..] [&quot;apple&quot;,&quot;orange&quot;,&quot;cherry&quot;,&quot;mango&quot;]</code></p>
+<h4 id="1-6-3-找直角三角形"><a href="#1-6-3-找直角三角形" class="headerlink" title="1.6.3 找直角三角形"></a>1.6.3 找直角三角形</h4><p>使用 Haskell 来找出所有满足下列条件的直角三角形：</p>
+<ul>
+<li>三边长度皆为整数；</li>
+<li>三边长度皆小于等于 10；</li>
+<li>周长（三边之和）为 24 的直角三角形。</li>
+</ul>
+<p>假设 c 为斜边，a、b 为直角边：</p>
+<p><code>let rightTriangles&#39; = [(a,b,c) | c &lt;- [1..10], a &lt;- [1..c], b &lt;- [1..a], a^2 + b^2 == c^2, a+b+c == 24]</code><br><code>rightTriangles&#39; -&gt; [(8,6,10)]</code></p>
+<h2 id="第-2-章-相信类型"><a href="#第-2-章-相信类型" class="headerlink" title="第 2 章 相信类型"></a>第 2 章 相信类型</h2><p>在 Haskell 中，每个表达式都会在编译时得到明确的类型，从而提高代码的安全性。Haskell 中一切皆类型，因此编译器在编译时可以得到较多的信息来检查错误。Haskell 支持<strong>类型推导</strong>。</p>
+<h3 id="2-1-显式类型声明"><a href="#2-1-显式类型声明" class="headerlink" title="2.1 显式类型声明"></a>2.1 显式类型声明</h3><p>在 GHCi 中，通过 :t 命令，后跟任何合法的表达式，即可得到该表达式的类型。</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Haskell"><span class="hljs-title">ghci</span>&gt;:t <span class="hljs-string">&#x27;a&#x27;</span><br><span class="hljs-string">&#x27;a&#x27;</span> :: <span class="hljs-type">Char</span><br><span class="hljs-title">ghci</span>&gt;:t <span class="hljs-type">True</span><br><span class="hljs-type">True</span> :: <span class="hljs-type">Bool</span><br><span class="hljs-title">ghci</span>&gt;:t <span class="hljs-string">&quot;HELLO!&quot;</span><br><span class="hljs-string">&quot;HELLO!&quot;</span> :: [<span class="hljs-type">Char</span>]<br><span class="hljs-title">ghci</span>&gt;:t (<span class="hljs-type">True</span>, <span class="hljs-string">&#x27;a&#x27;</span>)<br>(<span class="hljs-type">True</span>, <span class="hljs-string">&#x27;a&#x27;</span>) :: (<span class="hljs-type">Bool</span>, <span class="hljs-type">Char</span>)<br><span class="hljs-title">ghci</span>&gt;:t <span class="hljs-number">4</span> == <span class="hljs-number">5</span><br><span class="hljs-number">4</span> == <span class="hljs-number">5</span> :: <span class="hljs-type">Bool</span><br></code></pre></td></tr></table></figure>
+
+<p>:: 读作“它的类型为”。凡是明确的类型，其首字母必须为大写。</p>
+<p>同样，函数也有类型。编写函数时，可以给它一个显式的类型声明。例如：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Haskell"><span class="hljs-title">removeNonUppercase</span> :: [<span class="hljs-type">Char</span>] -&gt; [<span class="hljs-type">Char</span>]<br><span class="hljs-title">removeNonUppercase</span> st = [c | c &lt;- st, c `elem` [<span class="hljs-string">&#x27;A&#x27;</span>..<span class="hljs-string">&#x27;Z&#x27;</span>]]<br></code></pre></td></tr></table></figure>
+
+<p>这里 removeNonUppercase 的类型为 [Char] -&gt; [Char]，意为它取一个字符串作为参数，返回另一个字符串。</p>
+<h3 id="2-2-Haskell-的常见类型"><a href="#2-2-Haskell-的常见类型" class="headerlink" title="2.2 Haskell 的常见类型"></a>2.2 Haskell 的常见类型</h3><ul>
+<li>Int：整数，有界。</li>
+<li>Integer：整数，无界。</li>
+<li>Float：单精度浮点数。</li>
+<li>Double：双精度浮点数。</li>
+<li>Bool：布尔值。</li>
+<li>Char：Unicode 字符。</li>
+<li>元组。</li>
+</ul>
+<h3 id="2-3-类型变量"><a href="#2-3-类型变量" class="headerlink" title="2.3 类型变量"></a>2.3 类型变量</h3><p>有时让一些元素处理多种类型将更加合理。比如 head 函数，它可以取一个列表作为参数，返回这个列表头部的元素。head 函数的类型是 <code>head :: [a] -&gt; a</code>。这里的 a 是一个类型变量（type variable），因此，a 可以是任何类型。</p>
+<p>通过类型变量，我们可以在类型安全（type safe）的前提下，轻而易举地编写能够处理多种类型的函数。这一点与其他语言中的泛型（generic）很相似，但在 Haskell 中要更为强大，更容易写出通用的函数。</p>
+<p>使用了类型变量的函数被称为<strong>多态函数（polymorphic function）</strong>。</p>
+<h3 id="2-4-类型类入门"><a href="#2-4-类型类入门" class="headerlink" title="2.4 类型类入门"></a>2.4 类型类入门</h3><p>类型类（typeclass）是定义行为的接口。如果一个类型是某类型类的实例（instance），那它必须实现了该类型类所描述的行为。</p>
+<p>具体来讲，类型类是一组函数的集合，如果将某类型实现为某类型类的实例，那就需要为这一类型提供这些函数的相应实现。</p>
+<p>例如：&#x3D;&#x3D; 运算符的类型签名为 <code>(==) :: (Eq a) =&gt; a -&gt; a -&gt; Bool</code>。&#x3D;&gt; 符合的左侧叫做<strong>类型约束（type constraint）</strong>。我们可以这样读这段类型声明：“相等性函数取两个相同类型的值作为参数并返回一个布尔值，而这两个参数的类型同为 Eq 类型类的实例”。</p>
+<blockquote>
+<p><strong>注意</strong> 千万不要将 Haskell 的类型类与面向对象语言中的类（Class）的概念混淆。</p>
+</blockquote>
+<ul>
+<li>Eq 类型类：用于可判断相等性的类型，要求它的实例必须实现 &#x3D;&#x3D; 和 &#x2F;&#x3D; 两个函数。</li>
+<li>Ord 类型类：用于可比较大小的类型，包含了所有标准比较函数，如 &lt;、&gt;、&lt;&#x3D;、&gt;&#x3D; 等。</li>
+<li>Show 类型类：实例为可以表示为字符串的类型，目前为止提到的除函数以外的所有类型都是 Show 的实例。show 函数可以取 Show 的实例类型作为参数，并将其转换为字符串。</li>
+<li>Read 类型类：与 Show 相反的类型类。目前为止提到的所有类型都是 Read 的实例。read 函数可以取一个字符串作为参数并转换为 Read 的某个实例的类型。</li>
+<li>Enum 类型类：其实例类型都是具有连续顺序的——它们的值都是可以枚举的。我们可以在区间中使用这些类型，每个值都有相应的后继（successer）和前驱（predecesor），分别可以通过 succ 函数和 pred 函数得到。</li>
+<li>Bounded 类型类：实例类型都有一个上界和下界，分别可以通过 maxBound 和 minBound 两个函数获取到。</li>
+<li>Num 类型类：表示数值的类型类，它的实例类型都具有数的特征。只有已经属于 Show 与 Eq 的实例类型，才可以成为 Num 类型类的实例。</li>
+<li>Floating 类型类：仅包含 Float 和 Double 两种浮点类型，用于存储浮点数。</li>
+<li>Integeral 类型类：仅包含整数，其实例类型有 Int 和 Integer。</li>
+</ul>
+<p>由于类型类定义的是一个抽象的接口，一个类型可以作为多个类型类的实例，一个类型类也可以含有多个类型作为实例。有时，一个类型必须在成为某类型类的实例之后，才能成为另一个类型类的实例。</p>
+<h2 id="第-3-章-函数的语法"><a href="#第-3-章-函数的语法" class="headerlink" title="第 3 章 函数的语法"></a>第 3 章 函数的语法</h2><h2 id="第-4-章-你好，递归"><a href="#第-4-章-你好，递归" class="headerlink" title="第 4 章 你好，递归"></a>第 4 章 你好，递归</h2><h2 id="第-5-章-高阶函数"><a href="#第-5-章-高阶函数" class="headerlink" title="第 5 章 高阶函数"></a>第 5 章 高阶函数</h2><h2 id="第-6-章-模块"><a href="#第-6-章-模块" class="headerlink" title="第 6 章 模块"></a>第 6 章 模块</h2><h2 id="第-7-章-构建我们自己的类型和类型类"><a href="#第-7-章-构建我们自己的类型和类型类" class="headerlink" title="第 7 章 构建我们自己的类型和类型类"></a>第 7 章 构建我们自己的类型和类型类</h2><h2 id="第-8-章-输入与输出"><a href="#第-8-章-输入与输出" class="headerlink" title="第 8 章 输入与输出"></a>第 8 章 输入与输出</h2><h2 id="第-9-章-更多的输入与输出操作"><a href="#第-9-章-更多的输入与输出操作" class="headerlink" title="第 9 章 更多的输入与输出操作"></a>第 9 章 更多的输入与输出操作</h2><h2 id="第-10-章-函数式地解决问题"><a href="#第-10-章-函数式地解决问题" class="headerlink" title="第 10 章 函数式地解决问题"></a>第 10 章 函数式地解决问题</h2><h2 id="第-11-章-applicative-函子"><a href="#第-11-章-applicative-函子" class="headerlink" title="第 11 章 applicative 函子"></a>第 11 章 applicative 函子</h2><h2 id="第-12-章-Monoid"><a href="#第-12-章-Monoid" class="headerlink" title="第 12 章 Monoid"></a>第 12 章 Monoid</h2><h2 id="第-13-章-更多-monad-的例子"><a href="#第-13-章-更多-monad-的例子" class="headerlink" title="第 13 章 更多 monad 的例子"></a>第 13 章 更多 monad 的例子</h2><h2 id="第-14-章-再多一些-monad"><a href="#第-14-章-再多一些-monad" class="headerlink" title="第 14 章 再多一些 monad"></a>第 14 章 再多一些 monad</h2><h2 id="第-15-章-zipper"><a href="#第-15-章-zipper" class="headerlink" title="第 15 章 zipper"></a>第 15 章 zipper</h2>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF/Haskell/" class="category-chain-item">Haskell</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%AC%94%E8%AE%B0/" class="print-no-link">#笔记</a>
+      
+        <a href="/tags/Haskell/" class="print-no-link">#Haskell</a>
+      
+        <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" class="print-no-link">#函数式编程</a>
+      
+        <a href="/tags/%E5%85%A5%E9%97%A8/" class="print-no-link">#入门</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Haskell 趣学指南</div>
+      <div>http://example.com/2023/08/13/haskell-primer/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>QiDianMaker</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年8月12日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2025年5月30日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/08/14/eigen-library-guide/" title="Eigen 库官方文档">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Eigen 库官方文档</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/08/12/modern-poems/" title="现代诗观止">
+                        <span class="hidden-mobile">现代诗观止</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"6xahBDKE9bVdQzuufG4r0SrN-gzGzoHsz","appKey":"aS53wAMJ32RwAJRsefQAsX9P","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div style="font-size: 0.85rem"> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

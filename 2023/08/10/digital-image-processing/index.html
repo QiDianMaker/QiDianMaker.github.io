@@ -1,0 +1,1249 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/about/favicon.png">
+  <link rel="icon" href="/images/about/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="QiDianMaker">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在数字图像处理领域，本书作为主要教材已有 40 多年的历史。第四版是作者在前三版的基础上修订而成的，是前三版的发展与延续。除保留前几版的大部分内容外，根据读者的反馈，作者对本书进行了全面修订，融入了近几年来数字图像处理领域的重要进展，增加了几百幅新图像、几十个新图表和上百道新习题。全书共十二章，即绪论、数字图像基础、灰度变换与空间滤波、频率域滤波、图像复原与重建、小波变换和其他图像变换、彩色图像处">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数字图像处理">
+<meta property="og:url" content="http://example.com/2023/08/10/digital-image-processing/index.html">
+<meta property="og:site_name" content="奇点创客">
+<meta property="og:description" content="在数字图像处理领域，本书作为主要教材已有 40 多年的历史。第四版是作者在前三版的基础上修订而成的，是前三版的发展与延续。除保留前几版的大部分内容外，根据读者的反馈，作者对本书进行了全面修订，融入了近几年来数字图像处理领域的重要进展，增加了几百幅新图像、几十个新图表和上百道新习题。全书共十二章，即绪论、数字图像基础、灰度变换与空间滤波、频率域滤波、图像复原与重建、小波变换和其他图像变换、彩色图像处">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/digital-image-processing/index.png">
+<meta property="article:published_time" content="2023-08-09T22:14:59.000Z">
+<meta property="article:modified_time" content="2025-05-31T03:57:27.513Z">
+<meta property="article:author" content="QiDianMaker">
+<meta property="article:tag" content="数字图像处理">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/digital-image-processing/index.png">
+  
+  
+  
+  <title>数字图像处理 - 奇点创客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"cpp"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"6xahBDKE9bVdQzuufG4r0SrN-gzGzoHsz","app_key":"aS53wAMJ32RwAJRsefQAsX9P","server_url":"https://6xahbdke.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>奇点创客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>文库</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    <i class="iconfont icon-archive-fill"></i>
+                    <span>归档</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    <span>分类</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    <span>标签</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-th-large"></i>
+                <span>精神家园</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/books/">
+                    <i class="iconfont icon-book"></i>
+                    <span>读书</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/music/">
+                    <i class="iconfont icon-music"></i>
+                    <span>音乐</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/movies/">
+                    <i class="iconfont icon-youtube-fill"></i>
+                    <span>电影</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/travel/">
+                    <i class="iconfont icon-instagram-fill"></i>
+                    <span>旅行</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/digital-image-processing/banner.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数字图像处理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        QiDianMaker
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-08-09 14:14" pubdate>
+          2023年8月9日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          26 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="技术"
+        id="heading-a95dd3e179418be1ecd2a719a22db70e" role="tab" data-toggle="collapse" href="#collapse-a95dd3e179418be1ecd2a719a22db70e"
+        aria-expanded="true"
+      >
+        技术
+        <span class="list-group-count">(14)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-a95dd3e179418be1ecd2a719a22db70e"
+           role="tabpanel" aria-labelledby="heading-a95dd3e179418be1ecd2a719a22db70e">
+        
+        
+          
+          
+  <div class="category-post-list">
+    
+    
+  </div>
+
+          
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="C++"
+        id="heading-f6f87c9fdcf8b3c3f07f93f1ee8712c9" role="tab" data-toggle="collapse" href="#collapse-f6f87c9fdcf8b3c3f07f93f1ee8712c9"
+        aria-expanded="false"
+      >
+        C++
+        <span class="list-group-count">(12)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-f6f87c9fdcf8b3c3f07f93f1ee8712c9"
+           role="tabpanel" aria-labelledby="heading-f6f87c9fdcf8b3c3f07f93f1ee8712c9">
+        
+        
+          
+          
+  <div class="category-post-list">
+    
+    
+  </div>
+
+          
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="笔记"
+        id="heading-7051dc52c184c205e39aa54b4664ae9b" role="tab" data-toggle="collapse" href="#collapse-7051dc52c184c205e39aa54b4664ae9b"
+        aria-expanded="false"
+      >
+        笔记
+        <span class="list-group-count">(6)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-7051dc52c184c205e39aa54b4664ae9b"
+           role="tabpanel" aria-labelledby="heading-7051dc52c184c205e39aa54b4664ae9b">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2023/08/25/cpp-value-categories/" title="C++ 值类别探究"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">C++ 值类别探究</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/22/cpp-concepts-introduction/" title="C++ 概念简介"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">C++ 概念简介</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/05/effective-cpp/" title="Effective C++"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Effective C++</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/08/effective-modern-cpp/" title="Effective Modern C++"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Effective Modern C++</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/07/effective-stl/" title="Effective STL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Effective STL</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/06/more-effective-cpp/" title="More Effective C++"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">More Effective C++</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="翻译"
+        id="heading-8b3607d0f4181a3cb6ffdccf7185f09b" role="tab" data-toggle="collapse" href="#collapse-8b3607d0f4181a3cb6ffdccf7185f09b"
+        aria-expanded="false"
+      >
+        翻译
+        <span class="list-group-count">(6)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-8b3607d0f4181a3cb6ffdccf7185f09b"
+           role="tabpanel" aria-labelledby="heading-8b3607d0f4181a3cb6ffdccf7185f09b">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2023/08/18/boost-library-overview/" title="Boost 库概览"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Boost 库概览</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/04/cpp-lambda-story/" title="C++ Lambda 的故事"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">C++ Lambda 的故事</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/03/cpp-initialization-story/" title="C++ 初始化的故事"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">C++ 初始化的故事</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/09/cpp-template/" title="C++ 模板"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">C++ 模板</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/14/eigen-library-guide/" title="Eigen 库官方文档"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Eigen 库官方文档</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/15/range-library-guide/" title="Range-v3 库官方文档"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Range-v3 库官方文档</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Haskell"
+        id="heading-a59b783ba97fcd85891ddb2e62fbfebb" role="tab" data-toggle="collapse" href="#collapse-a59b783ba97fcd85891ddb2e62fbfebb"
+        aria-expanded="false"
+      >
+        Haskell
+        <span class="list-group-count">(1)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-a59b783ba97fcd85891ddb2e62fbfebb"
+           role="tabpanel" aria-labelledby="heading-a59b783ba97fcd85891ddb2e62fbfebb">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2023/08/13/haskell-primer/" title="Haskell 趣学指南"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Haskell 趣学指南</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="图像处理"
+        id="heading-7808a68ee1b34dab43011429a12de19e" role="tab" data-toggle="collapse" href="#collapse-7808a68ee1b34dab43011429a12de19e"
+        aria-expanded="true"
+      >
+        图像处理
+        <span class="list-group-count">(1)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-7808a68ee1b34dab43011429a12de19e"
+           role="tabpanel" aria-labelledby="heading-7808a68ee1b34dab43011429a12de19e">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2023/08/10/digital-image-processing/" title="数字图像处理"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">数字图像处理</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数字图像处理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在数字图像处理领域，本书作为主要教材已有 40 多年的历史。第四版是作者在前三版的基础上修订而成的，是前三版的发展与延续。除保留前几版的大部分内容外，根据读者的反馈，作者对本书进行了全面修订，融入了近几年来数字图像处理领域的重要进展，增加了几百幅新图像、几十个新图表和上百道新习题。全书共十二章，即绪论、数字图像基础、灰度变换与空间滤波、频率域滤波、图像复原与重建、小波变换和其他图像变换、彩色图像处理、图像压缩和水印、形态学图像处理、图像分割、特征提取、图像模式等。</p>
+<p>本书的读者对象主要是从事信号与信息处理、通信工程、电子科学与技术、信息工程、自动化、计算机科学与技术、地球物理、生物工程、生物医学工程、物理、化学、医学、遥感等领域的大学教师和科技工作者、研究生、大学本科高年级学生及工程技术人员。</p>
+<h2 id="第-1-章-绪论"><a href="#第-1-章-绪论" class="headerlink" title="第 1 章 绪论"></a>第 1 章 绪论</h2><h3 id="1-1-什么是数字图像处理"><a href="#1-1-什么是数字图像处理" class="headerlink" title="1.1 什么是数字图像处理"></a>1.1 什么是数字图像处理</h3><p>一幅图像可以定义为一个二维函数 $f(x, y)$，其中 $x$ 和 $y$ 是空间（平面）坐标，任一一对空间坐标 $(x, y)$ 处的幅值 $f$ 称为图像在该点的<code>强度</code>或<code>灰度</code>。当 $x$，$y$ 和灰度值 $f$ 都是有限的离散量时，我们称该图像为<code>数字图像</code>。<code>数字图像处理</code>是指借助于数字计算机来处理数字图像。注意，数字图像由有限数量的元素组成，每个元素都有一个特定的位置和数值。这些元素称为<code>图画元素</code>、<code>图像元素</code>或<code>像素</code>。</p>
+<p>考虑三种类型的计算机图像处理：</p>
+<ul>
+<li>低级处理：初级图像操作，涉及降噪、对比度增强和图像锐化等。</li>
+<li>中级处理：涉及诸多任务，如图像分割、提取特征（如边缘、轮廓和各个目标的识别）。</li>
+<li>高级处理：涉及“理解”目标，以及执行与人类视觉相关的认识功能。</li>
+</ul>
+<p>本书将<code>数字图像处理</code>界定为输入和输出都是图像的处理，它包含从图像种提取特征的处理，甚至包含各个目标的识别。举例：如文本自动分析。</p>
+<h3 id="1-2-数字图像处理的起源"><a href="#1-2-数字图像处理的起源" class="headerlink" title="1.2 数字图像处理的起源"></a>1.2 数字图像处理的起源</h3><p>数字图像处理的历史与数字计算机的发展密切相关。事实上，数字图像处理要求巨大的储存和计算能力，数字图像处理领域的发展一直依赖于数字计算机及数据存储、显示和传输等支撑技术的发展。</p>
+<h3 id="1-3-数字图像处理技术应用领域实例"><a href="#1-3-数字图像处理技术应用领域实例" class="headerlink" title="1.3 数字图像处理技术应用领域实例"></a>1.3 数字图像处理技术应用领域实例</h3><p>基于电磁波谱辐射的成像：</p>
+<ul>
+<li>伽马射线成像：核医学和天文观测。</li>
+<li>X 射线成像：医学诊断，工业成像，天文学。</li>
+<li>紫外波段成像：平板印刷术、工业检测、显微方法、激光、生物成像、天文观测。</li>
+<li>可见光和红外波段成像：光显微方法、天文学、遥感、工业和执法。</li>
+<li>微波波段成像：雷达，不受天气、光照条件影响。</li>
+<li>无线电波段成像：医学和天文学。</li>
+<li>其他方式成像：声波成像（B超）、电子显微方法、合成成像（分形）。</li>
+</ul>
+<h3 id="1-4-数字图像处理的基本步骤"><a href="#1-4-数字图像处理的基本步骤" class="headerlink" title="1.4 数字图像处理的基本步骤"></a>1.4 数字图像处理的基本步骤</h3><p><img src="/images/digital-image-processing/P1_23.png" srcset="/img/loading.gif" lazyload alt=" "></p>
+<h3 id="1-5-图像处理系统的组成"><a href="#1-5-图像处理系统的组成" class="headerlink" title="1.5 图像处理系统的组成"></a>1.5 图像处理系统的组成</h3><p><img src="/images/digital-image-processing/P1_24.png" srcset="/img/loading.gif" lazyload alt=" "></p>
+<h2 id="第-2-章-数字图像基础"><a href="#第-2-章-数字图像基础" class="headerlink" title="第 2 章 数字图像基础"></a>第 2 章 数字图像基础</h2><h3 id="2-1-视觉感知要素"><a href="#2-1-视觉感知要素" class="headerlink" title="2.1 视觉感知要素"></a>2.1 视觉感知要素</h3><h4 id="2-1-1-人眼的结构"><a href="#2-1-1-人眼的结构" class="headerlink" title="2.1.1 人眼的结构"></a>2.1.1 人眼的结构</h4><p><img src="/images/digital-image-processing/P2_1.png" srcset="/img/loading.gif" lazyload alt=" "></p>
+<p><strong>角膜</strong>是坚硬并且透明的组织，覆盖在人眼的前表面。<br><strong>巩膜</strong>是包围眼球其余部分的不透明膜。<br><strong>脉络膜</strong>中含有血管网，它是眼睛的主要营养来源。<br><strong>虹膜</strong>的收缩和扩张控制进入人眼的光量。<br><strong>晶状体</strong>吸收约 8% 的可见光谱，对短波长的光有较高的吸收率。<br><strong>视网膜</strong>布满整个后部的内壁。眼睛聚焦时，来自物体的光在视网膜上成像。其上分布有对颜色高度敏感的锥状体和对低光照敏感的杆状体。</p>
+<p><img src="/images/digital-image-processing/P2_2.png" srcset="/img/loading.gif" lazyload alt=" "></p>
+<h4 id="2-1-2-人眼中图像的成像"><a href="#2-1-2-人眼中图像的成像" class="headerlink" title="2.1.2 人眼中图像的成像"></a>2.1.2 人眼中图像的成像</h4><p>在普通照相机中，镜头的焦距是固定的。不同距离的聚焦是通过改变镜头和成像平面之间的距离来实现的，胶片（或数码相机的成像芯片）放在成像平面上。在人眼中，情况与此相反；晶状体和成像区域（视网膜）之间的距离是固定的，正确聚焦的焦距是通过改变晶状体的形状得到的。在远离或接近目标时，睫状体中的纤维通过分别压扁或加厚晶状体来实现聚焦。</p>
+<p><img src="/images/digital-image-processing/P2_3.png" srcset="/img/loading.gif" lazyload alt=" "></p>
+<h4 id="2-1-3-亮度适应与辨别"><a href="#2-1-3-亮度适应与辨别" class="headerlink" title="2.1.3 亮度适应与辨别"></a>2.1.3 亮度适应与辨别</h4><p>人类视觉系统能够适应的光强邓建的范围很宽——从暗阈值到强光约有 $10^{10}$ 级别。实验数据表明，主观亮度（即人类视觉系统感知的亮度）是进入人眼的光强的对数函数。</p>
+<p>现象一：视觉系统往往会在不同灰度区域的边界处出现“下冲”或“上冲”现象，典型如<code>马赫带效应</code>。</p>
+<p><img src="/images/digital-image-processing/P2_7.png" srcset="/img/loading.gif" lazyload alt=" "></p>
+<p>现象二：<code>同时对比</code>，即一个区域的感知亮度不只取决于其灰度，还与其周边环境的灰度相关。</p>
+<p><img src="/images/digital-image-processing/P2_8.png" srcset="/img/loading.gif" lazyload alt=" "></p>
+<p>现象三：<code>光学错视</code>，即人眼中充斥这不存在的信息或错误地感知了物体的几何特点。</p>
+<p><img src="/images/digital-image-processing/P2_9.png" srcset="/img/loading.gif" lazyload alt=" "></p>
+<h3 id="2-2-光和电磁波"><a href="#2-2-光和电磁波" class="headerlink" title="2.2 光和电磁波"></a>2.2 光和电磁波</h3><p>电磁波谱可用波长、频率或能量来表示。波长（$\lambda$）和频率（$v$）的关系为：$\lambda &#x3D; c &#x2F; v$；式中 $c$ 是光速。</p>
+<p>电磁波谱个分量的能量为 $E &#x3D; hv$；式中 $h$ 是普朗克常数。常用能量单位是电子伏特。</p>
+<p>电磁波可视为以波长 $\lambda$ 传播的正弦波，或视为没有质量的粒子流，每个粒子像波浪一样行进并以光速运动。每个无质量的粒子都是具有一定（一束）能量的粒子，称为<code>光子</code>。</p>
+<p>光是一种电磁辐射，它可以被人眼感知。电磁波谱可见光波段范围是 0.43 um（紫色）~ 0.79 um（红色）。</p>
+<p>感知的物体颜色由物体反射的光的性质决定。相对平衡地以所有可见光波长反射光的物体，在观察者看来呈现白色。</p>
+<p>没有颜色的光称为<code>单色光</code>或<code>无色光</code>。单色光的唯一属性是亮度。单色光从黑到白的数值范围通常称为<code>灰度级</code>，而单色图像常称为<code>灰度图像</code>。</p>
+<p>对于彩色光，除了频率外，我们还用三个其他量来描述彩色光源：辐射、光通量和亮度。<code>辐射</code>是从光源流出的总能量，通常用瓦特（W）来度量。<code>光通量</code>是观察者从光源感知的能量，但通常用流明（lm）来度量。<code>亮度</code>是光感知的主观描绘子，它实际上不能度量，体现的是强度的无色概念，是描述色彩感觉的关键因素之一。</p>
+<p>原理上，如果能够开发传感器来检测由一个电磁波谱波段发射的能量，那么 就能在该波段上对感兴趣的事件成像。</p>
+<h3 id="2-3-图像感知与获取"><a href="#2-3-图像感知与获取" class="headerlink" title="2.3 图像感知与获取"></a>2.3 图像感知与获取</h3><p><img src="/images/digital-image-processing/P2_12.png" srcset="/img/loading.gif" lazyload alt=" "></p>
+<p>我们感兴趣的大多数图像，都是由“照射”源和形成图像的“场景”元素对光能的反射和吸收产生的。对“照射”和“场景”加引号的目的，是强调它们要比我们熟悉的可见光源照射三维场景的情况更为普遍。例如，照射可能来自电磁能量源，如雷达、红外线或 X 射线系统。也可能来自非传统光源（如超声波），甚至来自计算机产生的照射模式。</p>
+<h4 id="2-3-1-使用单个传感器获取图像"><a href="#2-3-1-使用单个传感器获取图像" class="headerlink" title="2.3.1 使用单个传感器获取图像"></a>2.3.1 使用单个传感器获取图像</h4><p><img src="/images/digital-image-processing/P2_13.png" srcset="/img/loading.gif" lazyload alt=" "></p>
+<h4 id="2-3-2-使用条带传感器获取图像"><a href="#2-3-2-使用条带传感器获取图像" class="headerlink" title="2.3.2 使用条带传感器获取图像"></a>2.3.2 使用条带传感器获取图像</h4><p><img src="/images/digital-image-processing/P2_14.png" srcset="/img/loading.gif" lazyload alt=" "></p>
+<ul>
+<li>安装有成像条带传感器的飞行器以恒定高度和速度飞过待成像区域，对地面进行成像。</li>
+<li>医学和工业成像使用环形条带传感器获取三维物体的剖面（“切片”）图像。</li>
+</ul>
+<h4 id="2-3-3-使用阵列传感器获取图像"><a href="#2-3-3-使用阵列传感器获取图像" class="headerlink" title="2.3.3 使用阵列传感器获取图像"></a>2.3.3 使用阵列传感器获取图像</h4><p><img src="/images/digital-image-processing/P2_15.png" srcset="/img/loading.gif" lazyload alt=" "></p>
+<p>优点是将能量聚焦到阵列表面就可得到一幅完整的图像，不需要传感器排列的运动。典型如数字摄像机的典型传感器 CCD（电荷耦合器件）阵列。</p>
+<h4 id="2-3-4-一个简单的成像模型"><a href="#2-3-4-一个简单的成像模型" class="headerlink" title="2.3.4 一个简单的成像模型"></a>2.3.4 一个简单的成像模型</h4><p>我们用形如 $f(x,y)$ 的二维函数来表示图像。在空间坐标 $(x,y)$ 处 $f$ 的值是一个标量，其物理异议由图像源决定，其值与物理源（如电磁波）辐射的能量成正比。因此 $f(x,y)$ 一定是非负的和有限的，即 $0 \leq f(x,y) &lt; \infty$ 。</p>
+<p>函数 $f(x,y)$ 由两个分量表征：（1）入射到被观察场景的光源照射量；（2）被场景中物体反射的照射量。它们分别称为<code>入射分量</code>和<code>反射分量</code>，并分别用 $i(x,y)$ 和 $r(x,y)$ 表示。这两个函数的乘积形成 $f(x,y)$，即 $f(x,y)&#x3D;i(x,y)r(x,y)$，式中，$0 \leq i(x,y) &lt; \infty$ 且 $0 \leq r(x,y) \leq 1$。</p>
+<p>于是，反射分量限制在 0（全吸收）和 1（全反射）之间。$i(x,y)$ 的性质取决于照射源，而 $r(x,y)$ 的性质取决于被成像物体的特性。这些表达式也适用于投射成像的情况，如胸透 X 射线。这时，要用透射系数代替反射函数。</p>
+<h3 id="2-4-图像取样和量化"><a href="#2-4-图像取样和量化" class="headerlink" title="2.4 图像取样和量化"></a>2.4 图像取样和量化</h3>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" class="category-chain-item">图像处理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" class="print-no-link">#数字图像处理</a>
+      
+        <a href="/tags/%E7%AE%97%E6%B3%95/" class="print-no-link">#算法</a>
+      
+        <a href="/tags/%E7%AC%94%E8%AE%B0/" class="print-no-link">#笔记</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数字图像处理</div>
+      <div>http://example.com/2023/08/10/digital-image-processing/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>QiDianMaker</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年8月9日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2025年5月30日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/08/11/chicago-university-graduation-speech/" title="思维与亲密">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">思维与亲密</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/08/09/cpp-template/" title="C++ 模板">
+                        <span class="hidden-mobile">C++ 模板</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"6xahBDKE9bVdQzuufG4r0SrN-gzGzoHsz","appKey":"aS53wAMJ32RwAJRsefQAsX9P","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div style="font-size: 0.85rem"> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
