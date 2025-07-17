@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/effective-cpp/index.png">
 <meta property="article:published_time" content="2023-08-04T19:32:12.000Z">
-<meta property="article:modified_time" content="2025-07-16T03:24:00.245Z">
+<meta property="article:modified_time" content="2025-07-17T10:35:37.239Z">
 <meta property="article:author" content="QiDianMaker">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="经验">
@@ -330,7 +330,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          7.7k 字
+          9.4k 字
         
       </span>
     
@@ -341,7 +341,7 @@
         
         
         
-          65 分钟
+          78 分钟
         
       </span>
     
@@ -723,12 +723,37 @@
             <ul><li>C++ 高效编程守则视状况而变化，取决于你使用 C++ 的哪一部分。</li></ul>
           </div>
 
-<h3 id="条款-02：尽量以-const，enum，inline-替换-define"><a href="#条款-02：尽量以-const，enum，inline-替换-define" class="headerlink" title="条款 02：尽量以 const，enum，inline 替换 #define"></a>条款 02：尽量以 const，enum，inline 替换 #define</h3><div class="note note-success">
-            <ul><li>对于单纯常量，最好使用 const 对象或 enums 替换 #defines。</li><li>对于形似函数的宏（macros），最好改用 inline 函数替换 #defines。</li></ul>
+<h3 id="条款-02：尽量以-const，enum，inline-替换-define"><a href="#条款-02：尽量以-const，enum，inline-替换-define" class="headerlink" title="条款 02：尽量以 const，enum，inline 替换 #define"></a>条款 02：尽量以 const，enum，inline 替换 #define</h3><p>宏定义只会被预处理器看到，而不会被编译器看到；但是常量却可以。<br>可以定义一个类的专属常量，却无法利用 <code>#define</code> 来实现相同的功能，因为宏定义并不重视作用域。<br>无法取地址的常量可以用类内枚举取代。</p>
+<p>宏函数变量必须加小括号，而且其行为并不完全与函数相同。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 以 a 和 b 中较大值调用 f</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> CALL_WITH_MAX(a, b) f((a) &gt; (b) ? (a) : (b))</span><br><br><span class="hljs-type">int</span> a = <span class="hljs-number">5</span>, b = <span class="hljs-number">0</span>;<br><span class="hljs-built_in">CALL_WITH_MAX</span>(++a, b);    <span class="hljs-comment">// a 被累加两次</span><br><span class="hljs-built_in">CALL_WITH_MAX</span>(++a, b+<span class="hljs-number">10</span>); <span class="hljs-comment">// a 被累加一次</span><br></code></pre></td></tr></table></figure>
+
+<p>在这里，调用 <code>f</code> 之前，<code>a</code> 的递增次数竟然取决于“它被拿来和谁比较”！</p>
+<p>使用内联模板函数替换宏：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">callWithMax</span><span class="hljs-params">(<span class="hljs-type">const</span> T&amp; a, <span class="hljs-type">const</span> T&amp; b)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">f</span>(a &gt; b ? a : b);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<div class="note note-success">
+            <ul><li>对于单纯常量，最好使用 <code>const</code> 对象或 <code>enums</code> 替换 <code>#defines</code>。</li><li>对于形似函数的宏（macros），最好改用 <code>inline</code> 函数替换 <code>#defines</code>。</li></ul>
           </div>
 
-<h3 id="条款-03：尽可能使用-const"><a href="#条款-03：尽可能使用-const" class="headerlink" title="条款 03：尽可能使用 const"></a>条款 03：尽可能使用 const</h3><div class="note note-success">
-            <ul><li>将某些东西声明为 <code>const</code> 可帮助编译器侦测出错误用法。<code>const</code> 可被施加于任何作用域内的对象、函数参数、函数返回类型、成员函数本体。</li><li>编译器强制实施“物理上的常量性”（bitwise constness），但你编写程序时应使用“概念上的常量性”（conceptual constness）。</li><li>当 const 和 non-const 成员函数有着实质等价的实现时，令 non-const 版本调用 const 版本可避免代码重复。</li></ul>
+<h3 id="条款-03：尽可能使用-const"><a href="#条款-03：尽可能使用-const" class="headerlink" title="条款 03：尽可能使用 const"></a>条款 03：尽可能使用 const</h3><p><code>const</code> 修饰指针需要区分顶层 const 与底层 const。<br>STL 迭代器 <code>std::vector&lt;T&gt;::const_iterator</code> 模拟的是 <code>const T*</code> 指针语义。<br>对函数的返回值添加 <code>const</code> 有助于防止用户将返回值按左值使用。</p>
+<h4 id="const-成员函数"><a href="#const-成员函数" class="headerlink" title="const 成员函数"></a>const 成员函数</h4><p>将 <code>const</code> 实施于成员函数有两大好处：</p>
+<ol>
+<li>它们使类接口比较容易被理解。这是因为，得知哪个函数可以改动对象内容而哪个函数不行，很是重要。</li>
+<li>它们使“操作 <code>const</code> 对象”成为可能。这对编写高效代码是个关键，因为如<a href="#%E6%9D%A1%E6%AC%BE-20%E5%AE%81%E4%BB%A5%E4%BC%A0%E5%B8%B8%E9%87%8F%E5%BC%95%E7%94%A8%E6%9B%BF%E6%8D%A2%E4%BC%A0%E5%80%BC">条款 20</a> 所言，改善 C++ 程序效率的一个根本办法是以常引用的方式传递对象，而此技术可行的前提是，我们有 <code>const</code> 成员函数可用来处理取得（并经修饰而成）的 <code>const</code> 对象。</li>
+</ol>
+<p>两个成员函数，如果只是常量性不同，可以被重载。</p>
+<p>对于成员函数的常量性判定，需要区分<strong>物理常量性</strong>和<strong>逻辑常量性</strong>：</p>
+<ul>
+<li>物理常量性是指，成员函数只有在不更改对象之任何成员变量（<code>static</code> 除外）时才可以说是 <code>const</code>。也就是说它不更改对象内的任何一个比特。<br>  不幸的是许多成员函数虽然不十足具备 <code>const</code> 性质却能通过物理常量性测试。更具体地说，一个更改了”指针所指物”的成员函数虽然不能算是 <code>const</code>，但如果只有指针（而非其所指物）隶属于对象，那么称此函数为物理常量性不会引发编译器异议。这导致反直观结果。</li>
+<li>逻辑常量性是指，一个 <code>const</code> 成员函数可以修改它所处理的对象内的某些比特，但只有在客户端侦测不出的情况下才得如此。对于与物理常量性冲突的字段，需要用 <code>mutable</code> 关键字修饰。<code>mutable</code> 可以释放掉非静态成员函数的按比特常量约束。</li>
+</ul>
+<h4 id="在-const-和非-const-成员函数中避免重复"><a href="#在-const-和非-const-成员函数中避免重复" class="headerlink" title="在 const 和非 const 成员函数中避免重复"></a>在 const 和非 const 成员函数中避免重复</h4><p>对于在 <code>const</code> 和非 <code>const</code> 成员函数中有都会出现的重复逻辑，推荐使用非 <code>const</code> 版本调用 <code>const</code> 版本。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TextBlock</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    ...<br>    <span class="hljs-type">const</span> <span class="hljs-type">char</span>&amp; <span class="hljs-keyword">operator</span>[](std::<span class="hljs-type">size_t</span> position) <span class="hljs-type">const</span><br>    &#123;<br>        ...  <span class="hljs-comment">// 边界检查</span><br>        ...  <span class="hljs-comment">// 标志数据访问</span><br>        ...  <span class="hljs-comment">// 校验数据完整性</span><br>        <span class="hljs-keyword">return</span> text[position];<br>    &#125;<br><br>    <span class="hljs-type">char</span>&amp; <span class="hljs-keyword">operator</span>[](std::<span class="hljs-type">size_t</span> position)<br>    &#123;<br>        <span class="hljs-keyword">return</span><br>            <span class="hljs-built_in">const_cast</span>&lt;<span class="hljs-type">char</span>&amp;&gt;(                        <span class="hljs-comment">// 将 op[] 返回值的 const 移除</span><br>                <span class="hljs-built_in">static_cast</span>&lt;<span class="hljs-type">const</span> TextBlock&amp;&gt;(*<span class="hljs-keyword">this</span>)  <span class="hljs-comment">// 为 *this 加上 const</span><br>                    [position]                        <span class="hljs-comment">// 调用 const op[]</span><br>            );<br>    &#125;<br><br><span class="hljs-keyword">private</span>:<br>    std::string text;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>反向做法——令 <code>const</code> 版本调用非 <code>const</code> 版本是不应该做的。因为 <code>const</code> 成员函数承诺绝不改变其对象的逻辑状态, 非 <code>const</code> 成员函数却没有这般承诺。如果在 <code>const</code> 函数内调用非 <code>const</code> 函数，就是冒了这样的风险：你曾经承诺不改动的那个对象被改动了。</p>
+<div class="note note-success">
+            <ul><li>将某些东西声明为 <code>const</code> 可帮助编译器侦测出错误用法。<code>const</code> 可被施加于任何作用域内的对象、函数参数、函数返回类型、成员函数本体。</li><li>编译器强制实施“物理上的常量性”（bitwise constness），但你编写程序时应使用“概念上的常量性”（conceptual constness）。</li><li>当 const 和非 const 成员函数有着实质等价的实现时，令非 const 版本调用 const 版本可避免代码重复。</li></ul>
           </div>
 
 <h3 id="条款-04：确定对象被使用前已先被初始化"><a href="#条款-04：确定对象被使用前已先被初始化" class="headerlink" title="条款 04：确定对象被使用前已先被初始化"></a>条款 04：确定对象被使用前已先被初始化</h3><div class="note note-success">
@@ -1020,7 +1045,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>更新于</div>
-          <div>2025年7月15日</div>
+          <div>2025年7月17日</div>
         </div>
       
       
