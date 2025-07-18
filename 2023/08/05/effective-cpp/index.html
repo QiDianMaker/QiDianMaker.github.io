@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/effective-cpp/index.png">
 <meta property="article:published_time" content="2023-08-04T19:32:12.000Z">
-<meta property="article:modified_time" content="2025-07-17T12:51:36.634Z">
+<meta property="article:modified_time" content="2025-07-18T03:46:55.930Z">
 <meta property="article:author" content="QiDianMaker">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="经验">
@@ -330,7 +330,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          9.6k 字
+          10k 字
         
       </span>
     
@@ -341,7 +341,7 @@
         
         
         
-          80 分钟
+          86 分钟
         
       </span>
     
@@ -737,9 +737,12 @@
           </div>
 
 <h3 id="条款-03：尽可能使用-const"><a href="#条款-03：尽可能使用-const" class="headerlink" title="条款 03：尽可能使用 const"></a>条款 03：尽可能使用 const</h3><p><code>const</code> 修饰指针需要区分顶层 <code>const</code> 与底层 <code>const</code>。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">char</span> greeting[] = <span class="hljs-string">&quot;Hello&quot;</span>;      <span class="hljs-comment">// 底层 const，顶层 const</span><br>      <span class="hljs-type">char</span>*       p = greeting; <span class="hljs-comment">// 数据不是常量，指针不是常量</span><br><span class="hljs-type">const</span> <span class="hljs-type">char</span>*       p = greeting; <span class="hljs-comment">// 数据是常量，指针不是常量</span><br>      <span class="hljs-type">char</span>* <span class="hljs-type">const</span> p = greeting; <span class="hljs-comment">// 数据不是常量，指针是常量</span><br><span class="hljs-type">const</span> <span class="hljs-type">char</span>* <span class="hljs-type">const</span> p = greeting; <span class="hljs-comment">// 数据是常量，指针是常量</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">char</span> greeting[] = <span class="hljs-string">&quot;Hello&quot;</span>;       <span class="hljs-comment">// 底层 const，顶层 const</span><br><span class="hljs-type">char</span>       *       p = greeting; <span class="hljs-comment">// 数据不是常量，指针不是常量</span><br><span class="hljs-type">char</span> <span class="hljs-type">const</span> *       p = greeting; <span class="hljs-comment">// 数据是常量，指针不是常量</span><br><span class="hljs-type">char</span>       * <span class="hljs-type">const</span> p = greeting; <span class="hljs-comment">// 数据不是常量，指针是常量</span><br><span class="hljs-type">char</span> <span class="hljs-type">const</span> * <span class="hljs-type">const</span> p = greeting; <span class="hljs-comment">// 数据是常量，指针是常量</span><br></code></pre></td></tr></table></figure>
 
-<p>STL 迭代器 <code>std::vector&lt;T&gt;::const_iterator</code> 模拟的是 <code>const T*</code> 指针语义。<br>对函数的返回值添加 <code>const</code> 有助于防止用户将返回值按左值使用。</p>
+<p>STL 迭代器的 <code>const</code> 语义。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp">std::vector&lt;<span class="hljs-type">int</span>&gt; vec;<br>...<br><span class="hljs-type">const</span> std::vector&lt;<span class="hljs-type">int</span>&gt;::iterator  iter = vec.<span class="hljs-built_in">begin</span>();  <span class="hljs-comment">// T * const</span><br>std::vector&lt;<span class="hljs-type">int</span>&gt;::const_iterator cIter = vec.<span class="hljs-built_in">begin</span>();  <span class="hljs-comment">// T const *</span><br></code></pre></td></tr></table></figure>
+
+<p>对函数的返回值添加 <code>const</code> 有助于防止用户将返回值按左值使用。</p>
 <h4 id="const-成员函数"><a href="#const-成员函数" class="headerlink" title="const 成员函数"></a>const 成员函数</h4><p>将 <code>const</code> 实施于成员函数有两大好处：</p>
 <ol>
 <li>它们使类接口比较容易被理解。这是因为，得知哪个函数可以改动对象内容而哪个函数不行，很是重要。</li>
@@ -759,7 +762,14 @@
             <ul><li>将某些东西声明为 <code>const</code> 可帮助编译器侦测出错误用法。<code>const</code> 可被施加于任何作用域内的对象、函数参数、函数返回类型、成员函数本体。</li><li>编译器强制实施“物理上的常量性”（bitwise constness），但你编写程序时应使用“概念上的常量性”（conceptual constness）。</li><li>当 const 和非 const 成员函数有着实质等价的实现时，令非 const 版本调用 const 版本可避免代码重复。</li></ul>
           </div>
 
-<h3 id="条款-04：确定对象被使用前已先被初始化"><a href="#条款-04：确定对象被使用前已先被初始化" class="headerlink" title="条款 04：确定对象被使用前已先被初始化"></a>条款 04：确定对象被使用前已先被初始化</h3><div class="note note-success">
+<h3 id="条款-04：确定对象被使用前已先被初始化"><a href="#条款-04：确定对象被使用前已先被初始化" class="headerlink" title="条款 04：确定对象被使用前已先被初始化"></a>条款 04：确定对象被使用前已先被初始化</h3><p>永远在使用对象之前先将它初始化。对于无任何成员的内置类型，你必须手工完成此事。</p>
+<p>对于内置类型以外的任何其他类型，初始化责任落在构造函数身上。规则很简单：确保每一个构造函数都将对象的每一个成员初始化。</p>
+<p>推荐使用成员初值列来初始化每个成员，避免先构造再赋值的开销，且确保初始化顺序与成员声明的顺序相同。</p>
+<p>对于有多个构造函数，出现重复初始化的代码，C++11 之后推荐使用委托构造函数，消除重复的初始化代码。</p>
+<p>对于多个编译单元间的具有依赖关系的静态非局部变量的初始化问题，由于 C++ 对“定义于不同编译单元内的非局部静态对象”的初始化次序并无明确定义，推荐的做法是：将每个非局部静态对象搬到自己的专属函数内（该对象在此函数内被声明为静态）。这些函数返回一个引用指向它所含的对象。（单例模式的常见实现手法）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">FileSystem</span> &#123; ... &#125;;<br><br><span class="hljs-function">FileSystem&amp; <span class="hljs-title">tfs</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">static</span> FileSystem fs;<br>    <span class="hljs-keyword">return</span> fs;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Directory</span> &#123; ... &#125;;<br><br>Directory::<span class="hljs-built_in">Directory</span>(params)<br>&#123;<br>    ...<br>    std::<span class="hljs-type">size_t</span> disks = <span class="hljs-built_in">tfs</span>().<span class="hljs-built_in">numDisks</span>();<br>    ...<br>&#125;<br><br><span class="hljs-function">Directory&amp; <span class="hljs-title">tempDir</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">static</span> Directory td;<br>    <span class="hljs-keyword">return</span> td;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<div class="note note-success">
             <ul><li>为内置型对象进行手工初始化，因为 C++ 不保证初始化它们。</li><li>构造函数最好使用成员初值列（member initialization list），而不要在构造函数本体内使用赋值操作（assignment）。初值列列出的成员函数，其排列次序应该和它们在类中的声明次序相同。</li><li>为免除“跨编译单元之初始化次序”问题，请以局部静态对象替换非局部静态对象。</li></ul>
           </div>
 
