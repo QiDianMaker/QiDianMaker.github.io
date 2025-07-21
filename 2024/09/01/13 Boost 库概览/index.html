@@ -1,0 +1,869 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Boost 库概览 | 奇点创客</title><meta name="author" content="奇点创客"><meta name="copyright" content="奇点创客"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Boost 提供免费的同行评审的可移植 C++ 源代码库。 我们强调与 C++ 标准库配合良好的库。Boost 库旨在具有广泛的用途，并且可在广泛的应用程序中使用。Boost 许可证鼓励 所有用户以最小的限制使用 Boost 库。 我们的目标是建立“现有实践”并提供参考实现，以便 Boost 库适合最终标准化。从库技术报告(TR1) 中包含的 10 个 Boost 库开始，一直到 2011 年以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Boost 库概览">
+<meta property="og:url" content="https://qidianmaker.github.io/2024/09/01/13%20Boost%20%E5%BA%93%E6%A6%82%E8%A7%88/index.html">
+<meta property="og:site_name" content="奇点创客">
+<meta property="og:description" content="Boost 提供免费的同行评审的可移植 C++ 源代码库。 我们强调与 C++ 标准库配合良好的库。Boost 库旨在具有广泛的用途，并且可在广泛的应用程序中使用。Boost 许可证鼓励 所有用户以最小的限制使用 Boost 库。 我们的目标是建立“现有实践”并提供参考实现，以便 Boost 库适合最终标准化。从库技术报告(TR1) 中包含的 10 个 Boost 库开始，一直到 2011 年以">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qidianmaker.github.io/img/13/cover.png">
+<meta property="article:published_time" content="2024-09-01T06:16:26.000Z">
+<meta property="article:modified_time" content="2025-07-19T15:37:37.097Z">
+<meta property="article:author" content="奇点创客">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Boost">
+<meta property="article:tag" content="第三方库">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qidianmaker.github.io/img/13/cover.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Boost 库概览",
+  "url": "https://qidianmaker.github.io/2024/09/01/13%20Boost%20%E5%BA%93%E6%A6%82%E8%A7%88/",
+  "image": "https://qidianmaker.github.io/img/13/cover.png",
+  "datePublished": "2024-09-01T06:16:26.000Z",
+  "dateModified": "2025-07-19T15:37:37.097Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "奇点创客",
+      "url": "https://qidianmaker.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/website/favicon.png"><link rel="canonical" href="https://qidianmaker.github.io/2024/09/01/13%20Boost%20%E5%BA%93%E6%A6%82%E8%A7%88/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'medium_zoom',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-center"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Boost 库概览',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/website/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/read/"><i class="fa-fw fa fa-book"></i><span> 读书</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li><li><a class="site-page child" href="/travel/"><i class="fa-fw fa-solid fa-umbrella-beach"></i><span> 旅行</span></a></li><li><a class="site-page child" href="/tools/"><i class="fa-fw fa fa-tools"></i><span> 工具</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/13/top.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/website/favicon.png" alt="Logo"><span class="site-name">奇点创客</span></a><a class="nav-page-title" href="/"><span class="site-name">Boost 库概览</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/read/"><i class="fa-fw fa fa-book"></i><span> 读书</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li><li><a class="site-page child" href="/travel/"><i class="fa-fw fa-solid fa-umbrella-beach"></i><span> 旅行</span></a></li><li><a class="site-page child" href="/tools/"><i class="fa-fw fa fa-tools"></i><span> 工具</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Boost 库概览</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-09-01T06:16:26.000Z" title="发表于 2024-09-01 14:16:26">2024-09-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-07-19T15:37:37.097Z" title="更新于 2025-07-19 23:37:37">2025-07-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/C/">C++</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/C/%E7%BF%BB%E8%AF%91/">翻译</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">9.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>31分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p><img src="/img/13/boost_logo.png" alt=" "></p>
+<p>Boost 提供免费的同行评审的可移植 C++ 源代码库。</p>
+<p>我们强调与 C++ 标准库配合良好的库。Boost 库旨在具有广泛的用途，并且可在广泛的应用程序中使用。Boost 许可证鼓励 所有用户以最小的限制使用 Boost 库。</p>
+<p>我们的目标是建立“现有实践”并提供参考实现，以便 Boost 库适合最终标准化。从库技术报告(TR1) 中包含的 10 个 Boost 库开始，一直到 2011 年以来 C++ ISO 标准的每个版本，C++ 标准委员会一直依赖 Boost 作为标准 C++ 库补充的宝贵来源。</p>
+<p><strong>作为一个组织的 Boost</strong></p>
+<p>Boost 组织和更广泛的 Boost 社区支持对 C++ 及其开发的库的最佳用途的研究和教育，特别是但不限于 Boost 库中包含的那些内容。</p>
+<p>该组织和社区支持邮件列表和聊天室，为 Boost Libraries 和 C++ 用户提供有关最佳实践和尖端技术的教育。</p>
+<p>本文档基于 Boost 1.83.0</p>
+<h1 id="按类别排序"><a href="#按类别排序" class="headerlink" title="按类别排序"></a>按类别排序</h1><h2 id="字符串和文本处理"><a href="#字符串和文本处理" class="headerlink" title="字符串和文本处理"></a>字符串和文本处理</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/convert/doc/html/index.html">Convert</a>：一个可扩展且可配置的类型转换框架。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/format/">Format</a>：格式化库，提供了一种类型安全机制，用于根据类似 printf 的格式字符串格式化参数。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/iostreams/doc/index.html">Iostreams</a>：Boost.IOStreams 提供了一个用于定义流、流缓冲区和 I&#x2F;O 过滤器的框架。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/boost_lexical_cast.html">Lexical Cast</a>：一般文字文本转换，例如 int 表示字符串，反之亦然。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/locale/doc/html/index.html">Locale</a>：为 C++ 提供本地化和 Unicode 处理工具。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/regex/doc/html/index.html">Regex</a>：正则表达式库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/spirit/doc/html/index.html">Spirit</a>：LL 解析器框架，将解析器直接表示为内联 C++ 中的 EBNF 语法。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/spirit/classic/">Spirit Classic</a>：LL 解析器框架，将解析器直接表示为内联 C++ 中的 EBNF 语法。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/spirit/repository/doc/html/index.html">Spirit Repository</a>：Spirit Repository 是一个社区的成果，它为 Qi 解析器和 Karma 生成器收集了不同的可重用组件(原语、指令、语法等)。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/static_string/doc/html/index.html">Static String</a>：固定容量、动态大小的字符串。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/string_algo.html">String Algo</a>：字符串算法库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/tokenizer/doc/index.html">Tokenizer</a>：将字符串或其他字符序列分解为一系列标记。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/wave/">Wave</a>：Boost.Wave 库符合标准，并且高度可配置地实现了强制 C99&#x2F;C++ 预处理器功能，封装在易于使用的迭代器接口后面。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/xpressive.html">Xpressive</a>：可以编写为字符串或表达式模板的正则表达式，并且可以利用上下文无关语法的功能递归地相互引用和自身引用。</li>
+</ul>
+<h2 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/array.html">Array</a>：与 STL 兼容的容器包装器，用于常量大小的数组。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/bimap/doc/html/index.html">Bimap</a>：C++ 双向映射键值对容器库。 使用 Boost.Bimap，你可以创建关联容器，其两种类型都可以用作键。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/circular_buffer.html">Circular Buffer</a>：符合 STL 的容器也称为环或循环缓冲区。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/container.html">Container</a>：标准库容器和拓展。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/dynamic_bitset/dynamic_bitset.html">Dynamic Bitset</a>：dynamic_bitset 类表示一组二进制位。它通过 operator[] 提供对各个位的值的访问，并提供可应用于内置整数的所有按位运算符，例如 operator&amp; 和 operator&lt;&lt;。该集合中的位数是在运行时通过 dynamic_bitset 构造函数的参数指定的。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/gil/doc/html/index.html">GIL</a>：(C++14) 泛型图像库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/index.html">Graph</a>：BGL 图接口和图组件是泛型的，与标准模板库 (STL) 具有相同的意义。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph_parallel/doc/html/index.html">GraphParallel</a>：PBGL 图接口和图组件是泛型的，与标准模板库 (STL) 的意义相同。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/icl/doc/html/index.html">ICL</a>：间隔容器库、间隔集合和映射以及关联值的聚合。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/intrusive.html">Intrusive</a>：侵入式容器和算法。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/json/doc/html/index.html">JSON</a>：基于 C++11 的 JSON 解析、序列化和 DOM。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/multi_array/doc/index.html">Multi-Array</a>：Boost.MultiArray 提供了一个通用的 N 维数组概念定义和该接口的通用实现。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/multi_index/doc/index.html">Multi-Index</a>：The Boost Multi-index Containers Library 提供了一个名为 multi_index_container 的类模板，它支持构建容器，以维护具有不同排序和访问语义的一个或多个索引。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/ptr_container/doc/ptr_container.html">Pointer Container</a>：用于存储堆分配的多态对象以简化面向对象编程的容器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/poly_collection.html">PolyCollection</a>：多态对象的快速容器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/property_map/doc/property_map.html">Property Map</a>：定义将键对象映射到值对象的接口的概念。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/property_map_parallel/">Property Map (Parallel)</a>：Property Map 的并行扩展，可与 Parallel Graph 一起使用。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/property_tree.html">Property Tree</a>：树形数据结构特别适合存储配置数据。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/string_ref.html">String Ref</a>：字符串视图模板。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/unordered/doc/html/unordered.html">Unordered</a>：无序关联容器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/url/doc/html/index.html">URL</a>：C++11 的 URL 解析库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/variant.html">Variant</a>：安全、通用、基于堆栈的可区分联合容器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/variant2/doc/html/variant2.html">Variant2</a>：std::variant 的绝对无值、强有力的保证实现。</li>
+</ul>
+<h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/gil/doc/html/index.html">GIL</a>：(C++14) 泛型图像库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/index.html">Graph</a>：BGL 图接口和图组件是泛型的，与标准模板库 (STL) 具有相同的意义。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph_parallel/doc/html/index.html">GraphParallel</a>：PBGL 图接口和图组件是泛型的，与标准模板库 (STL) 的意义相同。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/iterator/doc/index.html">Iterator</a>：Boost 迭代器库包含两部分。第一个是扩展 C++ 标准迭代器需求的概念系统。第二个是一个组件框架，用于基于这些扩展的概念构建迭代器，并包括几个有用的迭代器适配器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/utility/utilities/operators.html">Operators</a>：用模板简化了的算术类和迭代器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/tokenizer/doc/index.html">Tokenizer</a>：将字符串或其他字符序列分解为一系列标记。</li>
+</ul>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/algorithm/doc/html/index.html">Algorithm</a>：一个有用的泛型算法的集合。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/foreach.html">Foreach</a>：在 C++ 中，编写一个在序列上迭代的循环是乏味的。我们既可以使用迭代器，这需要大量的模板，也可以使用 std::for_each() 算法并将循环体移到谓词中，这需要同样多的模板，并迫使我们将逻辑移到远离使用它的地方。相反，其他一些语言，如 Perl，提供了一个专用的“foreach”结构来自动化这个过程。BOOST_FOREACH 就是 C++ 中的这样一个构造。它为我们遍历序列，使我们不必直接处理迭代器或编写谓词。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/geometry/doc/html/index.html">Geometry</a>：Boost.Geometry 库提供几何算法、基元和空间索引。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/gil/doc/html/index.html">GIL</a>：(C++14) 泛型图像库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/index.html">Graph</a>：BGL 图接口和图组件是泛型的，与标准模板库 (STL) 具有相同的意义。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph_parallel/doc/html/index.html">GraphParallel</a>：PBGL 图接口和图组件是泛型的，与标准模板库 (STL) 的意义相同。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/histogram/doc/html/index.html">Histogram</a>：快速多维直方图，具有方便的 C++14 接口。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/algorithm/minmax/">Min-Max</a>：同时进行最小&#x2F;最大和最小&#x2F;最大元素计算的标准库扩展。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/polygon/doc/index.htm">Polygon</a>：Voronoi 图构造和布尔&#x2F;裁剪、调整大小&#x2F;偏移等，适用于具有积分坐标的平面多边形。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/qvm/doc/html/index.html">QVM</a>：用于处理四元数向量和矩阵的通用 C++ 库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/range/doc/html/index.html">Range</a>：建立在新式迭代器概念之上的泛型算法的新基础设施。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/sort/doc/html/index.html">Sort</a>：高性能模板化排序函数。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/string_algo.html">String Algo</a>：字符串算法库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/index.html">Utility</a>：类不可复制加上 checked_delete()，checked_array_delete()，next()，prior() 函数模板，加上 base-from-member 惯用法。</li>
+</ul>
+<h2 id="函数对象和高阶编程"><a href="#函数对象和高阶编程" class="headerlink" title="函数对象和高阶编程"></a>函数对象和高阶编程</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/bind/doc/html/bind.html">Bind</a>：boost::bind 标准库函数 <code>std::bind1st</code> 和 <code>std::bind2nd</code> 的泛化。它支持任意函数对象、函数、函数指针和成员函数指针，并且能够将任何参数绑定到特定值或将输入参数路由到任意位置。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/container_hash/doc/html/hash.html">Container Hash</a>：与 STL 兼容的哈希函数对象，可以扩展哈希到用户定义的类型。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/function.html">Function</a>：用于延迟调用或回调的函数对象包装器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/functional/">Functional</a>：Boost.Function 库包含一系列类模板，它们是函数对象包装器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/functional/factory/doc/html/index.html">Functional&#x2F;Factory</a>：用于创建动态和静态对象的函数对象模板。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/functional/forward/doc/html/index.html">Functional&#x2F;Forward</a>：允许泛型函数对象接受任意参数的适配器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/functional/overloaded_function/doc/html/index.html">Functional&#x2F;Overloaded Function</a>：将不同的函数重载到单个函数对象中。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/hof/doc/html/doc/index.html">HOF</a>：C++ 的高阶函数。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/lambda.html">Lambda</a>：在实际调用地点定义小型匿名函数对象等。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/lambda2/doc/html/lambda2.html">Lambda2</a>：C++14 的 lambda 库.</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/local_function/doc/html/index.html">Local Function</a>：程序在本地，在其他函数中，直接在需要它们的范围内运行。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/bind/doc/html/mem_fn.html">Member Function</a>：函数、对象、指针和成员函数的通用绑定器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/phoenix/doc/html/index.html">Phoenix</a>：在实际调用点定义小的匿名函数对象等。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/core/doc/html/core/ref.html">Ref</a>：用于传递对泛型函数的引用的实用程序库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/index.html#result_of">Result Of</a>：确定函数调用表达式的类型。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/signals2.html">Signals2</a>：托管信号和槽回调实现（线程安全版本 2）。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/index.html">Utility</a>：类不可复制加上 checked_delete()，checked_array_delete()，next()，prior() 函数模板，加上 base-from-member 惯用法。</li>
+</ul>
+<h2 id="泛型编程"><a href="#泛型编程" class="headerlink" title="泛型编程"></a>泛型编程</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/utility/utilities/call_traits.html">Call Traits</a>：定义传递参数的类型。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/concept_check/concept_check.htm">Concept Check</a>：泛型编程工具。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/core/doc/html/core/enable_if.html">Enable If</a>：有选择地包含函数模板重载。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/function_types/doc/html/index.html">Function Types</a>：Boost.FunctionTypes 提供了对函数、函数指针、函数引用和成员类型指针进行分类、分解和综合的功能。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/gil/doc/html/index.html">GIL</a>：(C++14) 泛型图像库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/utility/utilities/in_place_factory.html">In Place Factory, Typed In Place Factory</a>：使用可变参数列表对包含的对象进行通用就地构造。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/utility/utilities/operators.html">Operators</a>：用模板简化了的算术类和迭代器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/property_map/doc/property_map.html">Property Map</a>：定义将键对象映射到值对象的接口的概念。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/property_map_parallel/">Property Map (Parallel)</a>：Property Map 的并行扩展，可与 Parallel Graph 一起使用。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/qvm/doc/html/index.html">QVM</a>：用于处理四元数向量和矩阵的通用 C++ 库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/boost_staticassert.html">Static Assert</a>：静态断言（编译期断言）。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/stl_interfaces.html">Stl_interfaces</a>：用于定义迭代器、视图和容器的 C++14 及更高版本 CRTP 模板。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/tti/doc/html/index.html">TTI</a>：类型特征自省库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/type_traits/doc/html/index.html">Type Traits</a>：类型基本属性模板。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/yap.html">YAP</a>：C++14 及更高版本的表达式模板库。</li>
+</ul>
+<h2 id="模板元编程"><a href="#模板元编程" class="headerlink" title="模板元编程"></a>模板元编程</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/callable_traits/doc/html/index.html">CallableTraits</a>：Boost.FunctionTypes 的精神继承者，Boost.CallableTraits 是一个仅包含头文件的 C++11 库，用于编译时检查和操作所有“可调用”类型。包含对 C++17 特性的额外支持。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/describe/doc/html/describe.html">Describe</a>：一个 C++14 的反射库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/function_types/doc/html/index.html">Function Types</a>：Boost.FunctionTypes 提供了对函数、函数指针、函数引用和成员类型指针进行分类、分解和综合的功能。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/fusion/doc/html/">Fusion</a>：用于处理元组的库，包括各种容器、算法等。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/hana/doc/html/index.html">Hana</a>：现代 C++ 元编程库。它提供高级算法来操作异构序列，允许使用自然语法编写类型级计算，提供内省用户定义类型的工具等等。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/hof/doc/html/doc/index.html">HOF</a>：C++ 的高阶函数。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/metaparse.html">Metaparse</a>：一个用于生成编译时解析器的库，解析嵌入式 DSL 代码作为 C++ 编译过程的一部分。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/mp11/doc/html/mp11.html">Mp11</a>：C++11 模板元编程库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/mpl/doc/index.html">MPL</a>：Boost.MPL 是一个通用的、高级的 C++ 模板元编程框架，包含编译时算法、序列和元函数。它提供了一个概念基础和一套广泛的强大而连贯的工具，使在当前语言中使用 C++ 进行显式元编程尽可能容易和愉快。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/master/doc/html/boost_pfr.html">PFR</a>：用户定义类型的基基反射库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/proto.html">Proto</a>：用于特定领域嵌入式语言的表达式模板库和编译器构建工具包。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/boost_staticassert.html">Static Assert</a>：静态断言（编译期断言）。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/tti/doc/html/index.html">TTI</a>：类型特征自省库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/type_traits/doc/html/index.html">Type Traits</a>：类型基本属性模板。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/yap.html">YAP</a>：C++14 及更高版本的表达式模板库。</li>
+</ul>
+<h2 id="预处理元编程"><a href="#预处理元编程" class="headerlink" title="预处理元编程"></a>预处理元编程</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/identity_type/doc/html/index.html">Identity Type</a>：将类型括在圆括号内，以便它们始终可以作为宏参数传递。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/preprocessor/doc/index.html">Preprocessor</a>：预处理器元编程工具，包括重复和递归。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/vmd/doc/html/index.html">VMD</a>：可变参数宏参数库。</li>
+</ul>
+<h2 id="并发编程"><a href="#并发编程" class="headerlink" title="并发编程"></a>并发编程</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/boost_asio.html">Asio</a>：可移植的网络和其他低级 I&#x2F;O，包括套接字、定时器、主机名解析、套接字流、串行端口、文件描述符和 Windows 句柄。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/atomic/doc/html/index.html">Atomic</a>：C++11 风格的 atomic&lt;&gt;。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/beast/doc/html/index.html">Beast</a>：仅使用 C++11 和 Boost.Asio 的可移植的 HTTP、WebSocket 和网络操作。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/compute/doc/html/index.html">Compute</a>：并行&#x2F;GPU计算库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/context/doc/html/index.html">Context</a>：(C++11) 上下文切换库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/coroutine/doc/html/index.html">Coroutine (已弃用)</a>：协程库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/coroutine2/doc/html/index.html">Coroutine2</a>：(C++11) 协程库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/fiber/doc/html/index.html">Fiber</a>：(C++11) 用户态线程库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/interprocess.html">Interprocess</a>：共享内存、内存映射文件、进程共享互斥锁、条件变量、容器和分配器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/lockfree.html">Lockfree</a>：无锁数据结构。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/mpi.html">MPI</a>：消息传递接口库，用于分布式内存并行应用程序编程。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/mysql/doc/html/index.html">MySQL</a>：建立在 Boost.Asio 之上的 MySQL 客户端。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/thread.html">Thread</a>：可移植的 C++ 多线程, C++03, C++11, C++14, C++17。</li>
+</ul>
+<h2 id="数学与数字"><a href="#数学与数字" class="headerlink" title="数学与数字"></a>数学与数字</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/accumulators.html">Accumulators</a>：用于增量计算的框架，以及统计累加器的集合。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/endian/doc/html/endian.html">Endian</a>：用于正确字节排序等的类型和转换函数，无论处理器字节顺序如何。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/geometry/doc/html/index.html">Geometry</a>：Boost.Geometry 库提供几何算法、基元和空间索引。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/histogram/doc/html/index.html">Histogram</a>：快速多维直方图，具有方便的 C++14 接口。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/integer/doc/html/index.html">Integer</a>：组织 boost 整形头文件和类，旨在利用 1999 C 标准中的 <code>&lt;stdint.h&gt;</code> 类型，而不诉诸 1998 C++ 标准中的未定义行为。头文件 <code>&lt;boost/cstdint.hpp&gt;</code> 使标准整数类型在命名空间 boost 中安全可用，而无需在命名空间 std 中放置任何名称。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/math/doc/html/index.html">Math</a>：Boost.Math 包括在数学领域的多项贡献：浮点实用程序，特定宽度浮点类型，数学常数，统计分布，特殊函数，求根和函数最小化，多项式和有理函数，插值，数值积分和微分。许多这些特性都是模板化的，以支持内置和扩展的宽度类型（例如 Boost.Multiprecision）。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/math/doc/html/gcd_lcm.html">Math Common Factor</a>：最大公约数和最小公倍数。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/math/doc/html/octonions.html">Math Octonion</a>：八元数。</li>
+</ul>
+<h2 id="正确性和测试"><a href="#正确性和测试" class="headerlink" title="正确性和测试"></a>正确性和测试</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/assert/doc/html/assert.html">Assert</a>：可定制的断言宏。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/concept_check/concept_check.htm">Concept Check</a>：泛型编程工具。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/contract/doc/html/index.html">Contract</a>：C++ 契约编程。所有的契约编程特性都得到了支持：转包、类不变量、后置条件（带有旧的和返回值）、先决条件、对断言失败的可定制操作（终止或抛异常）、可选的编译和检查断言等。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/safe_numerics/doc/html/index.html">Safe Numerics</a>：保证正确的整数算术。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/master/doc/html/stacktrace.html">Stacktrace</a>：收集、存储、复制和打印回溯。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/boost_staticassert.html">Static Assert</a>：静态断言（编译期断言）。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/test/doc/html/index.html">Test</a>：支持简单的程序测试、完整的单元测试以及程序执行监控。</li>
+</ul>
+<h2 id="错误处理和恢复"><a href="#错误处理和恢复" class="headerlink" title="错误处理和恢复"></a>错误处理和恢复</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/assert/doc/html/assert.html">Assert</a>：可定制的断言宏。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/exception/doc/boost-exception.html">Exception</a>：Boost Exception 库支持在异常对象中传输任意数据，以及在线程之间传输异常。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/leaf/doc/html/index.html">LEAF</a>：C++11 的轻量级错误处理库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/system/doc/html/system.html">System</a>：可扩展的错误报告。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/throw_exception/doc/html/throw_exception.html">ThrowException</a>：用于从 Boost 库抛出异常的通用基础设施。</li>
+</ul>
+<h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/any.html">Any</a>：用于不同值类型的单值安全、泛型容器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/bimap/doc/html/index.html">Bimap</a>：C++ 双向映射键值对容器库。 使用 Boost.Bimap，你可以创建关联容器，其两种类型都可以用作键。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/utility/utilities/compressed_pair.html">Compressed Pair</a>：空成员优化。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/container.html">Container</a>：标准库容器和拓展。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/fusion/doc/html/">Fusion</a>：用于处理元组的库，包括各种容器、算法等。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/geometry/doc/html/index.html">Geometry</a>：Boost.Geometry 库提供几何算法、基元和空间索引。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/heap.html">Heap</a>：优先级队列数据结构。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/histogram/doc/html/index.html">Histogram</a>：快速多维直方图，具有方便的 C++14 接口。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/icl/doc/html/index.html">ICL</a>：间隔容器库、间隔集合和映射以及关联值的聚合。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/json/doc/html/index.html">JSON</a>：基于 C++11 的 JSON 解析、序列化和 DOM。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/multi_index/doc/index.html">Multi-Index</a>：The Boost Multi-index Containers Library 提供了一个名为 multi_index_container 的类模板，它支持构建容器，以维护具有不同排序和访问语义的一个或多个索引。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/optional/doc/html/index.html">Optional</a>：一个值语义的、类型安全的包装器，用于表示给定类型的’optional’（或’nullable’）对象。可选对象可以包含也可以不包含基础类型的值。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/master/doc/html/boost_pfr.html">PFR</a>：用户定义类型的基基反射库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/ptr_container/doc/ptr_container.html">Pointer Container</a>：用于存储堆分配的多态对象以简化面向对象编程的容器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/polygon/doc/index.htm">Polygon</a>：Voronoi 图构造和布尔&#x2F;裁剪、调整大小&#x2F;偏移等，适用于具有积分坐标的平面多边形。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/property_tree.html">Property Tree</a>：树形数据结构特别适合存储配置数据。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/tuple/doc/html/tuple_users_guide.html">Tuple</a>：简化返回多个值的函数的定义等。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/boost_typeerasure.html">Type Erasure</a>：基于概念的运行时多态性。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/url/doc/html/index.html">URL</a>：C++11 的 URL 解析库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/uuid/doc/index.html">Uuid</a>：通用唯一标识符。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/variant.html">Variant</a>：安全、通用、基于堆栈的可区分联合容器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/variant2/doc/html/variant2.html">Variant2</a>：std::variant 的绝对无值、强有力的保证实现。</li>
+</ul>
+<h2 id="特定领域"><a href="#特定领域" class="headerlink" title="特定领域"></a>特定领域</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/chrono.html">Chrono</a>：有用的时间实用程序。C++11。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/crc.html">CRC</a>：Boost CRC 库提供了两种 CRC（循环冗余码）计算对象的实现和两种 CRC 计算函数的实现。这些实现是基于模板的。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/date_time.html">Date Time</a>：一组基于泛型编程概念的日期时间库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/boost_units.html">Units</a>：零开销维度分析以及单位&#x2F;数量操作和转换。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/uuid/doc/index.html">Uuid</a>：通用唯一标识符。</li>
+</ul>
+<h2 id="图像处理"><a href="#图像处理" class="headerlink" title="图像处理"></a>图像处理</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/gil/doc/html/index.html">GIL</a>：(C++14) 泛型图像库。</li>
+</ul>
+<h2 id="输入输出"><a href="#输入输出" class="headerlink" title="输入输出"></a>输入输出</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/boost_asio.html">Asio</a>：可移植的网络和其他低级 I&#x2F;O，包括套接字、定时器、主机名解析、套接字流、串行端口、文件描述符和 Windows 句柄。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/assign/doc/index.html">Assign</a>：用常量或生成的数据填充容器从未如此简单。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/beast/doc/html/index.html">Beast</a>：仅使用 C++11 和 Boost.Asio 的可移植的 HTTP、WebSocket 和网络操作。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/endian/doc/html/endian.html">Endian</a>：用于正确字节排序等的类型和转换函数，无论处理器字节顺序如何。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/format/">Format</a>：格式化库，提供了一种类型安全机制，用于根据类似 printf 的格式字符串格式化参数。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/io/doc/html/io.html">IO</a>：标准I&#x2F;O库的实用程序。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/iostreams/doc/index.html">Iostreams</a>：Boost.IOStreams 提供了一个用于定义流、流缓冲区和 I&#x2F;O 过滤器的框架。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/json/doc/html/index.html">JSON</a>：基于 C++11 的 JSON 解析、序列化和 DOM。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/mysql/doc/html/index.html">MySQL</a>：建立在 Boost.Asio 之上的 MySQL 客户端。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/program_options.html">Program Options</a>：program_options 库允许程序开发人员通过命令行和配置文件等常规方法从用户处获取程序选项，即（名称，值）对。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/serialization/doc/index.html">Serialization</a>：用于持久性和编组的序列化。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/url/doc/html/index.html">URL</a>：C++11 的 URL 解析库。</li>
+</ul>
+<h2 id="跨语言支持"><a href="#跨语言支持" class="headerlink" title="跨语言支持"></a>跨语言支持</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/python/doc/html/index.html">Python</a>：Boost Python 库是一个用于连接 Python 和 C++ 的框架。它允许您快速、无缝地将 C++ 类函数和对象公开给 Python，反之亦然，无需使用特殊工具 - 只需使用 C++ 编译器。</li>
+</ul>
+<h2 id="语言特性仿真"><a href="#语言特性仿真" class="headerlink" title="语言特性仿真"></a>语言特性仿真</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/compat/doc/html/compat.html">Compat</a>：后续 C++ 标准中添加的标准组件的 C++11 实现。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/describe/doc/html/describe.html">Describe</a>：一个 C++14 的反射库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/exception/doc/boost-exception.html">Exception</a>：Boost Exception 库支持在异常对象中传输任意数据，以及在线程之间传输异常。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/foreach.html">Foreach</a>：在 C++ 中，编写一个在序列上迭代的循环是乏味的。我们既可以使用迭代器，这需要大量的模板，也可以使用 std::for_each() 算法并将循环体移到谓词中，这需要同样多的模板，并迫使我们将逻辑移到远离使用它的地方。相反，其他一些语言，如 Perl，提供了一个专用的“foreach”结构来自动化这个过程。BOOST_FOREACH 就是 C++ 中的这样一个构造。它为我们遍历序列，使我们不必直接处理迭代器或编写谓词。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/move.html">Move</a>：用于 C++03 and C++11 编译器的可移植移动语义。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/outcome/doc/html/index.html">Outcome</a>：部分模拟轻量级异常的确定性故障处理库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/parameter/doc/html/index.html">Parameter</a>：Boost.Parameter 库 - 编写按名称接受参数的函数。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/parameter_python/doc/html/index.html">Parameter Python Bindings</a>：Boost.Parameter 的 Python 绑定。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/scope_exit/doc/html/index.html">Scope Exit</a>：在作用域出口处执行任意代码。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/throw_exception/doc/html/throw_exception.html">ThrowException</a>：用于从 Boost 库抛出异常的通用基础设施。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/master/doc/html/boost_typeindex.html">Type Index</a>：运行时&#x2F;编译时可复制的类型信息。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/typeof.html">Typeof</a>：Typeof 运算符模拟。</li>
+</ul>
+<h2 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/align.html">Align</a>：内存对齐函数，分配器，特征。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/pool/doc/html/index.html">Pool</a>：内存池管理。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/smart_ptr/doc/html/smart_ptr.html">Smart Ptr</a>：智能指针模板类。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/index.html">Utility</a>：类不可复制加上 checked_delete()，checked_array_delete()，next()，prior() 函数模板，加上 base-from-member 惯用法。</li>
+</ul>
+<h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/spirit/doc/html/index.html">Spirit</a>：LL 解析器框架，将解析器直接表示为内联 C++ 中的 EBNF 语法。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/spirit/classic/">Spirit Classic</a>：LL 解析器框架，将解析器直接表示为内联 C++ 中的 EBNF 语法。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/spirit/repository/doc/html/index.html">Spirit Repository</a>：Spirit Repository 是一个社区的成果，它为 Qi 解析器和 Karma 生成器收集了不同的可重用组件(原语、指令、语法等)。</li>
+</ul>
+<h2 id="模式和习语"><a href="#模式和习语" class="headerlink" title="模式和习语"></a>模式和习语</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/utility/utilities/compressed_pair.html">Compressed Pair</a>：空成员优化。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/flyweight/doc/index.html">Flyweight</a>：用于管理大量高度冗余对象的设计模式。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/outcome/doc/html/index.html">Outcome</a>：部分模拟轻量级异常的确定性故障处理库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/signals2.html">Signals2</a>：托管信号和槽回调实现（线程安全版本 2）。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/index.html">Utility</a>：类不可复制加上 checked_delete()，checked_array_delete()，next()，prior() 函数模板，加上 base-from-member 惯用法。</li>
+</ul>
+<h2 id="编程接口"><a href="#编程接口" class="headerlink" title="编程接口"></a>编程接口</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/compat/doc/html/compat.html">Compat</a>：后续 C++ 标准中添加的标准组件的 C++11 实现。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/function.html">Function</a>：用于延迟调用或回调的函数对象包装器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/outcome/doc/html/index.html">Outcome</a>：部分模拟轻量级异常的确定性故障处理库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/parameter/doc/html/index.html">Parameter</a>：Boost.Parameter 库 - 编写按名称接受参数的函数。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/parameter_python/doc/html/index.html">Parameter Python Bindings</a>：Boost.Parameter 的 Python 绑定。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/system/doc/html/system.html">System</a>：可扩展的错误报告。</li>
+</ul>
+<h2 id="状态机"><a href="#状态机" class="headerlink" title="状态机"></a>状态机</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/msm/doc/HTML/index.html">Meta State Machine</a>：一个非常高性能的库，用于表达UML2有限状态机。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/statechart/doc/index.html">Statechart</a>：Boost.Statechart - C++ 代码实现的易于阅读和维护的可用于任意复杂度的有限状态机。</li>
+</ul>
+<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/chrono.html">Chrono</a>：有用的时间实用程序。C++11。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/context/doc/html/index.html">Context</a>：(C++11) 上下文切换库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/date_time.html">Date Time</a>：一组基于泛型编程概念的日期时间库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/master/doc/html/boost_dll.html">DLL</a>：用于轻松使用 DLL 和 DSO 的库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/fiber/doc/html/index.html">Fiber</a>：(C++11) 用户态线程库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/filesystem/doc/index.htm">Filesystem</a>：Boost Filesystem 库提供了可移植的工具来查询和操作路径、文件和目录。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/nowide/doc/html/index.html">Nowide</a>：在 Windows 上使用 UTF-8 API 的标准库函数。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/process.html">Process</a>：以可移植的方式创建流程的库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/master/doc/html/stacktrace.html">Stacktrace</a>：收集、存储、复制和打印回溯。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/system/doc/html/system.html">System</a>：可扩展的错误报告。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/thread.html">Thread</a>：可移植的 C++ 多线程, C++03, C++11, C++14, C++17。</li>
+</ul>
+<h2 id="杂项"><a href="#杂项" class="headerlink" title="杂项"></a>杂项</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/master/doc/html/conversion.html">Conversion</a>：多态转换。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/convert/doc/html/index.html">Convert</a>：一个可扩展且可配置的类型转换框架。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/core/doc/html/index.html">Core</a>：具有最低依赖性的简单核心实用程序的集合。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/endian/doc/html/endian.html">Endian</a>：用于正确字节排序等的类型和转换函数，无论处理器字节顺序如何。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/boost_lexical_cast.html">Lexical Cast</a>：一般文字文本转换，例如 int 表示字符串，反之亦然。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/log/doc/html/index.html">Log</a>：日志库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/numeric/conversion/doc/html/index.html">Numeric Conversion</a>：优化的基于策略的数字转换。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/predef/doc/index.html">Predef</a>：该库从它可以收集的 C、C、Objective C 和 Objective C 预定义宏或通用头文件中定义的信息中定义了一组编译器、体系结构、操作系统、库和其他版本号。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/program_options.html">Program Options</a>：program_options 库允许程序开发人员通过命令行和配置文件等常规方法从用户处获取程序选项，即（名称，值）对。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/core/doc/html/core/swap.html">Swap</a>：增强通用交换功能。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/timer/doc/index.html">Timer</a>：事件计时器、进度计时器和进度显示类。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/tribool.html">Tribool</a>：三状态布尔类型库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/index.html">Utility</a>：类不可复制加上 checked_delete()，checked_array_delete()，next()，prior() 函数模板，加上 base-from-member 惯用法。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/utility/utilities/value_init.html">Value Initialized</a>：基于 David Abrahams 的原始想法，统一语法值初始化的包装器。</li>
+</ul>
+<h2 id="破碎编译器解决方案"><a href="#破碎编译器解决方案" class="headerlink" title="破碎编译器解决方案"></a>破碎编译器解决方案</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/compatibility/">Compatibility</a>：针对不合格标准库的帮助。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/config/doc/html/index.html">Config</a>：帮助 Boost 库开发人员适应编译器特性；不适合库用户。</li>
+</ul>
+<h1 id="按名称排序"><a href="#按名称排序" class="headerlink" title="按名称排序"></a>按名称排序</h1><h2 id="A"><a href="#A" class="headerlink" title="A"></a>A</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/accumulators.html">Accumulators</a>：用于增量计算的框架，以及统计累加器的集合。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/algorithm/doc/html/index.html">Algorithm</a>：一个有用的泛型算法的集合。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/align.html">Align</a>：内存对齐函数，分配器，特征。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/any.html">Any</a>：用于不同值类型的单值安全、泛型容器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/array.html">Array</a>：与 STL 兼容的容器包装器，用于常量大小的数组。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/boost_asio.html">Asio</a>：可移植的网络和其他低级 I&#x2F;O，包括套接字、定时器、主机名解析、套接字流、串行端口、文件描述符和 Windows 句柄。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/assert/doc/html/assert.html">Assert</a>：可定制的断言宏。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/assign/doc/index.html">Assign</a>：用常量或生成的数据填充容器从未如此简单。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/atomic/doc/html/index.html">Atomic</a>：C++11 风格的 atomic&lt;&gt;。</li>
+</ul>
+<h2 id="B"><a href="#B" class="headerlink" title="B"></a>B</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/beast/doc/html/index.html">Beast</a>：仅使用 C++11 和 Boost.Asio 的可移植的 HTTP、WebSocket 和网络操作。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/bimap/doc/html/index.html">Bimap</a>：C++ 双向映射键值对容器库。 使用 Boost.Bimap，你可以创建关联容器，其两种类型都可以用作键。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/bind/doc/html/bind.html">Bind</a>：boost::bind 标准库函数 <code>std::bind1st</code> 和 <code>std::bind2nd</code> 的泛化。它支持任意函数对象、函数、函数指针和成员函数指针，并且能够将任何参数绑定到特定值或将输入参数路由到任意位置。</li>
+</ul>
+<h2 id="C"><a href="#C" class="headerlink" title="C"></a>C</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/utility/utilities/call_traits.html">Call Traits</a>：定义传递参数的类型。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/callable_traits/doc/html/index.html">CallableTraits</a>：Boost.FunctionTypes 的精神继承者，Boost.CallableTraits 是一个仅包含头文件的 C++11 库，用于编译时检查和操作所有“可调用”类型。包含对 C++17 特性的额外支持。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/chrono.html">Chrono</a>：有用的时间实用程序。C++11。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/circular_buffer.html">Circular Buffer</a>：符合 STL 的容器也称为环或循环缓冲区。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/compat/doc/html/compat.html">Compat</a>：后续 C++ 标准中添加的标准组件的 C++11 实现。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/compatibility/">Compatibility</a>：针对不合格标准库的帮助。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/utility/utilities/compressed_pair.html">Compressed Pair</a>：空成员优化。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/compute/doc/html/index.html">Compute</a>：并行&#x2F;GPU计算库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/concept_check/concept_check.htm">Concept Check</a>：泛型编程工具。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/config/doc/html/index.html">Config</a>：帮助 Boost 库开发人员适应编译器特性；不适合库用户。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/container.html">Container</a>：标准库容器和拓展。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/container_hash/doc/html/hash.html">Container Hash</a>：与 STL 兼容的哈希函数对象，可以扩展哈希到用户定义的类型。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/context/doc/html/index.html">Context</a>：(C++11) 上下文切换库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/contract/doc/html/index.html">Contract</a>：C++ 契约编程。所有的契约编程特性都得到了支持：转包、类不变量、后置条件（带有旧的和返回值）、先决条件、对断言失败的可定制操作（终止或抛异常）、可选的编译和检查断言等。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/master/doc/html/conversion.html">Conversion</a>：多态转换。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/convert/doc/html/index.html">Convert</a>：可扩展且可配置的类型转换框架。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/core/doc/html/index.html">Core</a>：具有最低依赖性的简单核心实用程序的集合。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/coroutine/doc/html/index.html">Coroutine (已弃用)</a>：协程库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/coroutine2/doc/html/index.html">Coroutine2</a>：(C++11) 协程库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/crc.html">CRC</a>：Boost CRC 库提供了两种 CRC（循环冗余码）计算对象的实现和两种 CRC 计算函数的实现。这些实现是基于模板的。</li>
+</ul>
+<h2 id="D"><a href="#D" class="headerlink" title="D"></a>D</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/date_time.html">Date Time</a>：一组基于泛型编程概念的日期时间库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/describe/doc/html/describe.html">Describe</a>：一个 C++14 的反射库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/master/doc/html/boost_dll.html">DLL</a>：用于轻松使用 DLL 和 DSO 的库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/dynamic_bitset/dynamic_bitset.html">Dynamic Bitset</a>：dynamic_bitset 类表示一组二进制位。它通过 operator[] 提供对各个位的值的访问，并提供可应用于内置整数的所有按位运算符，例如 operator&amp; 和 operator&lt;&lt;。该集合中的位数是在运行时通过 dynamic_bitset 构造函数的参数指定的。</li>
+</ul>
+<h2 id="E"><a href="#E" class="headerlink" title="E"></a>E</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/core/doc/html/core/enable_if.html">Enable If</a>：有选择地包含函数模板重载。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/endian/doc/html/endian.html">Endian</a>：用于正确字节排序等的类型和转换函数，无论处理器字节顺序如何。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/exception/doc/boost-exception.html">Exception</a>：Boost Exception 库支持在异常对象中传输任意数据，以及在线程之间传输异常。</li>
+</ul>
+<h2 id="F"><a href="#F" class="headerlink" title="F"></a>F</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/fiber/doc/html/index.html">Fiber</a>：(C++11) 用户态线程库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/filesystem/doc/index.htm">Filesystem</a>：Boost Filesystem 库提供了可移植的工具来查询和操作路径、文件和目录。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/flyweight/doc/index.html">Flyweight</a>：用于管理大量高度冗余对象的设计模式。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/foreach.html">Foreach</a>：在 C++ 中，编写一个在序列上迭代的循环是乏味的。我们既可以使用迭代器，这需要大量的模板，也可以使用 std::for_each() 算法并将循环体移到谓词中，这需要同样多的模板，并迫使我们将逻辑移到远离使用它的地方。相反，其他一些语言，如 Perl，提供了一个专用的“foreach”结构来自动化这个过程。BOOST_FOREACH 就是 C++ 中的这样一个构造。它为我们遍历序列，使我们不必直接处理迭代器或编写谓词。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/format/">Format</a>：格式库提供了一种用于根据类似 printf 的格式字符串格式化参数的类型安全机制。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/function.html">Function</a>：用于延迟调用或回调的函数对象包装器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/function_types/doc/html/index.html">Function Types</a>：Boost.FunctionTypes 提供了对函数、函数指针、函数引用和成员类型指针进行分类、分解和综合的功能。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/functional/">Functional</a>：Boost.Function 库包含一系列类模板，它们是函数对象包装器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/functional/factory/doc/html/index.html">Functional&#x2F;Factory</a>：用于创建动态和静态对象的函数对象模板。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/functional/forward/doc/html/index.html">Functional&#x2F;Forward</a>：允许泛型函数对象接受任意参数的适配器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/functional/overloaded_function/doc/html/index.html">Functional&#x2F;Overloaded Function</a>：将不同的函数重载到单个函数对象中。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/fusion/doc/html/">Fusion</a>：用于处理元组的库，包括各种容器、算法等。</li>
+</ul>
+<h2 id="G"><a href="#G" class="headerlink" title="G"></a>G</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/geometry/doc/html/index.html">Geometry</a>：Boost.Geometry 库提供几何算法、基元和空间索引。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/gil/doc/html/index.html">GIL</a>：(C++14) 泛型图像库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/index.html">Graph</a>：BGL 图接口和图组件是泛型的，与标准模板库 (STL) 具有相同的意义。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/graph_parallel/doc/html/index.html">GraphParallel</a>：PBGL 图接口和图组件是泛型的，与标准模板库 (STL) 的意义相同。</li>
+</ul>
+<h2 id="H"><a href="#H" class="headerlink" title="H"></a>H</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/hana/doc/html/index.html">Hana</a>：现代 C++ 元编程库。它提供高级算法来操作异构序列，允许使用自然语法编写类型级计算，提供内省用户定义类型的工具等等。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/heap.html">Heap</a>：优先级队列数据结构。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/histogram/doc/html/index.html">Histogram</a>：快速多维直方图，具有方便的 C++14 接口。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/hof/doc/html/doc/index.html">HOF</a>：C++ 的高阶函数。</li>
+</ul>
+<h2 id="I"><a href="#I" class="headerlink" title="I"></a>I</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/icl/doc/html/index.html">ICL</a>：间隔容器库、间隔集合和映射以及关联值的聚合。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/identity_type/doc/html/index.html">Identity Type</a>：将类型括在圆括号内，以便它们始终可以作为宏参数传递。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/utility/utilities/in_place_factory.html">In Place Factory, Typed In Place Factory</a>：使用可变参数列表对包含的对象进行通用就地构造。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/integer/doc/html/index.html">Integer</a>：组织 boost 整形头文件和类，旨在利用 1999 C 标准中的 <code>&lt;stdint.h&gt;</code> 类型，而不诉诸 1998 C++ 标准中的未定义行为。头文件 <code>&lt;boost/cstdint.hpp&gt;</code> 使标准整数类型在命名空间 boost 中安全可用，而无需在命名空间 std 中放置任何名称。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/interprocess.html">Interprocess</a>：共享内存、内存映射文件、进程共享互斥锁、条件变量、容器和分配器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/numeric/interval/doc/interval.htm">Interval</a>：将常用的算术函数扩展到数学区间。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/intrusive.html">Intrusive</a>：侵入式容器和算法。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/io/doc/html/io.html">IO</a>：标准I&#x2F;O库的实用程序。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/iostreams/doc/index.html">Iostreams</a>：Boost.IOStreams 提供了一个定义流、流缓冲区和 I&#x2F;O 过滤器的框架。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/iterator/doc/index.html">Iterator</a>：Boost 迭代器库包含两部分。第一个是扩展 C++ 标准迭代器需求的概念系统。第二个是一个组件框架，用于基于这些扩展的概念构建迭代器，并包括几个有用的迭代器适配器。</li>
+</ul>
+<h2 id="J"><a href="#J" class="headerlink" title="J"></a>J</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/json/doc/html/index.html">JSON</a>：基于 C++11 的 JSON 解析、序列化和 DOM。</li>
+</ul>
+<h2 id="L"><a href="#L" class="headerlink" title="L"></a>L</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/lambda.html">Lambda</a>：在实际调用地点定义小型匿名函数对象等。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/lambda2/doc/html/lambda2.html">Lambda2</a>：C++14 的 lambda 库.</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/leaf/doc/html/index.html">LEAF</a>：C++11 的轻量级错误处理库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/boost_lexical_cast.html">Lexical Cast</a>：一般文字文本转换，例如将 int 表示为字符串，或相反。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/local_function/doc/html/index.html">Local Function</a>：程序在本地，在其他函数中，直接在需要它们的范围内运行。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/locale/doc/html/index.html">Locale</a>：为 C++ 提供本地化和 Unicode 处理工具。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/lockfree.html">Lockfree</a>：无锁数据结构。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/log/doc/html/index.html">Log</a>：日志库。</li>
+</ul>
+<h2 id="M"><a href="#M" class="headerlink" title="M"></a>M</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/math/doc/html/index.html">Math</a>：Boost.Math 包括在数学领域的多项贡献：浮点实用程序，特定宽度浮点类型，数学常数，统计分布，特殊函数，求根和函数最小化，多项式和有理函数，插值，数值积分和微分。许多这些特性都是模板化的，以支持内置和扩展的宽度类型（例如 Boost.Multiprecision）。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/math/doc/html/gcd_lcm.html">Math Common Factor</a>：最大公约数和最小公倍数。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/math/doc/html/octonions.html">Math Octonion</a>：八元数。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/math/doc/html/quaternions.html">Math Quaternion</a>：四元数。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/math/doc/html/special.html">Math&#x2F;Special Functions</a>：多种可供选择的数学特殊函数。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/math/doc/html/dist.html">Math&#x2F;Statistical Distributions</a>：多种单变量统计分布和对其进行运算的函数。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/bind/doc/html/mem_fn.html">Member Function</a>：函数、对象、指针和成员函数的通用绑定器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/msm/doc/HTML/index.html">Meta State Machine</a>：一个非常高性能的库，用于表达UML2有限状态机。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/metaparse.html">Metaparse</a>：一个用于生成编译时解析器的库，解析嵌入式 DSL 代码作为 C++ 编译过程的一部分。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/algorithm/minmax/">Min-Max</a>：同时进行最小&#x2F;最大和最小&#x2F;最大元素计算的标准库扩展。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/move.html">Move</a>：用于 C++03 and C++11 编译器的可移植移动语义。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/mp11/doc/html/mp11.html">Mp11</a>：C++11 模板元编程库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/mpi.html">MPI</a>：消息传递接口库，用于分布式内存并行应用程序编程。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/mpl/doc/index.html">MPL</a>：Boost.MPL 是一个通用的、高级的 C++ 模板元编程框架，包含编译时算法、序列和元函数。它提供了一个概念基础和一套广泛的强大而连贯的工具，使在当前语言中使用 C++ 进行显式元编程尽可能容易和愉快。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/multi_array/doc/index.html">Multi-Array</a>：Boost.MultiArray 提供了一个通用的 N 维数组概念定义和该接口的通用实现。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/multi_index/doc/index.html">Multi-Index</a>：The Boost Multi-index Containers Library 提供了一个名为 multi_index_container 的类模板，它支持构建容器，以维护具有不同排序和访问语义的一个或多个索引。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/multiprecision/doc/html/index.html">Multiprecision</a>：浮点、整数和有理数算术的扩展精度算术类型。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/mysql/doc/html/index.html">MySQL</a>：建立在 Boost.Asio 之上的 MySQL 客户端。</li>
+</ul>
+<h2 id="N"><a href="#N" class="headerlink" title="N"></a>N</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/nowide/doc/html/index.html">Nowide</a>：在 Windows 上使用 UTF-8 API 的标准库函数。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/numeric/conversion/doc/html/index.html">Numeric Conversion</a>：优化的基于策略的数字转换。</li>
+</ul>
+<h2 id="O"><a href="#O" class="headerlink" title="O"></a>O</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/numeric/odeint/doc/html/index.html">Odeint</a>：解常微分方程。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/utility/utilities/operators.html">Operators</a>：用模板简化了的算术类和迭代器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/optional/doc/html/index.html">Optional</a>：一个值语义的、类型安全的包装器，用于表示给定类型的’optional’（或’nullable’）对象。可选对象可以包含也可以不包含基础类型的值。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/outcome/doc/html/index.html">Outcome</a>：部分模拟轻量级异常的确定性故障处理库。</li>
+</ul>
+<h2 id="P"><a href="#P" class="headerlink" title="P"></a>P</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/parameter/doc/html/index.html">Parameter</a>：Boost.Parameter 库 - 编写按名称接受参数的函数。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/parameter_python/doc/html/index.html">Parameter Python Bindings</a>：Boost.Parameter 的 Python 绑定。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/master/doc/html/boost_pfr.html">PFR</a>：用户定义类型的基基反射库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/phoenix/doc/html/index.html">Phoenix</a>：在实际调用点定义小的匿名函数对象等。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/ptr_container/doc/ptr_container.html">Pointer Container</a>：用于存储堆分配的多态对象以简化面向对象编程的容器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/poly_collection.html">PolyCollection</a>：多态对象的快速容器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/polygon/doc/index.htm">Polygon</a>：Voronoi 图构造和布尔&#x2F;裁剪、调整大小&#x2F;偏移等，适用于具有积分坐标的平面多边形。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/pool/doc/html/index.html">Pool</a>：内存池管理。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/predef/doc/index.html">Predef</a>：该库从它可以收集的 C、C、Objective C 和 Objective C 预定义宏或通用头文件中定义的信息中定义了一组编译器、体系结构、操作系统、库和其他版本号。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/preprocessor/doc/index.html">Preprocessor</a>：预处理器元编程工具，包括重复和递归。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/process.html">Process</a>：以可移植的方式创建流程的库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/program_options.html">Program Options</a>：program_options 库允许程序开发人员通过命令行和配置文件等常规方法从用户处获取程序选项，即（名称，值）对。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/property_map/doc/property_map.html">Property Map</a>：定义将键对象映射到值对象的接口的概念。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/property_map_parallel/">Property Map (Parallel)</a>：Property Map 的并行扩展，可与 Parallel Graph 一起使用。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/property_tree.html">Property Tree</a>：树形数据结构特别适合存储配置数据。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/proto.html">Proto</a>：用于特定领域嵌入式语言的表达式模板库和编译器构建工具包。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/python/doc/html/index.html">Python</a>：Boost Python 库是一个用于连接 Python 和 C++ 的框架。它允许您快速、无缝地将 C++ 类函数和对象公开给 Python，反之亦然，无需使用特殊工具 - 只需使用 C++ 编译器。</li>
+</ul>
+<h2 id="Q"><a href="#Q" class="headerlink" title="Q"></a>Q</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/qvm/doc/html/index.html">QVM</a>：用于处理四元数向量和矩阵的通用 C++ 库。</li>
+</ul>
+<h2 id="R"><a href="#R" class="headerlink" title="R"></a>R</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/boost_random.html">Random</a>：一个完整的随机数生成系统。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/range/doc/html/index.html">Range</a>：建立在新式迭代器概念之上的泛型算法的新基础设施。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/ratio.html">Ratio</a>：编译时有理算术。C++11。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/rational/">Rational</a>：有理数类。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/core/doc/html/core/ref.html">Ref</a>：用于传递对泛型函数的引用的实用程序库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/regex/doc/html/index.html">Regex</a>：正则表达式库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/index.html#result_of">Result Of</a>：确定函数调用表达式的类型。</li>
+</ul>
+<h2 id="S"><a href="#S" class="headerlink" title="S"></a>S</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/safe_numerics/doc/html/index.html">Safe Numerics</a>：保证正确的整数算术。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/scope_exit/doc/html/index.html">Scope Exit</a>：在作用域出口处执行任意代码。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/serialization/doc/index.html">Serialization</a>：用于持久性和编组的序列化。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/signals2.html">Signals2</a>：托管信号和槽回调实现（线程安全版本 2）。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/smart_ptr/doc/html/smart_ptr.html">Smart Ptr</a>：智能指针模板类。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/sort/doc/html/index.html">Sort</a>：高性能模板化排序函数。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/spirit/doc/html/index.html">Spirit</a>：LL 解析器框架，将解析器直接表示为内联 C++ 中的 EBNF 语法。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/spirit/classic/">Spirit Classic</a>：LL 解析器框架，将解析器直接表示为内联 C++ 中的 EBNF 语法。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/spirit/repository/doc/html/index.html">Spirit Repository</a>：Spirit 存储库是一个社区的成果，为 Qi 解析器和 Karma 生成器收集不同的可重用组件（原语、指令、语法等）。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/master/doc/html/stacktrace.html">Stacktrace</a>：收集、存储、复制和打印回溯。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/statechart/doc/index.html">Statechart</a>：Boost.Statechart - C++ 代码实现的易于阅读和维护的可用于任意复杂度的有限状态机。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/boost_staticassert.html">Static Assert</a>：静态断言（编译期断言）。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/static_string/doc/html/index.html">Static String</a>：固定容量、动态大小的字符串。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/stl_interfaces.html">Stl_interfaces</a>：用于定义迭代器、视图和容器的 C++14 及更高版本 CRTP 模板。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/string_algo.html">String Algo</a>：字符串算法库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/string_ref.html">String Ref</a>：字符串视图模板。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/core/doc/html/core/swap.html">Swap</a>：增强通用交换功能。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/system/doc/html/system.html">System</a>：可扩展的错误报告。</li>
+</ul>
+<h2 id="T"><a href="#T" class="headerlink" title="T"></a>T</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/test/doc/html/index.html">Test</a>：支持简单的程序测试、完整的单元测试以及程序执行监控。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/thread.html">Thread</a>：可移植的 C++ 多线程, C++03, C++11, C++14, C++17。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/throw_exception/doc/html/throw_exception.html">ThrowException</a>：用于从 Boost 库抛出异常的通用基础设施。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/timer/doc/index.html">Timer</a>：事件计时器、进度计时器和进度显示类。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/tokenizer/doc/index.html">Tokenizer</a>：将字符串或其他字符序列分解为一系列标记。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/tribool.html">Tribool</a>：三状态布尔类型库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/tti/doc/html/index.html">TTI</a>：类型特征自省库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/tuple/doc/html/tuple_users_guide.html">Tuple</a>：简化返回多个值的函数的定义等。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/boost_typeerasure.html">Type Erasure</a>：基于概念的运行时多态性。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/master/doc/html/boost_typeindex.html">Type Index</a>：运行时&#x2F;编译时可复制的类型信息。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/type_traits/doc/html/index.html">Type Traits</a>：类型基本属性模板。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/typeof.html">Typeof</a>：Typeof 运算符模拟。</li>
+</ul>
+<h2 id="U"><a href="#U" class="headerlink" title="U"></a>U</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/numeric/ublas/doc/index.html">uBLAS</a>：uBLAS 提供张量、矩阵和向量类以及基本线性代数例程。支持多种密集、压缩和稀疏存储方案。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/boost_units.html">Units</a>：零开销维度分析以及单位&#x2F;数量操作和转换。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/unordered/doc/html/unordered.html">Unordered</a>：无序关联容器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/url/doc/html/index.html">URL</a>：C++11 的 URL 解析库。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/index.html">Utility</a>：类不可复制加上 checked_delete()，checked_array_delete()，next()，prior() 函数模板，加上 base-from-member 惯用法。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/uuid/doc/index.html">Uuid</a>：通用唯一标识符。</li>
+</ul>
+<h2 id="V"><a href="#V" class="headerlink" title="V"></a>V</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/utility/doc/html/utility/utilities/value_init.html">Value Initialized</a>：基于 David Abrahams 的原始想法，统一语法值初始化的包装器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/variant.html">Variant</a>：安全、通用、基于堆栈的可区分联合容器。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/variant2/doc/html/variant2.html">Variant2</a>：std::variant 的绝对无值、强有力的保证实现。</li>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/vmd/doc/html/index.html">VMD</a>：可变参数宏参数库。</li>
+</ul>
+<h2 id="W"><a href="#W" class="headerlink" title="W"></a>W</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/libs/wave/">Wave</a>：Boost.Wave 库符合标准，是强制性 C99&#x2F;C++ 预处理器功能的高度可配置实现，封装在易于使用的迭代器接口后面。</li>
+</ul>
+<h2 id="X"><a href="#X" class="headerlink" title="X"></a>X</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/xpressive.html">Xpressive</a>：可以编写为字符串或表达式模板的正则表达式，并且可以利用上下文无关语法的功能递归地相互引用和自身引用。</li>
+</ul>
+<h2 id="Y"><a href="#Y" class="headerlink" title="Y"></a>Y</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_83_0/doc/html/yap.html">YAP</a>：C++14 及更高版本的表达式模板库。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://qidianmaker.github.io">奇点创客</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://qidianmaker.github.io/2024/09/01/13%20Boost%20%E5%BA%93%E6%A6%82%E8%A7%88/">https://qidianmaker.github.io/2024/09/01/13%20Boost%20%E5%BA%93%E6%A6%82%E8%A7%88/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://qidianmaker.github.io" target="_blank">奇点创客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/C/">C++</a><a class="post-meta__tags" href="/tags/Boost/">Boost</a><a class="post-meta__tags" href="/tags/%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93/">第三方库</a></div><div class="post-share"><div class="social-share" data-image="/img/13/cover.png" data-sites="wechat,qq,weibo,twitter,facebook"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2024/10/01/14%20C++%20%E6%A6%82%E5%BF%B5%E6%8E%A2%E7%A9%B6/" title="C++ 概念简介"><img class="cover" src="/img/14/cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">C++ 概念简介</div></div><div class="info-2"><div class="info-item-1">C++ 模板不仅具备强大的泛化能力，自身也是一种“图灵完备”的语言，掀起了 C++ 之父 Bjarne Stroustrup 自己都没料到的“模板元编程”这一子领域。 但是，使用模板做泛型编程，最大的问题就是缺少良好的接口，一旦使用过程中出现偏差，报错信息我们难以理解，甚至无从下手。更糟的是，使用模板的代码几乎无法做到程序 ABI 层面兼容。这些问题的根本原因是 C++ 语言本身缺乏模板参数约束能力，因此，既能拥有良好接口、高性能表达泛化，又能融入语言本身是非常困难的。 好在 C++20 标准及其后续演进中，为我们带来了 Concepts 核心语言特性变更来解决这一难题。那么它能为我们的编程体验带来多大的革新？能解决多少模板元编程的历史遗留问题？今天我们一起探究 Concepts。 第 1 章 概念和约束的历史早在 1987 年，C++ 之父 Bjarne Stroustrup 就着手为模板参数设置合适的接口。长期以来，模板参数没有任何约束，仅仅在实例化的时候才能发现类型上的错误。他希望模板拥有如下三大特点：  强大的泛化、表达能力。 相对于手写代码做到零成本开销。 良好的接口。...</div></div></div></a><a class="pagination-related" href="/2024/08/01/12%20Range%20%E5%BA%93%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/" title="Range-v3 库官方文档"><img class="cover" src="/img/12/cover.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Range-v3 库官方文档</div></div><div class="info-2"><div class="info-item-1">前言C++14&#x2F;17&#x2F;20 的范围库。此代码是 C++20 中范围支持的基础。 开发状态 这些代码相当稳定，经过充分测试，适合随意使用，尽管目前缺乏文档。不做出任何有关支持或长期稳定性的承诺。该代码将不断发展，而不考虑向后兼容性。 一个需要注意的例外是在 range::cpp20 命名空间中找到的任何内容。这些组件很少改变或者（最好）永远不会改变。 安装该库仅包含头文件。您可以从 github 上的 range-v3 存储库获取源代码。要使用 Range-v3 进行编译，只需 #include 您想要的各个标头。 该发行版实际上包含三个独立的仅头文件库：  include&#x2F;concepts&#x2F;… 包含概念可移植性预处理器 (CPP)，它是一组用于定义和使用概念检查的宏，无论您的编译器是否恰好支持 C++20 概念语言功能。 include&#x2F;meta&#x2F;… 包含元库，它是一组元编程实用程序，用于在编译时处理类型和类型列表。 include&#x2F;range&#x2F;… 包含 Range-v3 库，如下所述。  Range...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2023/09/01/01%20C++%20%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E6%95%85%E4%BA%8B/" title="C++ 初始化的故事"><img class="cover" src="/img/01/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-09-01</div><div class="info-item-2">C++ 初始化的故事</div></div><div class="info-2"><div class="info-item-1">关于本书在 C++ 中，初始化是一个热门话题！互联网上充满了关于最佳实践的讨论，甚至还有关于这个主题的有趣的表情包。这种情况并不奇怪，因为有十几种方法可以初始化一个简单的整数值、有自动类型推断的复杂规则、数据成员和对象生命周期的细微差别。 于是，出现了这本书。 通过本文，你将学习在现代 C++ 中初始化各种类型的变量和数据成员的实用选项。具体来说，本书教授了多种类型的初始化、构造函数、非静态数据成员初始化、内联变量、指定初始化器等。此外，你将看到从 C++11 到 C++20 的变化和新技术，以及大量的示例来加强你的理解。 计划是解释初始化的大部分(如果不是全部的话)，学习许多优秀的 C++ 技术，并了解底层到底发生了什么。   为什么你需要阅读本书？使用现代 C++（从 C++11 开始），我们有许多新特性来简化工作和代码。改进的一个方面是初始化。现代 C++ 增加了新的初始化规则，试图在保持旧行为（主要来自 C 语言）兼容性的同时简化初始化。然而，有时规则可能看起来令人困惑和复杂，甚至 ISO 委员会也可能需要在此过程中纠正一些事情。这本书将帮助你浏览这些原则，以更好地理解这...</div></div></div></a><a class="pagination-related" href="/2023/12/01/04%20More%20Effective%20C++/" title="More Effective C++"><img class="cover" src="/img/04/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-01</div><div class="info-item-2">More Effective C++</div></div><div class="info-2"><div class="info-item-1">继 Effective C++ 之后，Scott Meyers 于 1996 年推出这本“续集”。条款变得比较少，页数倒是多了一些，原因是这次选材比“第一集”更高阶。尤其是第 5 章。Meyers 将此章命名为技术（techniques），并明白告诉你，其中都是一些 patterns（模式），例如 virtual contructors（虚构造函数），smart pointers（智能指针），reference counting（引用计数），proxy classes（策略类），double dispatching（双重派发）……这一章的每个条款篇幅都长达 15~30 页之多，实在让人有“山重水复疑无路，柳暗花明又一村”之叹。   基础议题条款 1：仔细区分指针和引用条款 2：最好使用 C++ 转型操作符条款 3：绝对不要以多态反诗处理数组条款 4：非必要不提供默认构造函数操作符条款 5：对定制的“类型转换函数”保持警觉条款 6：区分自增&#x2F;自减操作符的前置和后置形式条款 7：千万不要重载 &amp;&amp;，|| 和 , 操作符条款 8：了解各种不同意义的 new 和...</div></div></div></a><a class="pagination-related" href="/2023/11/01/03%20Effective%20C++/" title="Effective C++"><img class="cover" src="/img/03/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-01</div><div class="info-item-2">Effective C++</div></div><div class="info-2"><div class="info-item-1">有人说 C++ 程序员可以分为两类，读过 Effective C++ 的和没读过的。世界级 C++ 大师 Scott Meyers 成名之作的第三版的确当得起这样的评价。当您读过本书之后，就获得了迅速提升自己 C++ 功力的一个契机。 在国际上，本书所引起的反响，波及整个计算机的出版领域，余音至今未绝。几乎在所有 C++ 书籍的推荐名单上，本书都会位于前三名。作者高超的技术把握力、独特的视角、诙谐轻松的写作风格、独具匠心的内容组织，都受到极大的推崇和效仿。这种奇特的现象，只能解释为人们对这本书衷心的赞美和推崇。 这本书不是读完一遍就可以束之高阁的快餐读物，也不是用于解决手边问题的参考手册，而是需要您去反复阅读体会的，C++ 是真正程序员的语言，背后有着精深的思想与无与伦比的表达能力，这使得它具有类似宗教般的魅力。希望这本书能够帮助您跨越 C++ 的重重险阻，领略高处才有的壮美风光，做一个成功而快乐的 C++ 程序员。 1. 让自己习惯 C++不论你的编程背景是什么，C++ 都可能让你觉得有点熟悉。它是一个威力强大的语言，带着众多特性，但是在你可以驾驭其威力并有效运用其特性之前，你...</div></div></div></a><a class="pagination-related" href="/2023/10/01/02%20C++%20Lambda%20%E6%95%85%E4%BA%8B/" title="C++ Lambda 的故事"><img class="cover" src="/img/02/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-01</div><div class="info-item-2">C++ Lambda 的故事</div></div><div class="info-2"><div class="info-item-1"> C++98&#x2F;03 中的 Lambda作为开始，了解一些关于我们所讨论的主题的背景知识是很有必要的。为此，我们会转而回顾过去，看看那些不使用任何现代 C++ 技术的代码——即 C++98&#x2F;03 规范下的代码。 在本章中，我们将会学习：  如何将旧式的函数对象传给 C++ 标准库中的各种算法。 函数对象类型的限制。 为什么辅助函数不够好。 C++0x&#x2F;C++11 中引入 Lambda 的动机。  C++98&#x2F;03 中的可调用对象标准库的一个基本设计思想是：对于像 std::sort，std::for_each，std::transform 等这样的泛型函数，能够接受任何可调用对象然后对输入容器中的每个元素依次调用它。然而，在 C++98&#x2F;03 中，可调用对象只包括函数指针和重载了调用操作符的类类型（通常被称为“函子”）。 举例来说，我们有一个打印一个向量中所有元素的应用程序。在第一个版本中，我们使用普通的函数来实现： 123456789101112131415// Ex1_1: 一个基础的函数对象.#include &lt;algo...</div></div></div></a><a class="pagination-related" href="/2024/01/01/05%20Effective%20STL/" title="Effective STL"><img class="cover" src="/img/05/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-01-01</div><div class="info-item-2">Effective STL</div></div><div class="info-2"><div class="info-item-1">本书是 Effective C++ 的第 3 卷，被评为“值得所有 C++ 程序员阅读的 C++ 书籍之一”。本书详细讲述了使用 STL 的 50 条指导原则，并提供了透彻的分析和深刻的实例，实用性极强，是 C++ 程序员必备的基础书籍。C++ 的标准模板库（STL）是革命性的，要用好 STL 并不容易。本书作者 Scott Meyers 揭示了专家总结的一些关键规则，包括专家们总是采用的做法，以及专家们总是避免的做法。通过这些规则，STL 程序员可以最大限度地使用 STL。  </div></div></div></a><a class="pagination-related" href="/2024/02/01/06%20Effective%20Modern%20C++/" title="Effective Modern C++"><img class="cover" src="/img/06/cover.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-02-01</div><div class="info-item-2">Effective Modern C++</div></div><div class="info-2"><div class="info-item-1">一份宏大的作品，能够带动一个领域的蓬勃发展。C++ 社群在相对沉寂数十年之后迎来新一波浪潮，原因是，作为一门编程工具的最核心，C++ 的语言和标准库都出现巨大的拓展和强化。这一番大变革始自 2011，并分别于 2014、2017 持续进化。业界习惯性地将这些新版本统称为 Modern C++，用以区别“传统” C++。 作为知名书系的最新作品，《Effective Modern C++》的佳质和佳评一如其早期同门作品《Effective C++》和《More Effective C++》。本书延续作者 Scott Meyers 的一贯风格和质量，其最大特质就是，不但告诉我们 How，更用巨大而精良的篇幅告诉我们 Why。作者穷追猛打讲究再三的劲儿，常让我筋疲力尽，痛并快乐地爬行于某个条款之际拍案而叹：“天哪，还有下一页！” 而我，是一个在 C++ 领域已经生活了 25 年的老兵。 是的，我是一个在 C++ 领域已经生活了 25 年的老兵，这意味着我具备相当的 C++ 能力。尽管如此，面对号称全新语言的 Modern C++，我时或也有力不能逮、掩卷长叹的焦躁，特别是面对 Rval...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/website/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">奇点创客</div><div class="author-info-description">一枚爱智求真的理工男</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>关注我</span></a><div class="card-info-social-icons"><a class="social-icon" href="mailto:144057175@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://github.com/QiDianMaker" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://space.bilibili.com/53822487?spm_id_from=333.1007.0.0" target="_blank" title="Bilibili"><i class="fa-brands fa-bilibili" style="color: #fb7299;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8C%89%E7%B1%BB%E5%88%AB%E6%8E%92%E5%BA%8F"><span class="toc-number">1.</span> <span class="toc-text">按类别排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%92%8C%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text">字符串和文本处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8"><span class="toc-number">1.2.</span> <span class="toc-text">容器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="toc-number">1.3.</span> <span class="toc-text">迭代器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95"><span class="toc-number">1.4.</span> <span class="toc-text">算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1%E5%92%8C%E9%AB%98%E9%98%B6%E7%BC%96%E7%A8%8B"><span class="toc-number">1.5.</span> <span class="toc-text">函数对象和高阶编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B"><span class="toc-number">1.6.</span> <span class="toc-text">泛型编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF%E5%85%83%E7%BC%96%E7%A8%8B"><span class="toc-number">1.7.</span> <span class="toc-text">模板元编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E5%A4%84%E7%90%86%E5%85%83%E7%BC%96%E7%A8%8B"><span class="toc-number">1.8.</span> <span class="toc-text">预处理元编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B"><span class="toc-number">1.9.</span> <span class="toc-text">并发编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E4%B8%8E%E6%95%B0%E5%AD%97"><span class="toc-number">1.10.</span> <span class="toc-text">数学与数字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E7%A1%AE%E6%80%A7%E5%92%8C%E6%B5%8B%E8%AF%95"><span class="toc-number">1.11.</span> <span class="toc-text">正确性和测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E5%92%8C%E6%81%A2%E5%A4%8D"><span class="toc-number">1.12.</span> <span class="toc-text">错误处理和恢复</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-number">1.13.</span> <span class="toc-text">数据结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E5%AE%9A%E9%A2%86%E5%9F%9F"><span class="toc-number">1.14.</span> <span class="toc-text">特定领域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86"><span class="toc-number">1.15.</span> <span class="toc-text">图像处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA"><span class="toc-number">1.16.</span> <span class="toc-text">输入输出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%A8%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81"><span class="toc-number">1.17.</span> <span class="toc-text">跨语言支持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7%E4%BB%BF%E7%9C%9F"><span class="toc-number">1.18.</span> <span class="toc-text">语言特性仿真</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98"><span class="toc-number">1.19.</span> <span class="toc-text">内存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90"><span class="toc-number">1.20.</span> <span class="toc-text">解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%BC%8F%E5%92%8C%E4%B9%A0%E8%AF%AD"><span class="toc-number">1.21.</span> <span class="toc-text">模式和习语</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.22.</span> <span class="toc-text">编程接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="toc-number">1.23.</span> <span class="toc-text">状态机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.24.</span> <span class="toc-text">系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%82%E9%A1%B9"><span class="toc-number">1.25.</span> <span class="toc-text">杂项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A0%B4%E7%A2%8E%E7%BC%96%E8%AF%91%E5%99%A8%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">1.26.</span> <span class="toc-text">破碎编译器解决方案</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8C%89%E5%90%8D%E7%A7%B0%E6%8E%92%E5%BA%8F"><span class="toc-number">2.</span> <span class="toc-text">按名称排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#A"><span class="toc-number">2.1.</span> <span class="toc-text">A</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#B"><span class="toc-number">2.2.</span> <span class="toc-text">B</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C"><span class="toc-number">2.3.</span> <span class="toc-text">C</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#D"><span class="toc-number">2.4.</span> <span class="toc-text">D</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#E"><span class="toc-number">2.5.</span> <span class="toc-text">E</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#F"><span class="toc-number">2.6.</span> <span class="toc-text">F</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#G"><span class="toc-number">2.7.</span> <span class="toc-text">G</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#H"><span class="toc-number">2.8.</span> <span class="toc-text">H</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#I"><span class="toc-number">2.9.</span> <span class="toc-text">I</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#J"><span class="toc-number">2.10.</span> <span class="toc-text">J</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#L"><span class="toc-number">2.11.</span> <span class="toc-text">L</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#M"><span class="toc-number">2.12.</span> <span class="toc-text">M</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#N"><span class="toc-number">2.13.</span> <span class="toc-text">N</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#O"><span class="toc-number">2.14.</span> <span class="toc-text">O</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#P"><span class="toc-number">2.15.</span> <span class="toc-text">P</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q"><span class="toc-number">2.16.</span> <span class="toc-text">Q</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#R"><span class="toc-number">2.17.</span> <span class="toc-text">R</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#S"><span class="toc-number">2.18.</span> <span class="toc-text">S</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#T"><span class="toc-number">2.19.</span> <span class="toc-text">T</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#U"><span class="toc-number">2.20.</span> <span class="toc-text">U</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#V"><span class="toc-number">2.21.</span> <span class="toc-text">V</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#W"><span class="toc-number">2.22.</span> <span class="toc-text">W</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#X"><span class="toc-number">2.23.</span> <span class="toc-text">X</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Y"><span class="toc-number">2.24.</span> <span class="toc-text">Y</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/11/01/15%20C++%20%E5%80%BC%E7%B1%BB%E5%88%AB%E6%8E%A2%E7%A9%B6/" title="C++ 值类别探究"><img src="/img/15/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="C++ 值类别探究"/></a><div class="content"><a class="title" href="/2024/11/01/15%20C++%20%E5%80%BC%E7%B1%BB%E5%88%AB%E6%8E%A2%E7%A9%B6/" title="C++ 值类别探究">C++ 值类别探究</a><time datetime="2024-11-01T03:46:07.000Z" title="发表于 2024-11-01 11:46:07">2024-11-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/10/01/14%20C++%20%E6%A6%82%E5%BF%B5%E6%8E%A2%E7%A9%B6/" title="C++ 概念简介"><img src="/img/14/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="C++ 概念简介"/></a><div class="content"><a class="title" href="/2024/10/01/14%20C++%20%E6%A6%82%E5%BF%B5%E6%8E%A2%E7%A9%B6/" title="C++ 概念简介">C++ 概念简介</a><time datetime="2024-10-01T14:58:52.000Z" title="发表于 2024-10-01 22:58:52">2024-10-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/09/01/13%20Boost%20%E5%BA%93%E6%A6%82%E8%A7%88/" title="Boost 库概览"><img src="/img/13/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Boost 库概览"/></a><div class="content"><a class="title" href="/2024/09/01/13%20Boost%20%E5%BA%93%E6%A6%82%E8%A7%88/" title="Boost 库概览">Boost 库概览</a><time datetime="2024-09-01T06:16:26.000Z" title="发表于 2024-09-01 14:16:26">2024-09-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/08/01/12%20Range%20%E5%BA%93%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/" title="Range-v3 库官方文档"><img src="/img/12/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Range-v3 库官方文档"/></a><div class="content"><a class="title" href="/2024/08/01/12%20Range%20%E5%BA%93%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/" title="Range-v3 库官方文档">Range-v3 库官方文档</a><time datetime="2024-08-01T08:39:31.000Z" title="发表于 2024-08-01 16:39:31">2024-08-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/07/01/11%20Eigen%20%E5%BA%93%E6%95%99%E7%A8%8B/" title="Eigen 库官方文档"><img src="/img/11/cover.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Eigen 库官方文档"/></a><div class="content"><a class="title" href="/2024/07/01/11%20Eigen%20%E5%BA%93%E6%95%99%E7%A8%8B/" title="Eigen 库官方文档">Eigen 库官方文档</a><time datetime="2024-07-01T00:57:17.000Z" title="发表于 2024-07-01 08:57:17">2024-07-01</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/13/top.png);"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;2023 - 2025 By 奇点创客</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.4.2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const abcjsInit = () => {
+    const abcjsFn = () => {
+      setTimeout(() => {
+        const sheets = document.querySelectorAll(".abc-music-sheet")
+        for (let i = 0; i < sheets.length; i++) {
+          const ele = sheets[i]
+          if (ele.children.length > 0) continue
+
+          // Parse parameters from data-params attribute
+          let params = {}
+          const dp = ele.getAttribute("data-params")
+          if (dp) {
+            try {
+              params = JSON.parse(dp)
+            } catch (e) {
+              console.error("Failed to parse data-params:", e)
+            }
+          }
+
+          // Merge parsed parameters with the responsive option
+          // Ensures params content appears before responsive
+          const options = { ...params, responsive: "resize" }
+
+          // Render the music score using ABCJS.renderAbc
+          ABCJS.renderAbc(ele, ele.innerHTML, options)
+        }
+      }, 100)
+    }
+
+    if (typeof ABCJS === "object") {
+      abcjsFn()
+    } else {
+      btf.getScript("https://cdn.jsdelivr.net/npm/abcjs/dist/abcjs-basic-min.min.js").then(abcjsFn)
+    }
+  }
+
+  if (window.pjax) {
+    abcjsInit()
+  } else {
+    window.addEventListener("load", abcjsInit)
+  }
+
+  btf.addGlobalFn("encrypt", abcjsInit, "abcjs")
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: '6xahBDKE9bVdQzuufG4r0SrN-gzGzoHsz',
+      appKey: 'aS53wAMJ32RwAJRsefQAsX9P',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="true"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
